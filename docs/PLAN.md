@@ -46,7 +46,7 @@ MVP adapters: OpenAI (Chat Completions), Anthropic (Messages), Google Gemini (ge
 - `src/app` — expo-router routes, providers (theme, i18n, DB init)
 - `src/pages` — screens: feed list, article reader, settings
 - `src/widgets` — composition blocks (article card, translation panel)
-- `src/features` — scenarios: `add-feed`, `translate-article`, `manage-providers`, `refresh-feeds`
+- `src/features` — scenarios: `add-feed` (fetch-first URL validation + persistence), `translate-article`, `manage-providers`, `refresh-feeds`
 - `src/entities` — `feed`, `article`, `translation`, `ai-provider` (+ repositories)
 - `src/shared` — `ui`, `theme`, `i18n`, `lib` (rss parser, db, dates), `api/ai` (adapters)
 
@@ -60,7 +60,7 @@ Expo + TypeScript scaffold, ESLint/Prettier, FSD structure, design tokens and th
 
 expo-sqlite migrations; feed/article repositories; RSS parser (fast-xml-parser); refresh logic; retention: newest 50 non-saved articles per feed, saved ones are never pruned.
 
-### Phase 2 — Reading UI ✅ (done)
+### Phase 2 — Reading UI 🚧 (in progress)
 
 Feed and article lists, add feed by URL, pull-to-refresh, article screen (content rendered via WebView styled to the theme), save/unsave article toggle.
 

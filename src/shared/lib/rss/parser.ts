@@ -6,10 +6,11 @@ const xmlParser = new XMLParser({
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
   trimValues: true,
-  // Decode numeric and basic named entities; leftover named entities are
-  // decoded with `he` in decodeText (fast-xml-parser v5 covers only a subset).
-  processEntities: true,
-  htmlEntities: true,
+  // Disable fast-xml-parser's built-in entity decoding. We apply `he` exactly
+  // once for human-readable text fields to avoid double-decoding double-escaped
+  // entities such as `&amp;lt;`.
+  processEntities: false,
+  htmlEntities: false,
 });
 
 /** Full HTML entity decode for human-readable text fields. */
@@ -36,7 +37,8 @@ function asArray<T>(value: unknown): T[] {
   return Array.isArray(value) ? (value as T[]) : [value as T];
 }
 
-function asText(value: unknown): string | null {
+/** Raw text extraction without entity decoding (used for HTML content). */
+function rawText(value: unknown): string | null {
   if (value === null || value === undefined) return null;
   if (typeof value === 'string') return value.trim() || null;
   if (typeof value === 'number') return String(value);
@@ -47,10 +49,16 @@ function asText(value: unknown): string | null {
   return null;
 }
 
+/** Decoded text extraction for human-readable fields. */
+function asText(value: unknown): string | null {
+  const text = rawText(value);
+  return text === null ? null : decodeText(text);
+}
+
 function asLink(item: UnknownRecord): string | null {
   const rawLink = item['link'];
   if (typeof rawLink === 'string' && rawLink.trim() !== '') {
-    return rawLink.trim();
+    return decodeText(rawLink.trim());
   }
   const links = asArray<UnknownRecord>(asRecord(rawLink));
   // Atom: prefer rel="alternate" (or missing rel), which is the article URL.
@@ -83,7 +91,8 @@ function hashString(input: string): string {
 }
 
 function parseRssItem(item: UnknownRecord): ParsedArticle | null {
-  const title = asText(item['title']);
+  const rawTitle = rawText(item['title']);
+  const title = rawTitle ? decodeText(rawTitle) : null;
   const guid =
     asText(item['guid']) ?? asLink(item) ?? (title ? hashString(title) : null);
   if (!guid) return null;
@@ -91,10 +100,10 @@ function parseRssItem(item: UnknownRecord): ParsedArticle | null {
   return {
     guid,
     url: asLink(item),
-    title: title ? decodeText(title) : guid,
-    author: decodeMaybe(asText(item['dc:creator']) ?? asText(item['author'])),
-    summary: decodeMaybe(asText(item['description'])),
-    contentHtml: asText(item['content:encoded']) ?? asText(item['description']),
+    title: title ?? guid,
+    author: decodeMaybe(rawText(item['dc:creator']) ?? rawText(item['author'])),
+    summary: decodeMaybe(rawText(item['description'])),
+    contentHtml: rawText(item['content:encoded']) ?? rawText(item['description']),
     publishedAt:
       toDateMs(item['pubDate']) ??
       toDateMs(item['dc:date']) ??
@@ -103,17 +112,18 @@ function parseRssItem(item: UnknownRecord): ParsedArticle | null {
 }
 
 function parseAtomEntry(entry: UnknownRecord): ParsedArticle | null {
-  const title = asText(entry['title']);
+  const rawTitle = rawText(entry['title']);
+  const title = rawTitle ? decodeText(rawTitle) : null;
   const id = asText(entry['id']) ?? asLink(entry) ?? (title ? hashString(title) : null);
   if (!id) return null;
 
   return {
     guid: id,
     url: asLink(entry),
-    title: title ? decodeText(title) : id,
-    author: decodeMaybe(asText(asRecord(entry['author'])?.['name'])),
-    summary: decodeMaybe(asText(entry['summary'])),
-    contentHtml: asText(entry['content']) ?? asText(entry['summary']),
+    title: title ?? id,
+    author: decodeMaybe(rawText(asRecord(entry['author'])?.['name'])),
+    summary: decodeMaybe(rawText(entry['summary'])),
+    contentHtml: rawText(entry['content']) ?? rawText(entry['summary']),
     publishedAt:
       toDateMs(entry['published']) ??
       toDateMs(entry['updated']) ??
@@ -174,16 +184,31 @@ export function parseFeedXml(xml: string): ParsedFeed {
   throw new Error('RSS parse error: unsupported feed format');
 }
 
+const FETCH_TIMEOUT_MS = 15000;
+
 /** Fetches and parses a feed. Caller is responsible for error handling. */
 export async function fetchAndParseFeed(url: string): Promise<ParsedFeed> {
-  const response = await fetch(url, {
-    headers: {
-      Accept:
-        'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
-    },
-  });
-  if (!response.ok) {
-    throw new Error(`Feed request failed: HTTP ${response.status} (${url})`);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        Accept:
+          'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Feed request failed: HTTP ${response.status} (${url})`);
+    }
+    return parseFeedXml(await response.text());
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Feed request timed out (${url})`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
   }
-  return parseFeedXml(await response.text());
 }
