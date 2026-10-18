@@ -25,7 +25,11 @@ export function useAsyncData<T>(loader: () => Promise<T>): UseAsyncDataResult<T>
   const tokenRef = useRef<LoadToken>({ cancelled: false });
 
   const load = useCallback(
-    async (token: LoadToken) => {
+    async (token: LoadToken, signalLoading: boolean) => {
+      if (signalLoading) {
+        setLoading(true);
+        setError(null);
+      }
       try {
         const result = await loader();
         if (!token.cancelled) {
@@ -48,19 +52,31 @@ export function useAsyncData<T>(loader: () => Promise<T>): UseAsyncDataResult<T>
     tokenRef.current.cancelled = true;
     const token: LoadToken = { cancelled: false };
     tokenRef.current = token;
-    void load(token);
+
+    loader()
+      .then((result) => {
+        if (token.cancelled) return;
+        setData(result);
+      })
+      .catch((err) => {
+        if (token.cancelled) return;
+        setError(err instanceof Error ? err : new Error(String(err)));
+      })
+      .finally(() => {
+        if (token.cancelled) return;
+        setLoading(false);
+      });
+
     return () => {
       token.cancelled = true;
     };
-  }, [load]);
+  }, [loader]);
 
   const reload = useCallback(async () => {
     tokenRef.current.cancelled = true;
     const token: LoadToken = { cancelled: false };
     tokenRef.current = token;
-    setLoading(true);
-    setError(null);
-    await load(token);
+    await load(token, true);
   }, [load]);
 
   return { data, loading, error, reload, setData };

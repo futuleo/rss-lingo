@@ -1,12 +1,6 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Alert, FlatList, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { listArticlesByFeed } from '@entities/article';
 import { useFeed } from '@entities/feed';
@@ -48,7 +42,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         />
       ) : (
         <>
-          {feed?.title ?? feed?.url ? (
+          {(feed?.title ?? feed?.url) ? (
             <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
               <Text variant="title" style={styles.title}>
                 {feed?.title ?? feed?.url}

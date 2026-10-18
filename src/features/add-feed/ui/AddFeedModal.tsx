@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { Alert, Modal, StyleSheet, TextInput, View } from 'react-native';
 import { Button, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 import { useAddFeed } from '../model/useAddFeed';
@@ -35,12 +29,7 @@ export function AddFeedModal({ visible, onClose, onAdded }: AddFeedModalProps) {
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={[styles.modalBackdrop, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
         <View
           style={[
