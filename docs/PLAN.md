@@ -11,7 +11,7 @@ The user adds RSS feeds (by direct URL), reads fresh articles in a comfortable r
 | Area         | Decision                                                                      |
 | ------------ | ----------------------------------------------------------------------------- |
 | Stack        | React Native + Expo (SDK 58), TypeScript strict                               |
-| Navigation   | expo-router (routes in `src/app`)                                             |
+| Navigation   | expo-router (routes in root `app/`, providers in `src/app/providers`)         |
 | Architecture | Feature-Sliced Design: `app → pages → widgets → features → entities → shared` |
 | DB           | expo-sqlite — feeds, articles, translations                                   |
 | API keys     | expo-secure-store (secure storage)                                            |
@@ -43,12 +43,18 @@ MVP adapters: OpenAI (Chat Completions), Anthropic (Messages), Google Gemini (ge
 
 ## Structure (FSD)
 
-- `src/app` — expo-router routes, providers (theme, i18n, DB init)
+> Root `app/` is **not** an FSD layer. It is a thin expo-router file-based routing
+> adapter at the repo root (expo-router requirement). It contains only route files
+> that parse params and delegate to `@pages/*`. All providers/init live in the FSD
+> `app` layer at `src/app/providers`.
+
+- `app/` — expo-router route adapter (no app logic)
+- `src/app/providers` — FSD app layer: providers (theme, i18n, DB init)
 - `src/pages` — screens: feed list, article reader, settings
-- `src/widgets` — composition blocks (article card, translation panel)
+- `src/widgets` — composition blocks (article card, reader view, translation panel)
 - `src/features` — scenarios: `add-feed` (fetch-first URL validation + persistence), `translate-article`, `manage-providers`, `refresh-feeds`
-- `src/entities` — `feed`, `article`, `translation`, `ai-provider` (+ repositories)
-- `src/shared` — `ui`, `theme`, `i18n`, `lib` (rss parser, db, dates), `api/ai` (adapters)
+- `src/entities` — `feed`, `article`, `translation`, `ai-provider` (+ repositories + hooks)
+- `src/shared` — `ui`, `theme`, `i18n`, `lib` (rss parser, db, dates, hooks), `api/ai` (adapters)
 
 ## Phases
 

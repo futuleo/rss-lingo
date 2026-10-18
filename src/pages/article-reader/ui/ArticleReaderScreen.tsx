@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -8,106 +8,29 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { getArticle, setArticleSaved, type Article } from '@entities/article';
+import { useArticle, useToggleSaved } from '@entities/article';
 import { formatDate } from '@shared/lib/dates';
 import { Button, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
+import { ReaderWebView } from '@widgets/reader-view';
 
 export interface ArticleReaderScreenProps {
   articleId: number;
-}
-
-function buildReaderHtml(
-  article: Article,
-  options: {
-    background: string;
-    text: string;
-    textMuted: string;
-  },
-): string {
-  const content = article.contentHtml ?? '';
-  return `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3" />
-<style>
-  :root { color-scheme: light dark; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    background-color: ${options.background};
-    color: ${options.text};
-    font-size: 17px;
-    line-height: 1.6;
-    -webkit-text-size-adjust: 100%;
-    word-wrap: break-word;
-  }
-  body { padding: 16px; }
-  img { max-width: 100%; height: auto; border-radius: 8px; }
-  a { color: ${options.text}; }
-  pre, code { white-space: pre-wrap; word-wrap: break-word; }
-  blockquote {
-    margin: 12px 0;
-    padding-left: 12px;
-    border-left: 3px solid ${options.textMuted};
-    color: ${options.textMuted};
-  }
-</style>
-</head>
-<body>${content}</body>
-</html>`;
 }
 
 export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const load = useCallback(async () => {
-    const row = await getArticle(articleId);
-    setArticle(row);
-  }, [articleId]);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        await load();
-      } catch {
-        // The article stays null; the error state is rendered below.
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [load]);
+  const { data: article, loading, setData: setArticle } = useArticle(articleId);
+  const { saving, toggleSaved } = useToggleSaved();
 
   const onToggleSaved = useCallback(async () => {
     if (!article) return;
-    const next = !article.saved;
-    setArticle({ ...article, saved: next });
-    try {
-      await setArticleSaved(article.id, next);
-    } catch {
-      setArticle(article);
-      Alert.alert(t('common.error'));
-    }
-  }, [article, t]);
-
-  const readerHtml = useMemo(() => {
-    if (!article) return null;
-    return buildReaderHtml(article, {
-      background: theme.colors.background,
-      text: theme.colors.text,
-      textMuted: theme.colors.textMuted,
+    await toggleSaved(article, setArticle, {
+      onError: () => Alert.alert(t('common.error')),
     });
-  }, [article, theme]);
+  }, [article, setArticle, t, toggleSaved]);
 
   if (loading) {
     return (
@@ -137,8 +60,6 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
     );
   }
 
-  const hasContent = Boolean(article.contentHtml);
-
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <ScrollView
@@ -155,6 +76,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             label={article.saved ? `★ ${t('reader.saved')}` : t('reader.save')}
             variant={article.saved ? 'secondary' : 'primary'}
             onPress={onToggleSaved}
+            disabled={saving}
           />
           {article.url ? (
             <Button
@@ -167,33 +89,8 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
           ) : null}
         </View>
 
-        {hasContent && readerHtml ? (
-          <WebView
-            source={{ html: readerHtml, baseUrl: article.url ?? undefined }}
-            style={[
-              styles.webview,
-              {
-                backgroundColor: theme.colors.background,
-                borderRadius: theme.radii.m,
-              },
-            ]}
-            javaScriptEnabled={false}
-            domStorageEnabled={false}
-            onShouldStartLoadWithRequest={(request) => {
-              // Feed-controlled HTML is untrusted. Keep the injected about:
-              // document inside the WebView, open http(s) links in the system
-              // browser, and block every other scheme (file:, intent:,
-              // javascript:, data:, custom schemes) from loading at all.
-              if (request.url.startsWith('about:')) {
-                return true;
-              }
-              if (/^https?:\/\//i.test(request.url)) {
-                void Linking.openURL(request.url);
-                return false;
-              }
-              return false;
-            }}
-          />
+        {article.contentHtml ? (
+          <ReaderWebView article={article} />
         ) : (
           <Text variant="body" style={{ color: theme.colors.textMuted }}>
             {t('reader.contentUnavailable')}
@@ -216,9 +113,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
-  },
-  webview: {
-    minHeight: 320,
-    flex: 1,
   },
 });

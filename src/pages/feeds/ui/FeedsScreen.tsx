@@ -1,18 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
   Alert,
   FlatList,
-  Modal,
   Pressable,
   StyleSheet,
-  TextInput,
   View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { listFeeds, type Feed } from '@entities/feed';
-import { refreshAllFeeds } from '@features/refresh-feeds';
+import { useFeeds } from '@entities/feed';
+import { AddFeedModal } from '@features/add-feed';
+import { useRefreshAllFeeds } from '@features/refresh-feeds';
 import { Button, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 
@@ -21,62 +20,25 @@ export function FeedsScreen() {
   const theme = useTheme();
   const router = useRouter();
 
-  const [feeds, setFeeds] = useState<Feed[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const { data: feeds, loading, reload } = useFeeds();
+  const { refreshing, onRefresh } = useRefreshAllFeeds(reload);
   const [addModalVisible, setAddModalVisible] = useState(false);
-  const [url, setUrl] = useState('');
-  const [adding, setAdding] = useState(false);
 
-  const load = useCallback(async () => {
-    const rows = await listFeeds();
-    setFeeds(rows);
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        await load();
-      } catch {
-        // The list stays empty; the user can retry the pull-to-refresh.
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [load]);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
+  const handleAdded = useCallback(async () => {
     try {
-      await refreshAllFeeds();
-      await load();
+      await reload();
+    } catch {
+      // The list stays empty; the user can retry the pull-to-refresh.
+    }
+  }, [reload]);
+
+  const handleRefresh = useCallback(async () => {
+    try {
+      await onRefresh();
     } catch {
       Alert.alert(t('common.error'), t('feeds.refreshAllFailed'));
-    } finally {
-      setRefreshing(false);
     }
-  }, [load, t]);
-
-  const onAdd = useCallback(async () => {
-    const trimmed = url.trim();
-    if (!trimmed) return;
-    setAdding(true);
-    try {
-      const { addFeedByUrl } = await import('@features/refresh-feeds');
-      await addFeedByUrl(trimmed);
-      setUrl('');
-      setAddModalVisible(false);
-      await load();
-    } catch {
-      Alert.alert(t('common.error'), t('feeds.addFailed'));
-    } finally {
-      setAdding(false);
-    }
-  }, [load, t, url]);
+  }, [onRefresh, t]);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -96,11 +58,11 @@ export function FeedsScreen() {
         />
       ) : (
         <FlatList
-          data={feeds}
+          data={feeds ?? []}
           keyExtractor={(feed) => String(feed.id)}
           contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
           refreshing={refreshing}
-          onRefresh={onRefresh}
+          onRefresh={handleRefresh}
           ListEmptyComponent={
             <View style={styles.empty}>
               <Text variant="headline">{t('feeds.emptyTitle')}</Text>
@@ -132,60 +94,11 @@ export function FeedsScreen() {
         />
       )}
 
-      <Modal
+      <AddFeedModal
         visible={addModalVisible}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setAddModalVisible(false)}
-      >
-        <View style={[styles.modalBackdrop, { backgroundColor: 'rgba(0,0,0,0.5)' }]}>
-          <View
-            style={[
-              styles.modalCard,
-              {
-                backgroundColor: theme.colors.surface,
-                borderRadius: theme.radii.l,
-                padding: theme.spacing.l,
-                gap: theme.spacing.s,
-              },
-            ]}
-          >
-            <Text variant="headline">{t('feeds.addTitle')}</Text>
-            <Text variant="caption">{t('feeds.urlLabel')}</Text>
-            <TextInput
-              value={url}
-              onChangeText={setUrl}
-              placeholder={t('feeds.urlPlaceholder')}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="url"
-              placeholderTextColor={theme.colors.textMuted}
-              style={[
-                styles.input,
-                {
-                  borderColor: theme.colors.border,
-                  borderRadius: theme.radii.s,
-                  color: theme.colors.text,
-                  padding: theme.spacing.s,
-                },
-              ]}
-            />
-            <View style={styles.modalButtons}>
-              <Button
-                label={t('common.cancel')}
-                variant="secondary"
-                onPress={() => setAddModalVisible(false)}
-                disabled={adding}
-              />
-              <Button
-                label={adding ? t('common.loading') : t('feeds.addSubmit')}
-                onPress={onAdd}
-                disabled={adding}
-              />
-            </View>
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setAddModalVisible(false)}
+        onAdded={handleAdded}
+      />
     </View>
   );
 }
@@ -216,21 +129,5 @@ const styles = StyleSheet.create({
   feedItem: {
     borderWidth: 1,
     gap: 4,
-  },
-  modalBackdrop: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  modalCard: {
-    margin: 16,
-  },
-  input: {
-    borderWidth: 1,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: 8,
-    marginTop: 8,
   },
 });

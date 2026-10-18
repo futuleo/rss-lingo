@@ -1,10 +1,17 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-import { listArticlesByFeed, type Article } from '@entities/article';
-import { listFeeds } from '@entities/feed';
-import { refreshFeed } from '@features/refresh-feeds';
+import { listArticlesByFeed } from '@entities/article';
+import { useFeed } from '@entities/feed';
+import { useRefreshFeed } from '@features/refresh-feeds';
+import { useAsyncData } from '@shared/lib/hooks';
 import { Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 import { ArticleCard } from '@widgets/article-card';
@@ -18,50 +25,18 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   const theme = useTheme();
   const router = useRouter();
 
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [feedTitle, setFeedTitle] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const load = useCallback(() => listArticlesByFeed(feedId), [feedId]);
+  const { data: articles, loading, reload } = useAsyncData(load);
+  const { data: feed } = useFeed(feedId);
+  const { refreshing, onRefresh } = useRefreshFeed(feedId, reload);
 
-  const load = useCallback(async () => {
-    const rows = await listArticlesByFeed(feedId);
-    setArticles(rows);
-  }, [feedId]);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const feeds = await listFeeds();
-        const feed = feeds.find((f) => f.id === feedId);
-        if (!cancelled) setFeedTitle(feed?.title ?? feed?.url ?? null);
-      } catch {
-        // Title is cosmetic; the article list still loads below.
-      }
-      load()
-        .catch(() => undefined)
-        .finally(() => {
-          if (!cancelled) setLoading(false);
-        });
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [feedId, load]);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
+  const handleRefresh = useCallback(async () => {
     try {
-      const feeds = await listFeeds();
-      const feed = feeds.find((f) => f.id === feedId);
-      if (feed) await refreshFeed(feed);
-      await load();
+      await onRefresh();
     } catch {
-      // Keep the previous list; the user can retry the pull-to-refresh.
-    } finally {
-      setRefreshing(false);
+      Alert.alert(t('common.error'), t('articles.refreshFailed'));
     }
-  }, [feedId, load]);
+  }, [onRefresh, t]);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -73,20 +48,20 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         />
       ) : (
         <>
-          {feedTitle ? (
+          {feed?.title ?? feed?.url ? (
             <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
               <Text variant="title" style={styles.title}>
-                {feedTitle}
+                {feed?.title ?? feed?.url}
               </Text>
             </View>
           ) : null}
           <FlatList
-            data={articles}
+            data={articles ?? []}
             keyExtractor={(article) => String(article.id)}
             style={styles.list}
             contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
             refreshing={refreshing}
-            onRefresh={onRefresh}
+            onRefresh={handleRefresh}
             ListEmptyComponent={
               <View style={styles.empty}>
                 <Text variant="headline">{t('articles.emptyTitle')}</Text>
