@@ -6,7 +6,7 @@ import { listArticlesByFeed } from '@entities/article';
 import { useFeed } from '@entities/feed';
 import { useRefreshFeed } from '@features/refresh-feeds';
 import { useAsyncData } from '@shared/lib/hooks';
-import { Text } from '@shared/ui';
+import { EmptyState, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 import { ArticleCard } from '@widgets/article-card';
 
@@ -57,12 +57,11 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
             refreshing={refreshing}
             onRefresh={handleRefresh}
             ListEmptyComponent={
-              <View style={styles.empty}>
-                <Text variant="headline">{t('articles.emptyTitle')}</Text>
-                <Text variant="body" style={styles.emptyHint}>
-                  {t('articles.emptyHint')}
-                </Text>
-              </View>
+              <EmptyState
+                symbol="📰"
+                title={t('articles.emptyTitle')}
+                hint={t('articles.emptyHint')}
+              />
             }
             renderItem={({ item }) => (
               <ArticleCard
@@ -93,14 +92,5 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-  },
-  empty: {
-    marginTop: 48,
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 24,
-  },
-  emptyHint: {
-    textAlign: 'center',
   },
 });
