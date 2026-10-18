@@ -33,5 +33,29 @@
     "saved": "Saved",
     "openInBrowser": "Open in browser",
     "contentUnavailable": "This article has no readable content. Try opening it in the browser."
+  },
+  "settings": {
+    "title": "Settings",
+    "back": "Back",
+    "providerLabel": "AI provider",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "modelLabel": "Model",
+    "modelPlaceholder": "e.g. gpt-4o-mini",
+    "baseUrlLabel": "Base URL (optional)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API key",
+    "apiKeyPlaceholder": "Your provider API key",
+    "targetLangLabel": "Translate to",
+    "targetLangOther": "Other…",
+    "testConnection": "Test connection",
+    "testOk": "Translation: {{result}}",
+    "testError": "Test failed: {{message}}",
+    "testErrorApiKeyRequired": "Enter an API key first",
+    "saved": "Saved",
+    "errors": {
+      "invalidResponse": "Unexpected provider response"
+    }
   }
 }

@@ -33,5 +33,29 @@
     "saved": "Сохранено",
     "openInBrowser": "Открыть в браузере",
     "contentUnavailable": "У этой статьи нет читаемого содержимого. Откройте её в браузере."
+  },
+  "settings": {
+    "title": "Настройки",
+    "back": "Назад",
+    "providerLabel": "AI-провайдер",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "modelLabel": "Модель",
+    "modelPlaceholder": "например, gpt-4o-mini",
+    "baseUrlLabel": "Базовый URL (необязательно)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API-ключ",
+    "apiKeyPlaceholder": "Ваш ключ провайдера",
+    "targetLangLabel": "Переводить на",
+    "targetLangOther": "Другой…",
+    "testConnection": "Проверить подключение",
+    "testOk": "Перевод: {{result}}",
+    "testError": "Ошибка: {{message}}",
+    "testErrorApiKeyRequired": "Сначала введите API-ключ",
+    "saved": "Сохранено",
+    "errors": {
+      "invalidResponse": "Неожиданный ответ провайдера"
+    }
   }
 }

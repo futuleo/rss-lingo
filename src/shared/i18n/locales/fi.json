@@ -33,5 +33,29 @@
     "saved": "Tallennettu",
     "openInBrowser": "Avaa selaimessa",
     "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa."
+  },
+  "settings": {
+    "title": "Asetukset",
+    "back": "Takaisin",
+    "providerLabel": "AI-palvelu",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "modelLabel": "Malli",
+    "modelPlaceholder": "esim. gpt-4o-mini",
+    "baseUrlLabel": "Päätepiste (valinnainen)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API-avain",
+    "apiKeyPlaceholder": "Palvelun API-avain",
+    "targetLangLabel": "Käännä kielelle",
+    "targetLangOther": "Muu…",
+    "testConnection": "Testaa yhteyttä",
+    "testOk": "Käännös: {{result}}",
+    "testError": "Virhe: {{message}}",
+    "testErrorApiKeyRequired": "Anna ensin API-avain",
+    "saved": "Tallennettu",
+    "errors": {
+      "invalidResponse": "Odottamaton palveluvastaus"
+    }
   }
 }
