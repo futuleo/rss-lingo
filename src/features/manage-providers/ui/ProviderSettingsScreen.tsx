@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
   Pressable,
@@ -37,6 +38,7 @@ function providerLabelKey(id: string): string {
 export function ProviderSettingsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
+  const router = useRouter();
   const { settings, loading } = useAiProviderSettings();
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -363,6 +365,23 @@ export function ProviderSettingsScreen() {
         )}
       </View>
 
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => router.push('/faq')}
+        style={[
+          styles.faqRow,
+          {
+            backgroundColor: theme.colors.surface,
+            borderColor: theme.colors.border,
+            borderRadius: theme.radii.m,
+            padding: theme.spacing.m,
+          },
+        ]}
+      >
+        <Text variant="headline">{t('settings.faq')}</Text>
+        <Text style={{ color: theme.colors.textMuted, fontSize: 18 }}>›</Text>
+      </Pressable>
+
       <Text
         variant="caption"
         style={[styles.savedHint, { color: theme.colors.textMuted }]}
@@ -411,6 +430,12 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 14,
     paddingVertical: 6,
+  },
+  faqRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
   },
   savedHint: {
     textAlign: 'center',

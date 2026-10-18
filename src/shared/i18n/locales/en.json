@@ -62,8 +62,105 @@
     "testError": "Test failed: {{message}}",
     "testErrorApiKeyRequired": "Enter an API key first",
     "saved": "Saved",
+    "faq": "FAQ",
     "errors": {
       "invalidResponse": "Unexpected provider response"
     }
+  },
+  "faq": {
+    "title": "FAQ",
+    "sections": [
+      {
+        "title": "About",
+        "items": [
+          {
+            "q": "What is RSS Lingo?",
+            "a": "RSS Lingo is a mobile RSS reader that helps you learn a language. Add feeds you care about, read comfortably, and translate articles with your own AI key. Everything is stored on your device."
+          }
+        ]
+      },
+      {
+        "title": "Feeds",
+        "items": [
+          {
+            "q": "How do I add a feed?",
+            "a": "Tap + Add feed and paste a direct RSS URL like https://example.org/rss.xml. The feed is fetched immediately."
+          },
+          {
+            "q": "Where can I find an RSS URL?",
+            "a": "Look for an \"RSS\" or \"Feed\" link in the site footer or header. You can also try /rss.xml, /feed/, or /atom.xml. Pasting the site address alone is not supported yet — auto-discovery is planned."
+          }
+        ]
+      },
+      {
+        "title": "Reading",
+        "items": [
+          {
+            "q": "What does Save do?",
+            "a": "Save keeps an article forever. Without saving, only the newest 50 articles per feed are kept."
+          },
+          {
+            "q": "Where are articles stored?",
+            "a": "Articles live in a local database on your device only."
+          }
+        ]
+      },
+      {
+        "title": "Translation setup (BYOK)",
+        "items": [
+          {
+            "q": "How do I set up translation?",
+            "a": "Open Settings (⚙), pick a provider (OpenAI, Anthropic, or Gemini), enter a model name (e.g. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash), paste your own API key from that provider (get it at platform.openai.com, console.anthropic.com, or aistudio.google.com), pick the target language, and tap Test connection."
+          }
+        ]
+      },
+      {
+        "title": "Key & privacy",
+        "items": [
+          {
+            "q": "Where is my API key stored?",
+            "a": "Your key is stored in the device's secure storage (iOS Keychain / Android Keystore). It is sent only to the provider you chose, only when you translate. We have no servers and never see your key."
+          },
+          {
+            "q": "Can I use OpenAI-compatible services?",
+            "a": "Yes. Set a custom Base URL in Settings for services like OpenRouter, Groq, or local models."
+          }
+        ]
+      },
+      {
+        "title": "Troubleshooting",
+        "items": [
+          {
+            "q": "\"Invalid API key\"",
+            "a": "Re-check the key in Settings."
+          },
+          {
+            "q": "\"Rate limited\"",
+            "a": "Wait a moment and retry."
+          },
+          {
+            "q": "\"Timed out\"",
+            "a": "Check your internet connection."
+          },
+          {
+            "q": "\"Configure first\"",
+            "a": "Open Settings and add an AI provider and API key."
+          },
+          {
+            "q": "Translation shows wrong language",
+            "a": "Check the target language in Settings."
+          }
+        ]
+      },
+      {
+        "title": "Languages",
+        "items": [
+          {
+            "q": "What languages does the app support?",
+            "a": "The app interface follows your device language (English, Russian, or Finnish). The translation target language is set separately in Settings."
+          }
+        ]
+      }
+    ]
   }
 }
