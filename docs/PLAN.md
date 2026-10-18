@@ -70,7 +70,7 @@ expo-sqlite migrations; feed/article repositories; RSS parser (fast-xml-parser);
 
 Feed and article lists, add feed by URL, pull-to-refresh, article screen (content rendered via WebView styled to the theme), save/unsave article toggle.
 
-### Phase 3 — Translation (BYOK)
+### Phase 3 — Translation (BYOK) 🚧 (in progress)
 
 Settings screen: provider, model, API key, translation language; three provider adapters; translation with paragraph-level chunking; translation cache in the DB; "Original / Translation" toggle.
 
