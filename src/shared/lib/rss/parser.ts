@@ -1,3 +1,4 @@
+import { decode as heDecode } from 'he';
 import { XMLParser } from 'fast-xml-parser';
 import type { ParsedArticle, ParsedFeed } from './types';
 
@@ -5,7 +6,21 @@ const xmlParser = new XMLParser({
   ignoreAttributes: false,
   attributeNamePrefix: '@_',
   trimValues: true,
+  // Decode numeric and basic named entities; leftover named entities are
+  // decoded with `he` in decodeText (fast-xml-parser v5 covers only a subset).
+  processEntities: true,
+  htmlEntities: true,
 });
+
+/** Full HTML entity decode for human-readable text fields. */
+function decodeText(value: string): string {
+  return heDecode(value);
+}
+
+/** decodeText for optional values: null-safe. */
+function decodeMaybe(value: string | null): string | null {
+  return value === null ? null : decodeText(value);
+}
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -76,9 +91,9 @@ function parseRssItem(item: UnknownRecord): ParsedArticle | null {
   return {
     guid,
     url: asLink(item),
-    title: title ?? guid,
-    author: asText(item['dc:creator']) ?? asText(item['author']),
-    summary: asText(item['description']),
+    title: title ? decodeText(title) : guid,
+    author: decodeMaybe(asText(item['dc:creator']) ?? asText(item['author'])),
+    summary: decodeMaybe(asText(item['description'])),
     contentHtml: asText(item['content:encoded']) ?? asText(item['description']),
     publishedAt:
       toDateMs(item['pubDate']) ??
@@ -95,9 +110,9 @@ function parseAtomEntry(entry: UnknownRecord): ParsedArticle | null {
   return {
     guid: id,
     url: asLink(entry),
-    title: title ?? id,
-    author: asText(asRecord(entry['author'])?.['name']),
-    summary: asText(entry['summary']),
+    title: title ? decodeText(title) : id,
+    author: decodeMaybe(asText(asRecord(entry['author'])?.['name'])),
+    summary: decodeMaybe(asText(entry['summary'])),
     contentHtml: asText(entry['content']) ?? asText(entry['summary']),
     publishedAt:
       toDateMs(entry['published']) ??
@@ -123,7 +138,7 @@ export function parseFeedXml(xml: string): ParsedFeed {
       .map((item) => parseRssItem(asRecord(item) ?? {}))
       .filter((a): a is ParsedArticle => a !== null);
     return {
-      title: asText(channel['title']),
+      title: decodeMaybe(asText(channel['title'])),
       siteUrl: asText(channel['link']),
       articles,
     };
@@ -138,7 +153,7 @@ export function parseFeedXml(xml: string): ParsedFeed {
       .map((item) => parseRssItem(asRecord(item) ?? {}))
       .filter((a): a is ParsedArticle => a !== null);
     return {
-      title: channel ? asText(channel['title']) : null,
+      title: channel ? decodeMaybe(asText(channel['title'])) : null,
       siteUrl: channel ? asText(channel['link']) : null,
       articles,
     };
@@ -150,7 +165,7 @@ export function parseFeedXml(xml: string): ParsedFeed {
       .map((entry) => parseAtomEntry(asRecord(entry) ?? {}))
       .filter((a): a is ParsedArticle => a !== null);
     return {
-      title: asText(atom['title']),
+      title: decodeMaybe(asText(atom['title'])),
       siteUrl: asLink(atom),
       articles,
     };
