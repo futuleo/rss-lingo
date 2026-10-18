@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from '@shared/theme';
 import { initI18n } from '@shared/i18n';
+import { DatabaseGate } from './ui/DatabaseGate';
 
 initI18n();
 
@@ -11,7 +12,9 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider>
         <StatusBar style="auto" />
-        <Stack screenOptions={{ headerShown: false }} />
+        <DatabaseGate>
+          <Stack screenOptions={{ headerShown: false }} />
+        </DatabaseGate>
       </ThemeProvider>
     </SafeAreaProvider>
   );
