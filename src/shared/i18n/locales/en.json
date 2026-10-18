@@ -21,12 +21,23 @@
     "emptyTitle": "No feeds yet",
     "emptyHint": "Add a feed by pasting a direct RSS URL of a site or blog.",
     "addFailed": "Could not add this feed. Check the URL and try again.",
-    "refreshAllFailed": "Some feeds failed to refresh"
+    "refreshAllFailed": "Some feeds failed to refresh",
+    "loadError": "Could not load feeds",
+    "deleteTitle": "Delete feed?",
+    "deleteMessage": "Delete \"{{title}}\"? This will also remove all its articles.",
+    "deleteFailed": "Could not delete this feed"
   },
   "articles": {
     "emptyTitle": "No articles yet",
     "emptyHint": "Pull down to refresh this feed.",
     "refreshFailed": "Refresh failed"
+  },
+  "saved": {
+    "title": "Saved articles",
+    "back": "Back",
+    "emptyTitle": "No saved articles",
+    "emptyHint": "Save articles while reading to find them here.",
+    "loadError": "Could not load saved articles"
   },
   "reader": {
     "save": "Save",
