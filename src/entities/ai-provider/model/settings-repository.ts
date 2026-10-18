@@ -34,10 +34,7 @@ export async function saveSettings(
   );
 }
 
-export async function saveApiKey(
-  providerId: string,
-  apiKey: string,
-): Promise<void> {
+export async function saveApiKey(providerId: string, apiKey: string): Promise<void> {
   const key = apiKeyKey(providerId);
   if (apiKey.trim().length === 0) {
     await SecureStore.deleteItemAsync(key);

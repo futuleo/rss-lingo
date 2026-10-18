@@ -117,18 +117,14 @@ describe('database invariants', () => {
   });
 
   test('migrations are applied up to the latest version', async () => {
-    const row = await db.getFirstAsync<{ user_version: number }>(
-      'PRAGMA user_version',
-    );
+    const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
     expect(row?.user_version).toBe(2);
   });
 
   test('migrations are idempotent', async () => {
     await migrateDatabase(db);
 
-    const row = await db.getFirstAsync<{ user_version: number }>(
-      'PRAGMA user_version',
-    );
+    const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
     expect(row?.user_version).toBe(2);
 
     const tables = await db.getAllAsync<{ name: string }>(

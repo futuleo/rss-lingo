@@ -45,7 +45,7 @@ export class OpenAiProvider implements AiProvider {
     }
 
     const data = (await response.json()) as {
-      choices?: Array<{ message?: { content?: unknown } }>;
+      choices?: { message?: { content?: unknown } }[];
     };
     const content = data.choices?.[0]?.message?.content;
     if (typeof content !== 'string') {

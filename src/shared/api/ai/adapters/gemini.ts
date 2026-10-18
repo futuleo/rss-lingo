@@ -29,8 +29,7 @@ export class GeminiProvider implements AiProvider {
     baseUrl,
     signal,
   }: TranslateParams): Promise<string> {
-    const base =
-      baseUrl ?? 'https://generativelanguage.googleapis.com/v1beta';
+    const base = baseUrl ?? 'https://generativelanguage.googleapis.com/v1beta';
     const url = `${base}/models/${model}:generateContent?key=${apiKey}`;
 
     const response = await fetch(url, {
@@ -53,7 +52,7 @@ export class GeminiProvider implements AiProvider {
     }
 
     const data = (await response.json()) as {
-      candidates?: Array<{ content?: { parts?: GeminiPart[] } }>;
+      candidates?: { content?: { parts?: GeminiPart[] } }[];
     };
     const parts = data.candidates?.[0]?.content?.parts;
     if (!Array.isArray(parts) || parts.length === 0) {
