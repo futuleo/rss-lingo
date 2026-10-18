@@ -2,14 +2,36 @@
   "app": {
     "title": "RSS Lingo"
   },
-  "home": {
-    "subtitle": "Lue RSS-syötteitä ja käännä artikkeleita omilla tekoälymalleillasi.",
-    "comingSoon": "Syötteet ja käännökset tulevat seuraavissa vaiheissa."
-  },
   "common": {
     "ok": "OK",
     "cancel": "Peruuta",
     "retry": "Yritä uudelleen",
-    "error": "Jokin meni pieleen"
+    "error": "Jokin meni pieleen",
+    "loading": "Ladataan…",
+    "delete": "Poista",
+    "close": "Sulje"
+  },
+  "feeds": {
+    "title": "Syötteet",
+    "add": "Lisää syöte",
+    "addTitle": "Uusi syöte",
+    "urlLabel": "Suora RSS-osoite",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "add": "Lisää",
+    "emptyTitle": "Ei vielä syötteitä",
+    "emptyHint": "Lisää syöte liittämällä sivuston tai blogin suora RSS-osoite.",
+    "addFailed": "Syötteen lisääminen epäonnistui. Tarkista osoite ja yritä uudelleen.",
+    "refreshAllFailed": "Joidenkin syötteiden päivitys epäonnistui"
+  },
+  "articles": {
+    "emptyTitle": "Ei vielä artikkeleita",
+    "emptyHint": "Päivitä syöte vetämällä alaspäin.",
+    "refreshFailed": "Päivitys epäonnistui"
+  },
+  "reader": {
+    "save": "Tallenna",
+    "saved": "Tallennettu",
+    "openInBrowser": "Avaa selaimessa",
+    "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa."
   }
 }
