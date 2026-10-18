@@ -1,4 +1,5 @@
 import type { AiProvider, TranslateParams } from '../types';
+import { assertHttpsEndpoint, assertObjectResponse } from './helpers';
 
 function buildPrompt(text: string, targetLang: string): string {
   return `Translate the following text to ${targetLang}. Return ONLY the translation, preserving paragraph breaks.\n\n${text}`;
@@ -30,7 +31,7 @@ export class AnthropicProvider implements AiProvider {
     baseUrl,
     signal,
   }: TranslateParams): Promise<string> {
-    const url = `${baseUrl ?? 'https://api.anthropic.com'}/v1/messages`;
+    const url = `${assertHttpsEndpoint(baseUrl, 'https://api.anthropic.com')}/v1/messages`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -50,10 +51,12 @@ export class AnthropicProvider implements AiProvider {
       throw mapError(response.status);
     }
 
-    const data = (await response.json()) as {
+    const data = await response.json();
+    assertObjectResponse(data, 'Anthropic');
+    const typedData = data as {
       content?: AnthropicContentBlock[];
     };
-    const blocks = data.content;
+    const blocks = typedData.content;
     if (!Array.isArray(blocks) || blocks.length === 0) {
       throw new Error('Unexpected Anthropic response');
     }

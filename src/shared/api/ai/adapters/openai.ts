@@ -1,4 +1,5 @@
 import type { AiProvider, TranslateParams } from '../types';
+import { assertHttpsEndpoint, assertObjectResponse } from './helpers';
 
 function buildPrompt(text: string, targetLang: string): string {
   return `Translate the following text to ${targetLang}. Return ONLY the translation, preserving paragraph breaks.\n\n${text}`;
@@ -25,7 +26,7 @@ export class OpenAiProvider implements AiProvider {
     baseUrl,
     signal,
   }: TranslateParams): Promise<string> {
-    const url = `${baseUrl ?? 'https://api.openai.com/v1'}/chat/completions`;
+    const url = `${assertHttpsEndpoint(baseUrl, 'https://api.openai.com/v1')}/chat/completions`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -44,10 +45,12 @@ export class OpenAiProvider implements AiProvider {
       throw mapError(response.status);
     }
 
-    const data = (await response.json()) as {
+    const data = await response.json();
+    assertObjectResponse(data, 'OpenAI');
+    const typedData = data as {
       choices?: { message?: { content?: unknown } }[];
     };
-    const content = data.choices?.[0]?.message?.content;
+    const content = typedData.choices?.[0]?.message?.content;
     if (typeof content !== 'string') {
       throw new Error('Unexpected OpenAI response');
     }

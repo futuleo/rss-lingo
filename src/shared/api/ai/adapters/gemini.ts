@@ -1,4 +1,5 @@
 import type { AiProvider, TranslateParams } from '../types';
+import { assertHttpsEndpoint, assertObjectResponse } from './helpers';
 
 function buildPrompt(text: string, targetLang: string): string {
   return `Translate the following text to ${targetLang}. Return ONLY the translation, preserving paragraph breaks.\n\n${text}`;
@@ -29,13 +30,13 @@ export class GeminiProvider implements AiProvider {
     baseUrl,
     signal,
   }: TranslateParams): Promise<string> {
-    const base = baseUrl ?? 'https://generativelanguage.googleapis.com/v1beta';
-    const url = `${base}/models/${model}:generateContent?key=${apiKey}`;
+    const url = `${assertHttpsEndpoint(baseUrl, 'https://generativelanguage.googleapis.com/v1beta')}/models/${model}:generateContent`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
       },
       body: JSON.stringify({
         contents: [
@@ -51,10 +52,12 @@ export class GeminiProvider implements AiProvider {
       throw mapError(response.status);
     }
 
-    const data = (await response.json()) as {
+    const data = await response.json();
+    assertObjectResponse(data, 'Gemini');
+    const typedData = data as {
       candidates?: { content?: { parts?: GeminiPart[] } }[];
     };
-    const parts = data.candidates?.[0]?.content?.parts;
+    const parts = typedData.candidates?.[0]?.content?.parts;
     if (!Array.isArray(parts) || parts.length === 0) {
       throw new Error('Unexpected Gemini response');
     }
