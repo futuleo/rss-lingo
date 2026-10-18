@@ -74,7 +74,7 @@ Feed and article lists, add feed by URL, pull-to-refresh, article screen (conten
 
 Settings screen: provider, model, API key, translation language; three provider adapters; translation with paragraph-level chunking; translation cache in the DB; "Original / Translation" toggle.
 
-### Phase 4 — Polish 🚧 (in progress)
+### Phase 4 — Polish ✅ (done)
 
 System dark theme, error/empty states, feed deletion, complete fi/ru/en texts, saved articles. After MVP: designer skills / UI polish pass.
 
