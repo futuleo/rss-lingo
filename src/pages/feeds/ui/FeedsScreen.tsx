@@ -9,10 +9,10 @@ import {
   View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useFeeds } from '@entities/feed';
+import { deleteFeed, useFeeds, type Feed } from '@entities/feed';
 import { AddFeedModal } from '@features/add-feed';
 import { useRefreshAllFeeds } from '@features/refresh-feeds';
-import { Button, Text } from '@shared/ui';
+import { Button, EmptyState, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 
 export function FeedsScreen() {
@@ -20,7 +20,7 @@ export function FeedsScreen() {
   const theme = useTheme();
   const router = useRouter();
 
-  const { data: feeds, loading, reload } = useFeeds();
+  const { data: feeds, loading, error, reload } = useFeeds();
   const { refreshing, onRefresh } = useRefreshAllFeeds(reload);
   const [addModalVisible, setAddModalVisible] = useState(false);
 
@@ -40,6 +40,31 @@ export function FeedsScreen() {
     }
   }, [onRefresh, t]);
 
+  const handleDeleteFeed = useCallback(
+    (feed: Feed) => {
+      Alert.alert(
+        t('feeds.deleteTitle'),
+        t('feeds.deleteMessage', { title: feed.title ?? feed.url }),
+        [
+          { text: t('common.cancel'), style: 'cancel' },
+          {
+            text: t('common.delete'),
+            style: 'destructive',
+            onPress: async () => {
+              try {
+                await deleteFeed(feed.id);
+                await reload();
+              } catch {
+                Alert.alert(t('common.error'), t('feeds.deleteFailed'));
+              }
+            },
+          },
+        ],
+      );
+    },
+    [reload, t],
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
@@ -47,9 +72,17 @@ export function FeedsScreen() {
         <View style={styles.headerActions}>
           <Pressable
             accessibilityRole="button"
+            accessibilityLabel={t('saved.title')}
+            onPress={() => router.push('/saved')}
+            style={styles.iconButton}
+          >
+            <Text style={{ fontSize: 22 }}>★</Text>
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
             accessibilityLabel={t('settings.title')}
             onPress={() => router.push('/settings')}
-            style={styles.settingsButton}
+            style={styles.iconButton}
           >
             <Text style={{ fontSize: 22 }}>⚙</Text>
           </Pressable>
@@ -66,6 +99,16 @@ export function FeedsScreen() {
           size="large"
           color={theme.colors.primary}
         />
+      ) : error ? (
+        <View style={styles.error}>
+          <Text
+            variant="body"
+            style={{ color: theme.colors.danger, textAlign: 'center' }}
+          >
+            {t('feeds.loadError')}
+          </Text>
+          <Button label={t('common.retry')} variant="secondary" onPress={reload} />
+        </View>
       ) : (
         <FlatList
           data={feeds ?? []}
@@ -74,17 +117,17 @@ export function FeedsScreen() {
           refreshing={refreshing}
           onRefresh={handleRefresh}
           ListEmptyComponent={
-            <View style={styles.empty}>
-              <Text variant="headline">{t('feeds.emptyTitle')}</Text>
-              <Text variant="body" style={styles.emptyHint}>
-                {t('feeds.emptyHint')}
-              </Text>
-            </View>
+            <EmptyState
+              symbol="📡"
+              title={t('feeds.emptyTitle')}
+              hint={t('feeds.emptyHint')}
+            />
           }
           renderItem={({ item }) => (
             <Pressable
               accessibilityRole="button"
               onPress={() => router.push(`/feeds/${item.id}`)}
+              onLongPress={() => handleDeleteFeed(item)}
               style={[
                 styles.feedItem,
                 {
@@ -127,22 +170,19 @@ const styles = StyleSheet.create({
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
   },
-  settingsButton: {
+  iconButton: {
     padding: 8,
   },
   loader: {
     marginTop: 48,
   },
-  empty: {
+  error: {
     marginTop: 48,
     alignItems: 'center',
-    gap: 8,
+    gap: 16,
     paddingHorizontal: 24,
-  },
-  emptyHint: {
-    textAlign: 'center',
   },
   feedItem: {
     borderWidth: 1,

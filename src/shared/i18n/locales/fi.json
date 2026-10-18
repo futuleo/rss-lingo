@@ -21,12 +21,23 @@
     "emptyTitle": "Ei vielä syötteitä",
     "emptyHint": "Lisää syöte liittämällä sivuston tai blogin suora RSS-osoite.",
     "addFailed": "Syötteen lisääminen epäonnistui. Tarkista osoite ja yritä uudelleen.",
-    "refreshAllFailed": "Joidenkin syötteiden päivitys epäonnistui"
+    "refreshAllFailed": "Joidenkin syötteiden päivitys epäonnistui",
+    "loadError": "Syötteiden lataaminen epäonnistui",
+    "deleteTitle": "Poista syöte?",
+    "deleteMessage": "Poista \"{{title}}\"? Kaikki sen artikkelit poistetaan myös.",
+    "deleteFailed": "Tämän syötteen poistaminen epäonnistui"
   },
   "articles": {
     "emptyTitle": "Ei vielä artikkeleita",
     "emptyHint": "Päivitä syöte vetämällä alaspäin.",
     "refreshFailed": "Päivitys epäonnistui"
+  },
+  "saved": {
+    "title": "Tallennetut artikkelit",
+    "back": "Takaisin",
+    "emptyTitle": "Ei tallennettuja artikkeleita",
+    "emptyHint": "Tallenna artikkeleita lukemisen aikana löytääksesi ne täältä.",
+    "loadError": "Tallennettujen artikkelien lataaminen epäonnistui"
   },
   "reader": {
     "save": "Tallenna",
