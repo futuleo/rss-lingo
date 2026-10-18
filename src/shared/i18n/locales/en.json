@@ -32,7 +32,15 @@
     "save": "Save",
     "saved": "Saved",
     "openInBrowser": "Open in browser",
-    "contentUnavailable": "This article has no readable content. Try opening it in the browser."
+    "contentUnavailable": "This article has no readable content. Try opening it in the browser.",
+    "original": "Original",
+    "translation": "Translation",
+    "translate": "Translate",
+    "translating": "Translating… {{done}}/{{total}}",
+    "cancel": "Cancel",
+    "translationFailed": "Translation failed",
+    "configureFirst": "Configure an AI provider and API key to translate articles.",
+    "configure": "Configure"
   },
   "settings": {
     "title": "Settings",

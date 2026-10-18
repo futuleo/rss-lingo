@@ -32,7 +32,15 @@
     "save": "Tallenna",
     "saved": "Tallennettu",
     "openInBrowser": "Avaa selaimessa",
-    "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa."
+    "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa.",
+    "original": "Alkuperäinen",
+    "translation": "Käännös",
+    "translate": "Käännä",
+    "translating": "Käännetään… {{done}}/{{total}}",
+    "cancel": "Peruuta",
+    "translationFailed": "Kääntäminen epäonnistui",
+    "configureFirst": "Määritä AI-palvelu ja API-avain artikkeleiden kääntämistä varten.",
+    "configure": "Määritä"
   },
   "settings": {
     "title": "Asetukset",

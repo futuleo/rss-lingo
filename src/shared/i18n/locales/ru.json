@@ -32,7 +32,15 @@
     "save": "Сохранить",
     "saved": "Сохранено",
     "openInBrowser": "Открыть в браузере",
-    "contentUnavailable": "У этой статьи нет читаемого содержимого. Откройте её в браузере."
+    "contentUnavailable": "У этой статьи нет читаемого содержимого. Откройте её в браузере.",
+    "original": "Оригинал",
+    "translation": "Перевод",
+    "translate": "Перевести",
+    "translating": "Перевод… {{done}}/{{total}}",
+    "cancel": "Отмена",
+    "translationFailed": "Ошибка перевода",
+    "configureFirst": "Настройте AI-провайдера и API-ключ, чтобы переводить статьи.",
+    "configure": "Настроить"
   },
   "settings": {
     "title": "Настройки",

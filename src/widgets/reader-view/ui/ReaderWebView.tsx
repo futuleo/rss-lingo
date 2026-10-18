@@ -5,14 +5,13 @@ import { useTheme } from '@shared/theme';
 import type { Article } from '@entities/article';
 
 function buildReaderHtml(
-  article: Article,
+  content: string,
   options: {
     background: string;
     text: string;
     textMuted: string;
   },
 ): string {
-  const content = article.contentHtml ?? '';
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -48,20 +47,23 @@ function buildReaderHtml(
 
 export interface ReaderWebViewProps {
   article: Article;
+  htmlOverride?: string;
 }
 
-export function ReaderWebView({ article }: ReaderWebViewProps) {
+export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
   const theme = useTheme();
 
+  const content = htmlOverride ?? article.contentHtml ?? '';
+
   const readerHtml = useMemo(() => {
-    return buildReaderHtml(article, {
+    return buildReaderHtml(content, {
       background: theme.colors.background,
       text: theme.colors.text,
       textMuted: theme.colors.textMuted,
     });
-  }, [article, theme]);
+  }, [content, theme]);
 
-  if (!article.contentHtml) {
+  if (!content) {
     return null;
   }
 
