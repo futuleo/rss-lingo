@@ -1,0 +1,15 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "home": {
+    "subtitle": "Lue RSS-syötteitä ja käännä artikkeleita omilla tekoälymalleillasi.",
+    "comingSoon": "Syötteet ja käännökset tulevat seuraavissa vaiheissa."
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Peruuta",
+    "retry": "Yritä uudelleen",
+    "error": "Jokin meni pieleen"
+  }
+}
