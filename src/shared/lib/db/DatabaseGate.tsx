@@ -1,9 +1,9 @@
 import { useEffect, useState, type PropsWithChildren } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { openDatabase } from '@shared/lib/db';
 import { Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
+import { openDatabase } from './client';
 
 type GateState = { status: 'pending' } | { status: 'ready' } | { status: 'error' };
 

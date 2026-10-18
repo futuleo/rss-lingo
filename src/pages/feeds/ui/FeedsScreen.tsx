@@ -83,7 +83,7 @@ export function FeedsScreen() {
       <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
         <Text variant="title">{t('feeds.title')}</Text>
         <Button
-          label={`+ ${t('feeds.add')}`}
+          label={`+ ${t('feeds.addHeader')}`}
           onPress={() => setAddModalVisible(true)}
         />
       </View>
@@ -178,7 +178,7 @@ export function FeedsScreen() {
                 disabled={adding}
               />
               <Button
-                label={adding ? t('common.loading') : t('feeds.add')}
+                label={adding ? t('common.loading') : t('feeds.addSubmit')}
                 onPress={onAdd}
                 disabled={adding}
               />

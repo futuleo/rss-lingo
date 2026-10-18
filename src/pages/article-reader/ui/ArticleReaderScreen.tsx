@@ -169,7 +169,6 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
 
         {hasContent && readerHtml ? (
           <WebView
-            originWhitelist={['*']}
             source={{ html: readerHtml, baseUrl: article.url ?? undefined }}
             style={[
               styles.webview,
@@ -178,11 +177,20 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
                 borderRadius: theme.radii.m,
               },
             ]}
+            javaScriptEnabled={false}
+            domStorageEnabled={false}
             onShouldStartLoadWithRequest={(request) => {
-              // The reader HTML itself loads about:blank; any http(s)
-              // navigation is a link tap — hand it to the system browser.
-              if (request.url.startsWith('about:')) return true;
-              void Linking.openURL(request.url);
+              // Feed-controlled HTML is untrusted. Keep the injected about:
+              // document inside the WebView, open http(s) links in the system
+              // browser, and block every other scheme (file:, intent:,
+              // javascript:, data:, custom schemes) from loading at all.
+              if (request.url.startsWith('about:')) {
+                return true;
+              }
+              if (/^https?:\/\//i.test(request.url)) {
+                void Linking.openURL(request.url);
+                return false;
+              }
               return false;
             }}
           />

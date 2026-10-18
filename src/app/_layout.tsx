@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from '@shared/theme';
 import { initI18n } from '@shared/i18n';
-import { DatabaseGate } from './ui/DatabaseGate';
+import { DatabaseGate } from '@shared/lib/db';
 
 initI18n();
 

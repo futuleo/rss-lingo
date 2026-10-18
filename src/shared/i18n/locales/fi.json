@@ -13,11 +13,11 @@
   },
   "feeds": {
     "title": "Syötteet",
-    "add": "Lisää syöte",
+    "addHeader": "Lisää syöte",
     "addTitle": "Uusi syöte",
     "urlLabel": "Suora RSS-osoite",
     "urlPlaceholder": "https://example.org/rss.xml",
-    "add": "Lisää",
+    "addSubmit": "Lisää",
     "emptyTitle": "Ei vielä syötteitä",
     "emptyHint": "Lisää syöte liittämällä sivuston tai blogin suora RSS-osoite.",
     "addFailed": "Syötteen lisääminen epäonnistui. Tarkista osoite ja yritä uudelleen.",

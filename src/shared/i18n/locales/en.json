@@ -13,11 +13,11 @@
   },
   "feeds": {
     "title": "Feeds",
-    "add": "Add feed",
+    "addHeader": "Add feed",
     "addTitle": "New feed",
     "urlLabel": "Direct RSS URL",
     "urlPlaceholder": "https://example.org/rss.xml",
-    "add": "Add",
+    "addSubmit": "Add",
     "emptyTitle": "No feeds yet",
     "emptyHint": "Add a feed by pasting a direct RSS URL of a site or blog.",
     "addFailed": "Could not add this feed. Check the URL and try again.",
