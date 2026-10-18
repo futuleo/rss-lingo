@@ -115,7 +115,21 @@ export async function translateArticle(
     );
   }
 
+  if (signal?.aborted) {
+    throw new TranslationError(
+      'Translation cancelled',
+      new DOMException('Aborted', 'AbortError'),
+    );
+  }
+
   const translatedHtml = translatedChunks.map(paragraphsToHtml).join('\n');
+
+  if (signal?.aborted) {
+    throw new TranslationError(
+      'Translation cancelled',
+      new DOMException('Aborted', 'AbortError'),
+    );
+  }
 
   try {
     await saveTranslation(

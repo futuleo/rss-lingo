@@ -48,6 +48,7 @@ export function ProviderSettingsScreen() {
   const [targetLang, setTargetLang] = useState<string>(SUPPORTED_TARGET_LANGS[0]);
   const [customTargetLang, setCustomTargetLang] = useState('');
   const [apiKey, setApiKey] = useState('');
+  const [isApiKeyDirty, setIsApiKeyDirty] = useState(false);
   const [testStatus, setTestStatus] = useState<
     | { type: 'idle' }
     | { type: 'loading' }
@@ -91,6 +92,7 @@ export function ProviderSettingsScreen() {
     void (async () => {
       const key = await getApiKey(providerId);
       setApiKey(key ?? '');
+      setIsApiKeyDirty(false);
     })();
   }, [providerId, isLoaded]);
 
@@ -112,14 +114,21 @@ export function ProviderSettingsScreen() {
   }, [providerId, model, baseUrl, targetLang, customTargetLang, isLoaded]);
 
   useEffect(() => {
-    if (!isLoaded) {
+    if (!isLoaded || !isApiKeyDirty) {
       return;
     }
     const timeout = setTimeout(() => {
-      void saveApiKey(providerId, apiKey);
+      void (async () => {
+        if (apiKey.trim().length === 0) {
+          await deleteApiKey(providerId);
+        } else {
+          await saveApiKey(providerId, apiKey);
+        }
+        setIsApiKeyDirty(false);
+      })();
     }, 500);
     return () => clearTimeout(timeout);
-  }, [apiKey, providerId, isLoaded]);
+  }, [apiKey, providerId, isLoaded, isApiKeyDirty]);
 
   const selectProvider = useCallback((id: string) => {
     setProviderId(id);
@@ -129,6 +138,7 @@ export function ProviderSettingsScreen() {
         : current,
     );
     setApiKey('');
+    setIsApiKeyDirty(false);
     setTestStatus({ type: 'idle' });
   }, []);
 
@@ -255,11 +265,21 @@ export function ProviderSettingsScreen() {
           value={apiKey}
           onChangeText={(value) => {
             setApiKey(value);
-            if (value.trim().length === 0) {
-              void deleteApiKey(providerId);
-            }
+            setIsApiKeyDirty(true);
           }}
-          onBlur={() => void saveApiKey(providerId, apiKey)}
+          onBlur={() => {
+            if (!isApiKeyDirty) {
+              return;
+            }
+            void (async () => {
+              if (apiKey.trim().length === 0) {
+                await deleteApiKey(providerId);
+              } else {
+                await saveApiKey(providerId, apiKey);
+              }
+              setIsApiKeyDirty(false);
+            })();
+          }}
           placeholder={t('settings.apiKeyPlaceholder')}
           placeholderTextColor={theme.colors.textMuted}
           secureTextEntry
