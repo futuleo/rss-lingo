@@ -3,17 +3,17 @@ description: Provides an independent high-capability review for high-impact or u
 mode: subagent
 model: opencode-go/gpt-6-luna
 permissions:
-  - action: "*"
-    resource: "*"
+  - action: '*'
+    resource: '*'
     effect: deny
   - action: read
-    resource: "*"
+    resource: '*'
     effect: allow
   - action: glob
-    resource: "*"
+    resource: '*'
     effect: allow
   - action: grep
-    resource: "*"
+    resource: '*'
     effect: allow
   - action: shell
     resource: git status *

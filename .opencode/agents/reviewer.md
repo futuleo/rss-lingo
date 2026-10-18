@@ -3,17 +3,17 @@ description: Reviews changes for bugs, regressions, and missing tests without ed
 mode: subagent
 model: opencode-go/glm-5.2
 permissions:
-  - action: "*"
-    resource: "*"
+  - action: '*'
+    resource: '*'
     effect: deny
   - action: read
-    resource: "*"
+    resource: '*'
     effect: allow
   - action: glob
-    resource: "*"
+    resource: '*'
     effect: allow
   - action: grep
-    resource: "*"
+    resource: '*'
     effect: allow
   - action: shell
     resource: git status *

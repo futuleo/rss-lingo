@@ -1,0 +1,15 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "home": {
+    "subtitle": "Read RSS feeds and translate articles with your own AI models.",
+    "comingSoon": "Feeds and translation are coming in the next phases."
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "error": "Something went wrong"
+  }
+}

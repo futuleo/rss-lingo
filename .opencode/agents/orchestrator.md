@@ -4,7 +4,7 @@ mode: primary
 model: opencode-go/glm-5.3-flash
 permissions:
   - action: subagent
-    resource: "*"
+    resource: '*'
     effect: deny
   - action: subagent
     resource: code-explorer
