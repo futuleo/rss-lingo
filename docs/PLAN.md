@@ -70,7 +70,30 @@ Settings screen: provider, model, API key, translation language; three provider 
 
 ### Phase 4 — Polish
 
-System dark theme, error/empty states, feed deletion, complete fi/ru/en texts, saved articles.
+System dark theme, error/empty states, feed deletion, complete fi/ru/en texts, saved articles. After MVP: designer skills / UI polish pass.
+
+## Product vision & roadmap### v1.0 — MVP (Phases 0–4)
+
+Read your feeds, read articles comfortably, translate an article with your own AI key. Usable for a single owner on daily basis.
+
+### v1.1 — Language value (already scaffolded by the data model)
+
+- Per-paragraph tap-to-translate (read in original, tap what you don't understand)
+- "Explain this phrase/grammar" via the same provider abstraction
+- Translation language per user + per feed override
+
+### v2 — Trainer (saved-flag → vocabulary)
+
+- Saved articles become learning material: pick unknown words → personal dictionary
+- SRS (spaced repetition) cards generated from saved words and phrases
+- Translation cache keyed by language/provider makes re-practice offline-friendly
+
+### v3 — Ecosystem
+
+- Reading statistics and level estimation (which feeds stretch you)
+- Source recommendations matched to your language level
+- Anki export; optional cloud sync (explicit opt-in only)
+- Local LLM support (OpenAI-compatible endpoint on device/LAN) for fully offline learning
 
 ## Backlog (post-MVP)
 
@@ -79,3 +102,4 @@ System dark theme, error/empty states, feed deletion, complete fi/ru/en texts, s
 - Per-paragraph tap-to-translate
 - "Saved articles" screen
 - Reading statistics
+- Designer skills / dedicated UI polish pass after MVP is functional
