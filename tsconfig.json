@@ -3,7 +3,6 @@
   "compilerOptions": {
     "strict": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
     "paths": {
       "@app/*": ["./src/app/*"],
       "@pages/*": ["./src/pages/*"],
@@ -12,5 +11,6 @@
       "@entities/*": ["./src/entities/*"],
       "@shared/*": ["./src/shared/*"]
     }
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "expo-env.d.ts"]
 }

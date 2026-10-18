@@ -16,7 +16,7 @@ permissions:
     resource: rm *
     effect: ask
   - action: subagent
-    resource: "*"
+    resource: '*'
     effect: deny
 ---
 

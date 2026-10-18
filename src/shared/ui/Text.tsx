@@ -1,4 +1,8 @@
-import { Text as RNText, StyleSheet, type TextProps as RNTextProps } from 'react-native';
+import {
+  Text as RNText,
+  StyleSheet,
+  type TextProps as RNTextProps,
+} from 'react-native';
 import { useTheme } from '../theme';
 import type { Theme } from '../theme';
 

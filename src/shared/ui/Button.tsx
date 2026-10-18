@@ -29,8 +29,8 @@ export function Button({
       paddingHorizontal: theme.spacing.l,
       paddingVertical: theme.spacing.s + 4,
     },
-    variant === 'secondary' && styles.secondary,
-    disabled && styles.disabled,
+    ...(variant === 'secondary' ? [styles.secondary] : []),
+    ...(disabled ? [styles.disabled] : []),
   ];
 
   return (
@@ -43,8 +43,7 @@ export function Button({
       <Text
         variant={labelVariant}
         style={{
-          color:
-            variant === 'primary' ? theme.colors.primaryText : theme.colors.text,
+          color: variant === 'primary' ? theme.colors.primaryText : theme.colors.text,
           fontWeight: theme.weight.medium,
         }}
       >

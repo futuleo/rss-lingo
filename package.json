@@ -1,7 +1,7 @@
 {
   "name": "rss-lingo",
   "version": "0.1.0",
-  "main": "expo/AppEntry.js",
+  "main": "expo-router/entry",
   "dependencies": {
     "expo": "~58.0.14",
     "expo-constants": "~58.0.12",

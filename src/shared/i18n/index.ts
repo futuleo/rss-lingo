@@ -15,9 +15,7 @@ const resources = {
 } as const;
 
 export function detectLanguage(): AppLanguage {
-  const deviceCodes = Localization.getLocales().map(
-    (locale) => locale.languageCode,
-  );
+  const deviceCodes = Localization.getLocales().map((locale) => locale.languageCode);
   for (const code of deviceCodes) {
     if ((supportedLanguages as readonly string[]).includes(code ?? '')) {
       return code as AppLanguage;
@@ -26,11 +24,11 @@ export function detectLanguage(): AppLanguage {
   return 'en';
 }
 
-export function initI18n(): typeof i18n {
+export function initI18n(): void {
   if (i18n.isInitialized) {
-    return i18n;
+    return;
   }
-  return i18n.use(initReactI18next).init({
+  void i18n.use(initReactI18next).init({
     resources,
     lng: detectLanguage(),
     fallbackLng: 'en',

@@ -8,12 +8,7 @@ export function HomeScreen() {
   const theme = useTheme();
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: theme.colors.background },
-      ]}
-    >
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Text variant="title">{t('app.title')}</Text>
       <Text style={styles.subtitle}>{t('home.subtitle')}</Text>
       <Text variant="caption">{t('home.comingSoon')}</Text>

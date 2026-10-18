@@ -32,7 +32,7 @@ export const weight = {
   bold: '700',
 } as const;
 
-export const palettes = {
+export const palettes: Record<ColorSchemeName, ThemeColors> = {
   light: {
     background: '#f6f7fb',
     surface: '#ffffff',
@@ -55,7 +55,16 @@ export const palettes = {
   },
 } as const;
 
-export type ThemeColors = (typeof palettes)['light'];
+export interface ThemeColors {
+  background: string;
+  surface: string;
+  text: string;
+  textMuted: string;
+  primary: string;
+  primaryText: string;
+  border: string;
+  danger: string;
+}
 export type ColorSchemeName = 'light' | 'dark';
 
 export interface Theme {
