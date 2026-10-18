@@ -101,14 +101,13 @@ export function FeedsScreen() {
         />
       ) : error ? (
         <View style={styles.error}>
-          <Text variant="body" style={{ color: theme.colors.danger, textAlign: 'center' }}>
+          <Text
+            variant="body"
+            style={{ color: theme.colors.danger, textAlign: 'center' }}
+          >
             {t('feeds.loadError')}
           </Text>
-          <Button
-            label={t('common.retry')}
-            variant="secondary"
-            onPress={reload}
-          />
+          <Button label={t('common.retry')} variant="secondary" onPress={reload} />
         </View>
       ) : (
         <FlatList

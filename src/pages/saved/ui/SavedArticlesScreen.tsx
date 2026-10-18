@@ -1,12 +1,6 @@
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { listSavedArticles } from '@entities/article';
 import { useAsyncData } from '@shared/lib/hooks';
@@ -54,14 +48,13 @@ export function SavedArticlesScreen() {
         />
       ) : error ? (
         <View style={styles.error}>
-          <Text variant="body" style={{ color: theme.colors.danger, textAlign: 'center' }}>
+          <Text
+            variant="body"
+            style={{ color: theme.colors.danger, textAlign: 'center' }}
+          >
             {t('saved.loadError')}
           </Text>
-          <Button
-            label={t('common.retry')}
-            variant="secondary"
-            onPress={reload}
-          />
+          <Button label={t('common.retry')} variant="secondary" onPress={reload} />
         </View>
       ) : (
         <FlatList
