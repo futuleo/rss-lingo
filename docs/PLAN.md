@@ -78,6 +78,12 @@ Settings screen: provider, model, API key, translation language; three provider 
 
 System dark theme, error/empty states, feed deletion, complete fi/ru/en texts, saved articles. After MVP: designer skills / UI polish pass.
 
+### Release requirements (stores)
+
+- **Privacy policy**: a `PRIVACY.md` in this public repo served via GitHub (raw/Pages URL is accepted by both stores). Content: all user data (feeds, articles, translations, settings, API keys) stays on-device (expo-sqlite + expo-secure-store); when translating, article text is sent by the app directly to the user-chosen AI provider (OpenAI/Anthropic/Google); no servers, no accounts, no analytics, no tracking; contact email.
+- **Google Play Data Safety form**: disclose that article text is shared with the user-configured third-party AI provider; no data collected by us.
+- **Apple App Review notes**: explain the BYOK model (app is a client for the user's own AI provider account; no tokens/credits are sold by us).
+
 ## Product vision & roadmap### v1.0 — MVP (Phases 0–4)
 
 Read your feeds, read articles comfortably, translate an article with your own AI key. Usable for a single owner on daily basis.
