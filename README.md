@@ -47,17 +47,17 @@ npm run web   # web preview
 
 ### Available scripts
 
-| Script         | Description                                |
-| -------------- | ------------------------------------------ |
-| `start`        | Start Expo Dev Tools                       |
-| `ios`          | Start on iOS simulator                     |
-| `android`      | Start on Android emulator                  |
-| `web`          | Start web preview                          |
-| `typecheck`    | Run TypeScript with `--noEmit`             |
-| `lint`         | Run ESLint                                 |
-| `test`         | Run Jest test suite                        |
-| `smoke`        | Run RSS smoke tests (`scripts/smoke-rss.mjs`) |
-| `format`       | Format code with Prettier                  |
+| Script      | Description                                   |
+| ----------- | --------------------------------------------- |
+| `start`     | Start Expo Dev Tools                          |
+| `ios`       | Start on iOS simulator                        |
+| `android`   | Start on Android emulator                     |
+| `web`       | Start web preview                             |
+| `typecheck` | Run TypeScript with `--noEmit`                |
+| `lint`      | Run ESLint                                    |
+| `test`      | Run Jest test suite                           |
+| `smoke`     | Run RSS smoke tests (`scripts/smoke-rss.mjs`) |
+| `format`    | Format code with Prettier                     |
 
 ## Project structure
 
@@ -78,12 +78,12 @@ docs/
 
 See [`docs/PLAN.md`](docs/PLAN.md) for the full plan.
 
-| Phase | Status | Focus                                          |
-| ----- | ------ | ---------------------------------------------- |
-| 0     | ✅ Done | Foundation: Expo, TypeScript, FSD, theme, i18n |
-| 1     | ✅ Done | Data: SQLite, RSS parser, refresh, retention   |
-| 2     | ✅ Done | Reading UI: feeds, reader, save/unsave         |
-| 3     | 🚧 Next | Translation with BYOK AI provider settings     |
+| Phase | Status     | Focus                                                 |
+| ----- | ---------- | ----------------------------------------------------- |
+| 0     | ✅ Done    | Foundation: Expo, TypeScript, FSD, theme, i18n        |
+| 1     | ✅ Done    | Data: SQLite, RSS parser, refresh, retention          |
+| 2     | ✅ Done    | Reading UI: feeds, reader, save/unsave                |
+| 3     | 🚧 Next    | Translation with BYOK AI provider settings            |
 | 4     | ⏳ Planned | Polish: dark theme, error/empty states, feed deletion |
 
 ## License
