@@ -43,6 +43,22 @@ const atom = `<?xml version="1.0" encoding="utf-8"?>
   </entry>
 </feed>`;
 
+const rdf = `<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns="http://purl.org/rss/1.0/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel rdf:about="https://example.org">
+    <title>RDF Feed</title>
+    <link>https://example.org</link>
+  </channel>
+  <item>
+    <title>Item &amp;amp; RDF</title>
+    <link>https://example.org/rdf-1</link>
+    <description>RDF item summary</description>
+    <dc:date>2026-09-03T08:00:00Z</dc:date>
+  </item>
+</rdf:RDF>`;
+
 let failures = 0;
 function check(name, cond, actual) {
   if (cond) {
@@ -92,5 +108,34 @@ check(
   b.articles[0]?.publishedAt === Date.parse('2026-09-02T12:00:00Z'),
   b.articles[0]?.publishedAt,
 );
+
+console.log('RDF / RSS 1.0:');
+const c = parseFeedXml(rdf);
+check('channel title', c.title === 'RDF Feed', c.title);
+check('1 item', c.articles.length === 1, c.articles.length);
+check(
+  'item title decoded once',
+  c.articles[0]?.title === 'Item &amp; RDF',
+  c.articles[0]?.title,
+);
+check(
+  'item link',
+  c.articles[0]?.url === 'https://example.org/rdf-1',
+  c.articles[0]?.url,
+);
+check(
+  'dc:date parsed',
+  c.articles[0]?.publishedAt === Date.parse('2026-09-03T08:00:00Z'),
+  c.articles[0]?.publishedAt,
+);
+
+console.log('Garbage input:');
+try {
+  parseFeedXml('this is not valid xml');
+  failures += 1;
+  console.error('  FAIL expected parser to throw');
+} catch {
+  console.log('  OK   parser throws on garbage input');
+}
 
 process.exit(failures === 0 ? 0 : 1);

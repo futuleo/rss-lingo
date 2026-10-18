@@ -30,6 +30,18 @@ export async function listFeeds(db?: SQLiteDatabase): Promise<Feed[]> {
   return rows.map(mapRow);
 }
 
+export async function getFeedById(
+  feedId: number,
+  db?: SQLiteDatabase,
+): Promise<Feed | null> {
+  const database = db ?? (await getDb());
+  const row = await database.getFirstAsync<FeedRow>(
+    'SELECT * FROM feeds WHERE id = ? LIMIT 1',
+    [feedId],
+  );
+  return row ? mapRow(row) : null;
+}
+
 export async function getFeedByUrl(
   url: string,
   db?: SQLiteDatabase,

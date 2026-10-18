@@ -12,5 +12,11 @@
       "@shared/*": ["./src/shared/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "expo-env.d.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "expo-env.d.ts"
+  ]
 }

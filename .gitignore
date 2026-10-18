@@ -149,6 +149,7 @@ vite.config.ts.timestamp-*
 # Turbo Repo
 .turbo
 
+
 # Expo / React Native
 .expo/
 web-build/

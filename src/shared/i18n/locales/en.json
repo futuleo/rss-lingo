@@ -2,14 +2,36 @@
   "app": {
     "title": "RSS Lingo"
   },
-  "home": {
-    "subtitle": "Read RSS feeds and translate articles with your own AI models.",
-    "comingSoon": "Feeds and translation are coming in the next phases."
-  },
   "common": {
     "ok": "OK",
     "cancel": "Cancel",
     "retry": "Retry",
-    "error": "Something went wrong"
+    "error": "Something went wrong",
+    "loading": "Loading…",
+    "delete": "Delete",
+    "close": "Close"
+  },
+  "feeds": {
+    "title": "Feeds",
+    "addHeader": "Add feed",
+    "addTitle": "New feed",
+    "urlLabel": "Direct RSS URL",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "Add",
+    "emptyTitle": "No feeds yet",
+    "emptyHint": "Add a feed by pasting a direct RSS URL of a site or blog.",
+    "addFailed": "Could not add this feed. Check the URL and try again.",
+    "refreshAllFailed": "Some feeds failed to refresh"
+  },
+  "articles": {
+    "emptyTitle": "No articles yet",
+    "emptyHint": "Pull down to refresh this feed.",
+    "refreshFailed": "Refresh failed"
+  },
+  "reader": {
+    "save": "Save",
+    "saved": "Saved",
+    "openInBrowser": "Open in browser",
+    "contentUnavailable": "This article has no readable content. Try opening it in the browser."
   }
 }
