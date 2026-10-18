@@ -43,7 +43,7 @@
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "jest",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "smoke": "node scripts/smoke-rss.mjs",
     "format": "prettier --write ."
   },

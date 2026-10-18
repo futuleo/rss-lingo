@@ -12,10 +12,7 @@ interface SQLiteDatabaseLike {
     sql: string,
     params?: SQLite.SQLiteBindParams,
   ): Promise<SQLite.SQLiteRunResult>;
-  getFirstAsync<T>(
-    sql: string,
-    params?: SQLite.SQLiteBindParams,
-  ): Promise<T | null>;
+  getFirstAsync<T>(sql: string, params?: SQLite.SQLiteBindParams): Promise<T | null>;
   getAllAsync<T>(sql: string, params?: SQLite.SQLiteBindParams): Promise<T[]>;
   withTransactionAsync<T>(
     action: (txn: SQLite.SQLiteDatabase) => Promise<T>,
@@ -72,10 +69,7 @@ export class NodeSqliteAdapter implements SQLiteDatabaseLike {
     return row ?? null;
   }
 
-  async getAllAsync<T>(
-    sql: string,
-    params?: SQLite.SQLiteBindParams,
-  ): Promise<T[]> {
+  async getAllAsync<T>(sql: string, params?: SQLite.SQLiteBindParams): Promise<T[]> {
     const statement = this.db.prepare(sql);
     if (params === undefined) {
       return statement.all() as T[];

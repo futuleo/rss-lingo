@@ -19,8 +19,11 @@ describe('RSS parser invariants', () => {
     const parsed = parseFeedXml(xml);
     expect(parsed.articles).toHaveLength(1);
     expect(parsed.articles[0]!.title).toBe('&lt;escaped&gt;');
-    // Content HTML must stay raw: only the outer &amp; layer is unescaped.
-    expect(parsed.articles[0]!.contentHtml).toBe('&lt;p&gt;raw html&lt;/p&gt;');
+    // Content HTML must stay raw: fast-xml-parser's entity decoding is
+    // disabled, so the original double-escaped text is preserved.
+    expect(parsed.articles[0]!.contentHtml).toBe(
+      '&amp;lt;p&amp;gt;raw html&amp;lt;/p&amp;gt;',
+    );
   });
 
   test('parses RSS 1.0 / RDF feeds', () => {
