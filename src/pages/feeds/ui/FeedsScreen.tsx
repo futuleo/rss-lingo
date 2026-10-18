@@ -44,10 +44,20 @@ export function FeedsScreen() {
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
         <Text variant="title">{t('feeds.title')}</Text>
-        <Button
-          label={`+ ${t('feeds.addHeader')}`}
-          onPress={() => setAddModalVisible(true)}
-        />
+        <View style={styles.headerActions}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('settings.title')}
+            onPress={() => router.push('/settings')}
+            style={styles.settingsButton}
+          >
+            <Text style={{ fontSize: 22 }}>⚙</Text>
+          </Pressable>
+          <Button
+            label={`+ ${t('feeds.addHeader')}`}
+            onPress={() => setAddModalVisible(true)}
+          />
+        </View>
       </View>
 
       {loading ? (
@@ -113,6 +123,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 48,
     paddingBottom: 8,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  settingsButton: {
+    padding: 8,
   },
   loader: {
     marginTop: 48,

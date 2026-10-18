@@ -70,13 +70,19 @@ expo-sqlite migrations; feed/article repositories; RSS parser (fast-xml-parser);
 
 Feed and article lists, add feed by URL, pull-to-refresh, article screen (content rendered via WebView styled to the theme), save/unsave article toggle.
 
-### Phase 3 — Translation (BYOK)
+### Phase 3 — Translation (BYOK) 🚧 (in progress)
 
 Settings screen: provider, model, API key, translation language; three provider adapters; translation with paragraph-level chunking; translation cache in the DB; "Original / Translation" toggle.
 
 ### Phase 4 — Polish
 
 System dark theme, error/empty states, feed deletion, complete fi/ru/en texts, saved articles. After MVP: designer skills / UI polish pass.
+
+### Release requirements (stores)
+
+- **Privacy policy**: a `PRIVACY.md` in this public repo served via GitHub (raw/Pages URL is accepted by both stores). Content: all user data (feeds, articles, translations, settings, API keys) stays on-device (expo-sqlite + expo-secure-store); when translating, article text is sent by the app directly to the user-chosen AI provider (OpenAI/Anthropic/Google); no servers, no accounts, no analytics, no tracking; contact email.
+- **Google Play Data Safety form**: disclose that article text is shared with the user-configured third-party AI provider; no data collected by us.
+- **Apple App Review notes**: explain the BYOK model (app is a client for the user's own AI provider account; no tokens/credits are sold by us).
 
 ## Product vision & roadmap### v1.0 — MVP (Phases 0–4)
 

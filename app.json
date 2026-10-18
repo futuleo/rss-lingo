@@ -23,6 +23,16 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": [["expo-router", { "root": "app" }], "expo-localization", "expo-sqlite"]
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "root": "app"
+        }
+      ],
+      "expo-localization",
+      "expo-sqlite",
+      "expo-secure-store"
+    ]
   }
 }

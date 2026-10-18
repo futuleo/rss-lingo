@@ -116,26 +116,25 @@ describe('database invariants', () => {
     expect(afterArticles?.count).toBe(0);
   });
 
-  test('migrations are idempotent', async () => {
-    const row1 = await db.getFirstAsync<{ user_version: number }>(
-      'PRAGMA user_version',
-    );
-    expect(row1?.user_version).toBe(1);
+  test('migrations are applied up to the latest version', async () => {
+    const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
+    expect(row?.user_version).toBe(2);
+  });
 
+  test('migrations are idempotent', async () => {
     await migrateDatabase(db);
 
-    const row2 = await db.getFirstAsync<{ user_version: number }>(
-      'PRAGMA user_version',
-    );
-    expect(row2?.user_version).toBe(1);
+    const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
+    expect(row?.user_version).toBe(2);
 
     const tables = await db.getAllAsync<{ name: string }>(
-      "SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?)",
-      ['feeds', 'articles', 'translations'],
+      "SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?, ?)",
+      ['feeds', 'articles', 'translations', 'settings'],
     );
     expect(tables.map((t) => t.name).sort()).toEqual([
       'articles',
       'feeds',
+      'settings',
       'translations',
     ]);
   });

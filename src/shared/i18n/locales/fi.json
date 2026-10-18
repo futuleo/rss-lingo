@@ -32,6 +32,135 @@
     "save": "Tallenna",
     "saved": "Tallennettu",
     "openInBrowser": "Avaa selaimessa",
-    "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa."
+    "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa.",
+    "original": "Alkuperäinen",
+    "translation": "Käännös",
+    "translate": "Käännä",
+    "translating": "Käännetään… {{done}}/{{total}}",
+    "cancel": "Peruuta",
+    "translationFailed": "Kääntäminen epäonnistui",
+    "configureFirst": "Määritä AI-palvelu ja API-avain artikkeleiden kääntämistä varten.",
+    "configure": "Määritä"
+  },
+  "settings": {
+    "title": "Asetukset",
+    "back": "Takaisin",
+    "providerLabel": "AI-palvelu",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "modelLabel": "Malli",
+    "modelPlaceholder": "esim. gpt-4o-mini",
+    "baseUrlLabel": "Päätepiste (valinnainen)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API-avain",
+    "apiKeyPlaceholder": "Palvelun API-avain",
+    "targetLangLabel": "Käännä kielelle",
+    "targetLangOther": "Muu…",
+    "testConnection": "Testaa yhteyttä",
+    "testOk": "Käännös: {{result}}",
+    "testError": "Virhe: {{message}}",
+    "testErrorApiKeyRequired": "Anna ensin API-avain",
+    "saved": "Tallennettu",
+    "faq": "UKK",
+    "errors": {
+      "invalidResponse": "Odottamaton palveluvastaus"
+    }
+  },
+  "faq": {
+    "title": "UKK",
+    "sections": [
+      {
+        "title": "Tietoja",
+        "items": [
+          {
+            "q": "Mikä on RSS Lingo?",
+            "a": "RSS Lingo on mobiili RSS-lukija, joka auttaa oppimaan kieltä. Lisää haluamasi syötteet, lue mukavasti ja käännä artikkelit omalla tekoälyavaimellasi. Kaikki tallennetaan laitteellesi."
+          }
+        ]
+      },
+      {
+        "title": "Syötteet",
+        "items": [
+          {
+            "q": "Miten lisään syötteen?",
+            "a": "Napauta + Lisää syöte ja liitä suora RSS-osoite, kuten https://example.org/rss.xml. Syöte haetaan heti."
+          },
+          {
+            "q": "Mistä löydän RSS-osoitteen?",
+            "a": "Etsi \"RSS\"- tai \"Feed\"-linkkiä sivuston alareunasta tai yläosasta. Voit myös kokeilla /rss.xml, /feed/ tai /atom.xml. Pelkkä sivuston osoite ei vielä riitä — automaattinen etsintä on suunnitteilla."
+          }
+        ]
+      },
+      {
+        "title": "Lukeminen",
+        "items": [
+          {
+            "q": "Mitä Tallenna tekee?",
+            "a": "Tallennettu artikkeli säilyy ikuisesti. Ilman tallennusta syötteessä säilytetään vain 50 uusinta artikkelia."
+          },
+          {
+            "q": "Missä artikkelit säilytetään?",
+            "a": "Artikkelit ovat vain laitteen paikallisessa tietokannassa."
+          }
+        ]
+      },
+      {
+        "title": "Käännöksen asetukset (BYOK)",
+        "items": [
+          {
+            "q": "Miten käännös asetetaan?",
+            "a": "Avaa Asetukset (⚙), valitse palvelu (OpenAI, Anthropic tai Gemini), anna mallin nimi (esim. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash), liitä oma API-avaimesi kyseiseltä palvelulta (saat sen osoitteista platform.openai.com, console.anthropic.com tai aistudio.google.com), valitse kohdekieli ja napauta Testaa yhteyttä."
+          }
+        ]
+      },
+      {
+        "title": "Avain ja yksityisyys",
+        "items": [
+          {
+            "q": "Missä API-avaimeni säilytetään?",
+            "a": "Avain tallennetaan laitteen suojattuun säilöön (iOS Keychain / Android Keystore). Se lähetetään vain valitsemallesi palvelulle ja vain kääntämisen yhteydessä. Meillä ei ole palvelimia, emmekä koskaan näe avaintasi."
+          },
+          {
+            "q": "Voinko käyttää OpenAI-yhteensopivia palveluita?",
+            "a": "Kyllä. Aseta oma Base URL -osoite Asetuksissa palveluille kuten OpenRouter, Groq tai paikalliset mallit."
+          }
+        ]
+      },
+      {
+        "title": "Vianetsintä",
+        "items": [
+          {
+            "q": "\"Virheellinen API-avain\"",
+            "a": "Tarkista avain Asetuksista."
+          },
+          {
+            "q": "\"Liikaa pyyntöjä\"",
+            "a": "Odota hetki ja yritä uudelleen."
+          },
+          {
+            "q": "\"Aikakatkaisu\"",
+            "a": "Tarkista internetyhteytesi."
+          },
+          {
+            "q": "\"Määritä ensin\"",
+            "a": "Avaa Asetukset ja lisää tekoälypalvelu sekä API-avain."
+          },
+          {
+            "q": "Käännös näyttää väärän kielen",
+            "a": "Tarkista kohdekieli Asetuksista."
+          }
+        ]
+      },
+      {
+        "title": "Kielet",
+        "items": [
+          {
+            "q": "Mitä kieliä sovellus tukee?",
+            "a": "Sovelluksen käyttöliittymä seuraa laitteen kieltä (englanti, venäjä tai suomi). Käännöksen kohdekieli asetetaan erikseen Asetuksissa."
+          }
+        ]
+      }
+    ]
   }
 }

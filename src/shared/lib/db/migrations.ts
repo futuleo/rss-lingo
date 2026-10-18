@@ -48,12 +48,26 @@ CREATE TABLE IF NOT EXISTS translations (
 );
 `;
 
+/**
+ * Schema version 2 — generic key/value settings table.
+ * Used for AI provider configuration and other per-user preferences.
+ */
+const MIGRATION_V2 = `
+CREATE TABLE IF NOT EXISTS settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
+`;
+
 type Migration = {
   version: number;
   sql: string;
 };
 
-const migrations: Migration[] = [{ version: 1, sql: MIGRATION_V1 }];
+const migrations: Migration[] = [
+  { version: 1, sql: MIGRATION_V1 },
+  { version: 2, sql: MIGRATION_V2 },
+];
 
 export async function migrateDatabase(db: SQLite.SQLiteDatabase): Promise<void> {
   const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
