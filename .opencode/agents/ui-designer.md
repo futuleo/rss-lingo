@@ -16,13 +16,13 @@ permissions:
     resource: '*'
     effect: allow
   - action: shell
-    resource: git status*
+    resource: git status *
     effect: allow
   - action: shell
-    resource: git log*
+    resource: git log *
     effect: allow
   - action: shell
-    resource: git diff*
+    resource: git diff *
     effect: allow
   - action: shell
     resource: ls *
