@@ -47,112 +47,143 @@ export function SavedArticlesScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View
-        style={[
-          styles.header,
-          {
-            paddingHorizontal: theme.spacing.m,
-            paddingTop: insets.top + theme.spacing.s,
-            paddingBottom: theme.spacing.s,
-          },
+      <FlatList
+        data={articles ?? []}
+        keyExtractor={(article) => String(article.id)}
+        style={styles.list}
+        contentContainerStyle={[
+          styles.listContent,
+          { padding: theme.spacing.m, gap: theme.spacing.s },
         ]}
-      >
-        <Text variant="title">{t('saved.title')}</Text>
-      </View>
-
-      {loading ? (
-        <ActivityIndicator
-          style={styles.loader}
-          size="large"
-          color={theme.colors.primary}
-        />
-      ) : error ? (
-        <View style={styles.error}>
-          <Text
-            variant="body"
-            style={{ color: theme.colors.danger, textAlign: 'center' }}
-          >
-            {t('saved.loadError')}
-          </Text>
-          <Button label={t('common.retry')} variant="secondary" onPress={reload} />
-        </View>
-      ) : (
-        <>
-          <View
-            style={[
-              styles.toggleArea,
-              {
-                paddingHorizontal: theme.spacing.m,
-                paddingBottom: theme.spacing.s,
-              },
-            ]}
-          >
-            <SegmentedToggle
-              options={[
-                { value: 'original', label: t('reader.original') },
-                { value: 'translation', label: t('reader.translation') },
+        ListHeaderComponent={
+          <View>
+            <View
+              style={[
+                styles.header,
+                {
+                  paddingHorizontal: theme.spacing.m,
+                  paddingTop: insets.top + theme.spacing.s,
+                  paddingBottom: theme.spacing.s,
+                },
               ]}
-              value={viewMode}
-              onChange={setViewMode}
-            />
-            {listTranslation.status === 'translating' ? (
-              <Text variant="caption">
-                {t('articles.translatingHeadlines', {
-                  done: listTranslation.progress?.done ?? 0,
-                  total: listTranslation.progress?.total ?? 0,
-                })}
-              </Text>
-            ) : null}
-            {viewMode === 'translation' && listTranslation.status === 'blocked' ? (
+            >
+              <Text variant="title">{t('saved.title')}</Text>
+            </View>
+
+            {!loading && !error ? (
               <View
                 style={[
-                  styles.banner,
+                  styles.toggleArea,
                   {
-                    backgroundColor: theme.colors.surface,
-                    borderColor: theme.colors.border,
+                    paddingHorizontal: theme.spacing.m,
+                    paddingBottom: theme.spacing.s,
                   },
                 ]}
               >
-                <Text variant="caption" style={styles.bannerText}>
-                  {t('reader.configureFirst')}
-                </Text>
-                <Button
-                  label={t('reader.configure')}
-                  variant="secondary"
-                  labelVariant="caption"
-                  onPress={() => router.navigate('/settings')}
+                <SegmentedToggle
+                  options={[
+                    { value: 'original', label: t('reader.original') },
+                    { value: 'translation', label: t('reader.translation') },
+                  ]}
+                  value={viewMode}
+                  onChange={setViewMode}
                 />
+                {listTranslation.status === 'translating' ? (
+                  <Text variant="caption">
+                    {t('articles.translatingHeadlines', {
+                      done: listTranslation.progress?.done ?? 0,
+                      total: listTranslation.progress?.total ?? 0,
+                    })}
+                  </Text>
+                ) : null}
+                {viewMode === 'translation' &&
+                listTranslation.status === 'blocked' ? (
+                  <View
+                    style={[
+                      styles.banner,
+                      {
+                        backgroundColor: theme.colors.surface,
+                        borderColor: theme.colors.border,
+                      },
+                    ]}
+                  >
+                    <Text variant="caption" style={styles.bannerText}>
+                      {t('reader.configureFirst')}
+                    </Text>
+                    <Button
+                      label={t('reader.configure')}
+                      variant="secondary"
+                      labelVariant="caption"
+                      onPress={() => router.navigate('/settings')}
+                    />
+                  </View>
+                ) : null}
+                {viewMode === 'translation' &&
+                listTranslation.status === 'failed' ? (
+                  <View
+                    style={[
+                      styles.banner,
+                      {
+                        backgroundColor: theme.colors.surface,
+                        borderColor: theme.colors.border,
+                      },
+                    ]}
+                  >
+                    <Text variant="caption" style={styles.bannerText}>
+                      {t('reader.translationFailed')}
+                    </Text>
+                    <Button
+                      label={t('common.retry')}
+                      variant="secondary"
+                      labelVariant="caption"
+                      onPress={translate}
+                    />
+                  </View>
+                ) : null}
               </View>
             ) : null}
           </View>
-          <FlatList
-            data={articles ?? []}
-            keyExtractor={(article) => String(article.id)}
-            contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
-            ListEmptyComponent={
-              <EmptyState
-                symbol="★"
-                title={t('saved.emptyTitle')}
-                hint={t('saved.emptyHint')}
-              />
-            }
-            renderItem={({ item }) => {
-              const meta =
-                viewMode === 'translation'
-                  ? listTranslation.items[item.id]
-                  : undefined;
-              return (
-                <ArticleCard
-                  article={item}
-                  titleOverride={meta?.title ?? null}
-                  summaryOverride={meta?.summary ?? null}
-                  onPress={(article) => router.push(`/article/${article.id}`)}
-                />
-              );
-            }}
-          />
-        </>
-      )}
+        }
+        ListEmptyComponent={
+          loading ? (
+            <ActivityIndicator
+              style={styles.loader}
+              size="large"
+              color={theme.colors.primary}
+            />
+          ) : error ? (
+            <View style={styles.error}>
+              <Text
+                variant="body"
+                style={{ color: theme.colors.danger, textAlign: 'center' }}
+              >
+                {t('saved.loadError')}
+              </Text>
+              <Button label={t('common.retry')} variant="secondary" onPress={reload} />
+            </View>
+          ) : (
+            <EmptyState
+              symbol="★"
+              title={t('saved.emptyTitle')}
+              hint={t('saved.emptyHint')}
+            />
+          )
+        }
+        renderItem={({ item }) => {
+          const meta =
+            viewMode === 'translation'
+              ? listTranslation.items[item.id]
+              : undefined;
+          return (
+            <ArticleCard
+              article={item}
+              titleOverride={meta?.title ?? null}
+              summaryOverride={meta?.summary ?? null}
+              onPress={(article) => router.push(`/article/${article.id}`)}
+            />
+          );
+        }}
+      />
     </View>
   );
 }
@@ -160,6 +191,12 @@ export function SavedArticlesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    paddingBottom: 48,
   },
   header: {
     flexDirection: 'row',
