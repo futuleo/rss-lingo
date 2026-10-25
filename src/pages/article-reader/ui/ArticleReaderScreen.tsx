@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -76,18 +76,11 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
     extrapolate: 'clamp',
   });
 
-  const scrollHandler = useMemo(
-    () =>
-      Animated.event(
-        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-        { useNativeDriver: true },
-      ),
-    [scrollY],
-  );
-
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    scrollHandler(event);
     const y = event.nativeEvent.contentOffset.y;
+    // Drive the collapse value directly instead of via `Animated.event`:
+    // `Animated.event` returns a non-callable object under React Compiler.
+    scrollY.setValue(y);
     setScrolled((prev) => {
       const next = y > 120;
       return prev === next ? prev : next;
