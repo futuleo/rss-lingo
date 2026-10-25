@@ -149,7 +149,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
               accessibilityRole="button"
               accessibilityLabel={t('reader.back')}
               onPress={() => router.back()}
-              style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+              style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
             >
               <Feather name="chevron-left" size={24} color={theme.colors.primary} />
             </Pressable>
@@ -445,10 +445,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  backButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
   iconButton: {
     width: 44,
     height: 44,
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'center',
   },
   pressed: {
