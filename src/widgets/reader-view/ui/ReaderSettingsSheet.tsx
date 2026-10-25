@@ -248,7 +248,6 @@ export function ReaderSettingsSheet({
                 value={settings.justify}
                 onValueChange={(value) => onChange({ justify: value })}
                 trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
-                thumbColor={theme.colors.primaryText}
               />
             </View>
           </ScrollView>
