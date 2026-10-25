@@ -3,6 +3,7 @@ import { Linking, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useTheme } from '@shared/theme';
 import type { Article } from '@entities/article';
+import { decideReaderRequest } from '../lib/decideReaderRequest';
 
 function buildReaderHtml(
   content: string,
@@ -63,13 +64,24 @@ export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
     });
   }, [content, theme]);
 
+  // Restrict the base URL to http(s) so a feed-controlled file:, data:,
+  // javascript:, or custom-scheme URL can never become the reader's own
+  // in-app document.
+  const baseUrl = useMemo(
+    () =>
+      article.url != null && /^https?:\/\//i.test(article.url)
+        ? article.url
+        : undefined,
+    [article.url],
+  );
+
   if (!content) {
     return null;
   }
 
   return (
     <WebView
-      source={{ html: readerHtml, baseUrl: article.url ?? undefined }}
+      source={{ html: readerHtml, baseUrl }}
       style={[
         styles.webview,
         {
@@ -80,16 +92,16 @@ export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
       javaScriptEnabled={false}
       domStorageEnabled={false}
       onShouldStartLoadWithRequest={(request) => {
-        // Feed-controlled HTML is untrusted. Keep the injected about:
-        // document inside the WebView, open http(s) links in the system
-        // browser, and block every other scheme (file:, intent:,
-        // javascript:, data:, custom schemes) from loading at all.
-        if (request.url.startsWith('about:')) {
+        // Feed-controlled HTML is untrusted and runs with JavaScript
+        // disabled, so keep the reader's own document in-app, open genuine
+        // http(s) link taps in the system browser, and block every other
+        // scheme from loading at all.
+        const decision = decideReaderRequest(request.url, article.url);
+        if (decision === 'allow') {
           return true;
         }
-        if (/^https?:\/\//i.test(request.url)) {
+        if (decision === 'external') {
           void Linking.openURL(request.url);
-          return false;
         }
         return false;
       }}
