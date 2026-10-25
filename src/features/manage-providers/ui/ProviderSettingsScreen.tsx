@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   providerCard: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 12,
     padding: 16,
     gap: 4,

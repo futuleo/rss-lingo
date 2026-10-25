@@ -82,7 +82,10 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         style={styles.list}
         contentContainerStyle={[
           styles.listContent,
-          { padding: theme.spacing.m, gap: theme.spacing.s },
+          {
+            paddingHorizontal: theme.spacing.m,
+            paddingBottom: theme.spacing.m,
+          },
         ]}
         refreshing={refreshing}
         onRefresh={handleRefresh}
@@ -202,7 +205,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
             />
           ) : (
             <EmptyState
-              symbol="📰"
+              icon="file-text"
               title={t('articles.emptyTitle')}
               hint={t('articles.emptyHint')}
             />

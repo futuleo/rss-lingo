@@ -23,3 +23,7 @@ jest.mock('he', () => ({
 jest.mock('expo-localization', () => ({
   getLocales: jest.fn(() => [{ languageCode: 'en' }]),
 }));
+
+jest.mock('@expo/vector-icons', () => ({
+  Feather: () => null,
+}));

@@ -72,7 +72,10 @@ export function FeedsScreen() {
       <FlatList
         data={feeds ?? []}
         keyExtractor={(feed) => String(feed.id)}
-        contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
+        contentContainerStyle={{
+          paddingHorizontal: theme.spacing.m,
+          paddingBottom: theme.spacing.m,
+        }}
         refreshing={refreshing}
         onRefresh={handleRefresh}
         ListHeaderComponent={
@@ -110,7 +113,7 @@ export function FeedsScreen() {
             </View>
           ) : (
             <EmptyState
-              symbol="📡"
+              icon="rss"
               title={t('feeds.emptyTitle')}
               hint={t('feeds.emptyHint')}
             />
@@ -124,10 +127,9 @@ export function FeedsScreen() {
             style={[
               styles.feedItem,
               {
-                backgroundColor: theme.colors.surface,
-                borderColor: theme.colors.border,
-                borderRadius: theme.radii.m,
-                padding: theme.spacing.m,
+                paddingVertical: theme.spacing.m,
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                borderBottomColor: theme.colors.border,
               },
             ]}
           >
@@ -168,7 +170,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   feedItem: {
-    borderWidth: 1,
     gap: 4,
   },
 });

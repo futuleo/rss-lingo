@@ -53,7 +53,10 @@ export function SavedArticlesScreen() {
         style={styles.list}
         contentContainerStyle={[
           styles.listContent,
-          { padding: theme.spacing.m, gap: theme.spacing.s },
+          {
+            paddingHorizontal: theme.spacing.m,
+            paddingBottom: theme.spacing.m,
+          },
         ]}
         ListHeaderComponent={
           <View>
@@ -164,7 +167,7 @@ export function SavedArticlesScreen() {
             </View>
           ) : (
             <EmptyState
-              symbol="★"
+              icon="bookmark"
               title={t('saved.emptyTitle')}
               hint={t('saved.emptyHint')}
             />
