@@ -15,12 +15,14 @@ const variantStyle = (theme: Theme, variant: TextVariant) => {
         fontSize: theme.font.title,
         lineHeight: theme.lineHeight.title,
         fontWeight: theme.weight.bold,
+        color: theme.colors.text,
       };
     case 'headline':
       return {
         fontSize: theme.font.headline,
         lineHeight: theme.lineHeight.headline,
         fontWeight: theme.weight.semibold,
+        color: theme.colors.text,
       };
     case 'caption':
       return {
@@ -32,6 +34,7 @@ const variantStyle = (theme: Theme, variant: TextVariant) => {
       return {
         fontSize: theme.font.body,
         lineHeight: theme.lineHeight.body,
+        color: theme.colors.text,
       };
   }
 };
