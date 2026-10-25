@@ -37,6 +37,13 @@ export function SavedArticlesScreen() {
   const listRef = useRef<FlatList<Article>>(null);
   const { onScroll, visible, reset } = useScrollToTop();
 
+  // Show skeleton placeholders while a translation is still being prepared or
+  // is in flight, instead of silently showing the original text.
+  const isTranslationPending =
+    listTranslation.status === 'loading' ||
+    listTranslation.status === 'idle' ||
+    listTranslation.status === 'translating';
+
   const handleScrollToTop = useCallback(() => {
     listRef.current?.scrollToOffset({ offset: 0, animated: true });
     reset();
@@ -197,6 +204,7 @@ export function SavedArticlesScreen() {
               article={item}
               titleOverride={meta?.title ?? null}
               summaryOverride={meta?.summary ?? null}
+              loading={viewMode === 'translation' && !meta && isTranslationPending}
               onPress={(article) => router.push(`/article/${article.id}`)}
             />
           );
