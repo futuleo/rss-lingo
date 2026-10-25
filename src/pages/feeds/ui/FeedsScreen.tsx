@@ -1,7 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  ActivityIndicator,
   Alert,
   FlatList,
   Pressable,
@@ -14,7 +13,7 @@ import { deleteFeed, useFeeds, type Feed } from '@entities/feed';
 import { AddFeedModal } from '@features/add-feed';
 import { useRefreshAllFeeds } from '@features/refresh-feeds';
 import { useScrollToTop } from '@shared/lib/hooks';
-import { Button, EmptyState, ScrollToTopButton, Text } from '@shared/ui';
+import { Button, EmptyState, ScrollToTopButton, Skeleton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 
 export function FeedsScreen() {
@@ -103,11 +102,24 @@ export function FeedsScreen() {
         }
         ListEmptyComponent={
           loading ? (
-            <ActivityIndicator
-              style={styles.loader}
-              size="large"
-              color={theme.colors.primary}
-            />
+            <View>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.feedItem,
+                    {
+                      paddingVertical: theme.spacing.m,
+                      borderBottomWidth: StyleSheet.hairlineWidth,
+                      borderBottomColor: theme.colors.border,
+                    },
+                  ]}
+                >
+                  <Skeleton style={{ height: theme.font.headline, width: '70%' }} />
+                  <Skeleton style={{ height: theme.font.caption, width: '45%' }} />
+                </View>
+              ))}
+            </View>
           ) : error ? (
             <View style={styles.error}>
               <Text
@@ -172,9 +184,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 8,
-  },
-  loader: {
-    marginTop: 48,
   },
   error: {
     marginTop: 48,

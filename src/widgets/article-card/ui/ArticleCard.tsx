@@ -14,6 +14,34 @@ export interface ArticleCardProps {
   loading?: boolean;
 }
 
+/** Skeleton placeholder matching an `ArticleCard`'s layout. */
+export function ArticleCardSkeleton() {
+  const { t } = useTranslation();
+  const theme = useTheme();
+
+  return (
+    <View
+      accessible
+      accessibilityLabel={t('common.loading')}
+      style={[
+        styles.card,
+        {
+          paddingVertical: theme.spacing.m,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomColor: theme.colors.border,
+        },
+      ]}
+    >
+      <View style={styles.metaRow}>
+        <Skeleton style={{ width: 72, height: theme.font.caption }} />
+      </View>
+      <Skeleton style={{ height: theme.font.headline, width: '85%' }} />
+      <Skeleton style={{ height: theme.font.body, width: '100%' }} />
+      <Skeleton style={{ height: theme.font.body, width: '55%' }} />
+    </View>
+  );
+}
+
 export function ArticleCard({
   article,
   onPress,
@@ -24,6 +52,14 @@ export function ArticleCard({
   const { t } = useTranslation();
   const theme = useTheme();
 
+  if (loading) {
+    return <ArticleCardSkeleton />;
+  }
+
+  const dateLabel = formatDate(article.publishedAt ?? article.fetchedAt);
+  const title = titleOverride ?? article.title;
+  const summary = summaryOverride ?? article.summary;
+
   const containerStyle: ViewStyle[] = [
     styles.card,
     {
@@ -32,27 +68,6 @@ export function ArticleCard({
       borderBottomColor: theme.colors.border,
     },
   ];
-
-  if (loading) {
-    return (
-      <View
-        accessible
-        accessibilityLabel={t('common.loading')}
-        style={containerStyle}
-      >
-        <View style={styles.metaRow}>
-          <Skeleton style={{ width: 72, height: theme.font.caption }} />
-        </View>
-        <Skeleton style={{ height: theme.font.headline, width: '85%' }} />
-        <Skeleton style={{ height: theme.font.body, width: '100%' }} />
-        <Skeleton style={{ height: theme.font.body, width: '55%' }} />
-      </View>
-    );
-  }
-
-  const dateLabel = formatDate(article.publishedAt ?? article.fetchedAt);
-  const title = titleOverride ?? article.title;
-  const summary = summaryOverride ?? article.summary;
 
   return (
     <Pressable

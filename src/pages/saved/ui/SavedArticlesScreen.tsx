@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { listSavedArticles, type Article } from '@entities/article';
@@ -14,7 +14,7 @@ import {
   Text,
 } from '@shared/ui';
 import { useTheme } from '@shared/theme';
-import { ArticleCard } from '@widgets/article-card';
+import { ArticleCard, ArticleCardSkeleton } from '@widgets/article-card';
 
 type ViewMode = 'original' | 'translation';
 
@@ -173,11 +173,11 @@ export function SavedArticlesScreen() {
         }
         ListEmptyComponent={
           loading ? (
-            <ActivityIndicator
-              style={styles.loader}
-              size="large"
-              color={theme.colors.primary}
-            />
+            <View>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <ArticleCardSkeleton key={index} />
+              ))}
+            </View>
           ) : error ? (
             <View style={styles.error}>
               <Text
@@ -250,9 +250,6 @@ const styles = StyleSheet.create({
   },
   bannerText: {
     flex: 1,
-  },
-  loader: {
-    marginTop: 48,
   },
   error: {
     marginTop: 48,

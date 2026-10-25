@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  ActivityIndicator,
   Alert,
   FlatList,
   Pressable,
@@ -27,7 +26,7 @@ import {
   Text,
 } from '@shared/ui';
 import { useTheme } from '@shared/theme';
-import { ArticleCard } from '@widgets/article-card';
+import { ArticleCard, ArticleCardSkeleton } from '@widgets/article-card';
 
 export interface FeedArticlesScreenProps {
   feedId: number;
@@ -211,11 +210,11 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         }
         ListEmptyComponent={
           loading ? (
-            <ActivityIndicator
-              style={styles.loader}
-              size="large"
-              color={theme.colors.primary}
-            />
+            <View>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <ArticleCardSkeleton key={index} />
+              ))}
+            </View>
           ) : (
             <EmptyState
               icon="file-text"
@@ -253,9 +252,6 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingBottom: 48,
-  },
-  loader: {
-    marginTop: 48,
   },
   backButton: {
     width: 44,
