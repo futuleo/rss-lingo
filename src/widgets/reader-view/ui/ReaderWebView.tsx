@@ -8,60 +8,15 @@ import {
 import { WebView } from 'react-native-webview';
 import { useTheme } from '@shared/theme';
 import type { Article } from '@entities/article';
+import {
+  DEFAULT_READER_SETTINGS,
+  LINE_HEIGHT_OPTIONS,
+  READER_FONTS,
+  resolveReaderPalette,
+  type ReaderSettings,
+} from '@entities/reader-settings';
+import { buildReaderHtml } from '../lib/buildReaderHtml';
 import { decideReaderRequest } from '../lib/decideReaderRequest';
-
-function buildReaderHtml(
-  content: string,
-  options: {
-    background: string;
-    text: string;
-    textMuted: string;
-    scheme: 'light' | 'dark';
-    topPadding: number;
-  },
-): string {
-  return `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3" />
-<style>
-  :root { color-scheme: ${options.scheme}; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    background-color: ${options.background};
-    color: ${options.text};
-    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
-    font-size: 18px;
-    line-height: 1.7;
-    -webkit-text-size-adjust: 100%;
-    word-wrap: break-word;
-  }
-  body {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: ${options.topPadding}px 18px 40px;
-  }
-  h1, h2, h3 {
-    line-height: 1.3;
-    font-weight: 600;
-    margin-top: 1.4em;
-  }
-  img { max-width: 100%; height: auto; border-radius: 10px; }
-  a { color: ${options.text}; }
-  pre, code { white-space: pre-wrap; word-wrap: break-word; }
-  blockquote {
-    margin: 12px 0;
-    padding-left: 12px;
-    border-left: 3px solid ${options.textMuted};
-    color: ${options.textMuted};
-  }
-</style>
-</head>
-<body>${content}</body>
-</html>`;
-}
 
 export interface ReaderWebViewProps {
   article: Article;
@@ -72,6 +27,8 @@ export interface ReaderWebViewProps {
    * article text starts below the header instead of behind it.
    */
   topPadding?: number;
+  /** Reading appearance settings; defaults to the app's built-in defaults. */
+  settings?: ReaderSettings;
 }
 
 export function ReaderWebView({
@@ -79,20 +36,43 @@ export function ReaderWebView({
   htmlOverride,
   onScroll,
   topPadding = 20,
+  settings = DEFAULT_READER_SETTINGS,
 }: ReaderWebViewProps) {
   const theme = useTheme();
 
   const content = htmlOverride ?? article.contentHtml ?? '';
 
+  const palette = resolveReaderPalette(settings, theme);
+  const font =
+    READER_FONTS.find((item) => item.id === settings.fontId) ?? READER_FONTS[0]!;
+  const lineHeight =
+    LINE_HEIGHT_OPTIONS.find((item) => item.id === settings.lineHeightId) ??
+    LINE_HEIGHT_OPTIONS[1]!;
+
   const readerHtml = useMemo(() => {
     return buildReaderHtml(content, {
-      background: theme.colors.background,
-      text: theme.colors.text,
-      textMuted: theme.colors.textMuted,
-      scheme: theme.scheme,
+      background: palette.background,
+      text: palette.text,
+      textMuted: palette.textMuted,
+      scheme: palette.scheme,
       topPadding,
+      fontFamily: font.family,
+      fontSize: settings.fontSize,
+      lineHeight: lineHeight.value,
+      justify: settings.justify,
     });
-  }, [content, theme, topPadding]);
+  }, [
+    content,
+    palette.background,
+    palette.text,
+    palette.textMuted,
+    palette.scheme,
+    topPadding,
+    font.family,
+    settings.fontSize,
+    lineHeight.value,
+    settings.justify,
+  ]);
 
   // Restrict the base URL to http(s) so a feed-controlled file:, data:,
   // javascript:, or custom-scheme URL can never become the reader's own
@@ -115,7 +95,7 @@ export function ReaderWebView({
       style={[
         styles.webview,
         {
-          backgroundColor: theme.colors.background,
+          backgroundColor: palette.background,
           borderRadius: theme.radii.m,
         },
       ]}
