@@ -48,6 +48,7 @@ export const palettes: Record<ThemeMode, ThemeColors> = {
     primary: '#0f766e',
     primaryText: '#ffffff',
     border: '#e8e5df',
+    skeleton: '#e4e1da',
     danger: '#dc2626',
   },
   sepia: {
@@ -58,6 +59,7 @@ export const palettes: Record<ThemeMode, ThemeColors> = {
     primary: '#0f766e',
     primaryText: '#ffffff',
     border: '#e6dbc6',
+    skeleton: '#e8d9bd',
     danger: '#dc2626',
   },
   dark: {
@@ -68,6 +70,7 @@ export const palettes: Record<ThemeMode, ThemeColors> = {
     primary: '#4fd1c5',
     primaryText: '#0a1f1b',
     border: '#2a2e28',
+    skeleton: '#252921',
     danger: '#f87171',
   },
 } as const;
@@ -80,6 +83,7 @@ export interface ThemeColors {
   primary: string;
   primaryText: string;
   border: string;
+  skeleton: string;
   danger: string;
 }
 
