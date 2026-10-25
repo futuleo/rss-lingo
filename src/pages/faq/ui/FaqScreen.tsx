@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
   backButton: {
     width: 44,
     height: 44,
+    marginLeft: -8,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
