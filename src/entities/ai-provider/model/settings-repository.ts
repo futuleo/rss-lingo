@@ -5,6 +5,28 @@ import type { AiProviderSettings } from './types';
 
 const SETTINGS_KEY = 'ai-provider';
 
+type SettingsChangeListener = () => void;
+
+const settingsChangeListeners = new Set<SettingsChangeListener>();
+
+/**
+ * Subscribes to AI provider settings changes. Returns an unsubscribe function.
+ * `useAiProviderSettings` uses this so every mounted consumer re-reads the
+ * settings when they change in another screen (e.g. the target language).
+ */
+export function subscribeSettingsChange(listener: SettingsChangeListener): () => void {
+  settingsChangeListeners.add(listener);
+  return () => {
+    settingsChangeListeners.delete(listener);
+  };
+}
+
+function notifySettingsChange(): void {
+  for (const listener of settingsChangeListeners) {
+    listener();
+  }
+}
+
 function apiKeyKey(providerId: string): string {
   return `ai-key-${providerId}`;
 }
@@ -32,6 +54,7 @@ export async function saveSettings(
     'INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)',
     [SETTINGS_KEY, JSON.stringify(settings)],
   );
+  notifySettingsChange();
 }
 
 export async function saveApiKey(providerId: string, apiKey: string): Promise<void> {
