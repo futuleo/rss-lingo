@@ -54,4 +54,68 @@ describe('RSS parser invariants', () => {
   test('throws on garbage input', () => {
     expect(() => parseFeedXml('this is not valid xml')).toThrow();
   });
+
+  test('flags RSS full content from content:encoded only', () => {
+    const withEncoded = `<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>Feed</title>
+    <link>https://example.org</link>
+    <item>
+      <guid>full</guid>
+      <title>Full item</title>
+      <description>Just a teaser</description>
+      <content:encoded><![CDATA[<p>Full body</p>]]></content:encoded>
+    </item>
+  </channel>
+</rss>`;
+    const teaserOnly = `<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>Feed</title>
+    <link>https://example.org</link>
+    <item>
+      <guid>teaser</guid>
+      <title>Teaser item</title>
+      <description>Just a teaser</description>
+    </item>
+  </channel>
+</rss>`;
+
+    const parsedFull = parseFeedXml(withEncoded);
+    expect(parsedFull.articles[0]!.hasFullContent).toBe(true);
+
+    const parsedTeaser = parseFeedXml(teaserOnly);
+    expect(parsedTeaser.articles[0]!.hasFullContent).toBe(false);
+  });
+
+  test('flags Atom full content from content only', () => {
+    const withContent = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Feed</title>
+  <id>https://example.org/feed</id>
+  <entry>
+    <id>https://example.org/full</id>
+    <title>Full entry</title>
+    <summary>Just a teaser</summary>
+    <content type="html">&lt;p&gt;Full body&lt;/p&gt;</content>
+  </entry>
+</feed>`;
+    const summaryOnly = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Feed</title>
+  <id>https://example.org/feed</id>
+  <entry>
+    <id>https://example.org/teaser</id>
+    <title>Teaser entry</title>
+    <summary>Just a teaser</summary>
+  </entry>
+</feed>`;
+
+    const parsedFull = parseFeedXml(withContent);
+    expect(parsedFull.articles[0]!.hasFullContent).toBe(true);
+
+    const parsedTeaser = parseFeedXml(summaryOnly);
+    expect(parsedTeaser.articles[0]!.hasFullContent).toBe(false);
+  });
 });

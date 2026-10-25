@@ -1,6 +1,11 @@
 /// <reference types="jest" />
 import { createFeed, deleteFeed, getFeedByUrl } from '@entities/feed';
-import { pruneFeedArticles, setArticleSaved, upsertArticles } from '@entities/article';
+import {
+  pruneFeedArticles,
+  setArticleContent,
+  setArticleSaved,
+  upsertArticles,
+} from '@entities/article';
 import { migrateDatabase } from '@shared/lib/db/migrations';
 import { NodeSqliteAdapter } from '@shared/lib/db/testing/node-sqlite-adapter';
 import type * as SQLite from 'expo-sqlite';
@@ -20,6 +25,7 @@ function makeArticle(guid: string, publishedAt: number) {
     author: null,
     summary: null,
     contentHtml: null,
+    hasFullContent: false,
     publishedAt,
   };
 }
@@ -56,6 +62,60 @@ describe('database invariants', () => {
       ['a1'],
     );
     expect(row).toEqual({ saved: 1, title: 'Updated title' });
+  });
+
+  test('fetched full content survives a teaser-only refresh', async () => {
+    const feed = await createFeed({ url: 'https://example.org/feed' }, db);
+    expect(feed).not.toBeNull();
+
+    // Insert a teaser-only article (no full content).
+    await upsertArticles(
+      feed!.id,
+      [{ ...makeArticle('a1', 1_000_000), contentHtml: '<p>teaser</p>' }],
+      db,
+    );
+    const inserted = await db.getFirstAsync<{ id: number }>(
+      'SELECT id FROM articles WHERE guid = ?',
+      ['a1'],
+    );
+    expect(inserted).not.toBeNull();
+
+    // Fetch-and-persist full content.
+    await setArticleContent(inserted!.id, '<p>full</p>', db);
+
+    // A later refresh still only ships the teaser: full content is preserved.
+    await upsertArticles(
+      feed!.id,
+      [{ ...makeArticle('a1', 1_000_000), contentHtml: '<p>teaser</p>' }],
+      db,
+    );
+
+    const preserved = await db.getFirstAsync<{
+      content_html: string | null;
+      has_full_content: number;
+    }>('SELECT content_html, has_full_content FROM articles WHERE guid = ?', ['a1']);
+    expect(preserved?.content_html).toBe('<p>full</p>');
+    expect(preserved?.has_full_content).toBe(1);
+
+    // A fresh incoming article with full content DOES overwrite the row.
+    await upsertArticles(
+      feed!.id,
+      [
+        {
+          ...makeArticle('a1', 1_000_000),
+          contentHtml: '<p>new full</p>',
+          hasFullContent: true,
+        },
+      ],
+      db,
+    );
+
+    const overwritten = await db.getFirstAsync<{
+      content_html: string | null;
+      has_full_content: number;
+    }>('SELECT content_html, has_full_content FROM articles WHERE guid = ?', ['a1']);
+    expect(overwritten?.content_html).toBe('<p>new full</p>');
+    expect(overwritten?.has_full_content).toBe(1);
   });
 
   test('prune keeps newest 50 non-saved and all saved articles', async () => {
@@ -118,14 +178,14 @@ describe('database invariants', () => {
 
   test('migrations are applied up to the latest version', async () => {
     const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
-    expect(row?.user_version).toBe(2);
+    expect(row?.user_version).toBe(3);
   });
 
   test('migrations are idempotent', async () => {
     await migrateDatabase(db);
 
     const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
-    expect(row?.user_version).toBe(2);
+    expect(row?.user_version).toBe(3);
 
     const tables = await db.getAllAsync<{ name: string }>(
       "SELECT name FROM sqlite_master WHERE type='table' AND name IN (?, ?, ?, ?)",

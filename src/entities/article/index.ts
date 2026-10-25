@@ -4,6 +4,7 @@ export {
   listArticlesByFeed,
   listSavedArticles,
   pruneFeedArticles,
+  setArticleContent,
   setArticleSaved,
   upsertArticles,
 } from './model/repository';

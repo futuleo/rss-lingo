@@ -22,6 +22,7 @@ function makeArticle(guid: string) {
     author: null,
     summary: null,
     contentHtml: `<p>Paragraph ${guid}</p>`,
+    hasFullContent: false,
     publishedAt: 1_000_000,
   };
 }
