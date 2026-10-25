@@ -64,7 +64,6 @@ export function SavedArticlesScreen() {
               style={[
                 styles.header,
                 {
-                  paddingHorizontal: theme.spacing.m,
                   paddingTop: insets.top + theme.spacing.s,
                   paddingBottom: theme.spacing.s,
                 },
@@ -78,7 +77,6 @@ export function SavedArticlesScreen() {
                 style={[
                   styles.toggleArea,
                   {
-                    paddingHorizontal: theme.spacing.m,
                     paddingBottom: theme.spacing.s,
                   },
                 ]}
