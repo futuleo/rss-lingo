@@ -80,12 +80,7 @@ export function FeedsScreen() {
         onRefresh={handleRefresh}
         ListHeaderComponent={
           <View style={{ paddingTop: insets.top + theme.spacing.s }}>
-            <View
-              style={[
-                styles.headerRow,
-                { paddingHorizontal: theme.spacing.m },
-              ]}
-            >
+            <View style={styles.headerRow}>
               <Text variant="title">{t('feeds.title')}</Text>
               <Button
                 label={`+ ${t('feeds.addHeader')}`}

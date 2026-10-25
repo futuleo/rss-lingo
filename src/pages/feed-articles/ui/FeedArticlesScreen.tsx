@@ -92,30 +92,23 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         ListHeaderComponent={
           <View>
             <View style={{ paddingTop: insets.top + theme.spacing.s }}>
-              <View style={{ paddingHorizontal: theme.spacing.m }}>
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel={t('reader.back')}
-                  onPress={() => router.back()}
-                  style={({ pressed }) => [
-                    styles.backButton,
-                    pressed && styles.pressed,
-                  ]}
-                >
-                  <Feather
-                    name="chevron-left"
-                    size={24}
-                    color={theme.colors.primary}
-                  />
-                </Pressable>
-              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={t('reader.back')}
+                onPress={() => router.back()}
+                style={({ pressed }) => [
+                  styles.backButton,
+                  pressed && styles.pressed,
+                ]}
+              >
+                <Feather
+                  name="chevron-left"
+                  size={24}
+                  color={theme.colors.primary}
+                />
+              </Pressable>
               {displayFeedTitle ? (
-                <View
-                  style={[
-                    styles.titleBlock,
-                    { paddingHorizontal: theme.spacing.m },
-                  ]}
-                >
+                <View style={styles.titleBlock}>
                   <Text variant="title">{displayFeedTitle}</Text>
                 </View>
               ) : null}
@@ -126,7 +119,6 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                 style={[
                   styles.toggleArea,
                   {
-                    paddingHorizontal: theme.spacing.m,
                     paddingBottom: theme.spacing.s,
                   },
                 ]}

@@ -231,12 +231,14 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
 
       <View style={styles.content}>
         {showTranslation ? (
-          <View style={[styles.translationContent, { paddingTop: headerHeight }]}>
+          <View style={styles.translationContent}>
             <TranslationPanel
               state={translationState}
               onTranslate={translate}
               onCancel={cancel}
               onConfigure={() => router.navigate('/settings')}
+              topPadding={headerHeight}
+              onScroll={handleScroll}
             />
           </View>
         ) : fullStatus === 'loading' || headerHeight === 0 ? (
@@ -293,6 +295,8 @@ interface TranslationPanelProps {
   onTranslate: () => void;
   onCancel: () => void;
   onConfigure: () => void;
+  topPadding: number;
+  onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 function TranslationPanel({
@@ -300,6 +304,8 @@ function TranslationPanel({
   onTranslate,
   onCancel,
   onConfigure,
+  topPadding,
+  onScroll,
 }: TranslationPanelProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -322,6 +328,8 @@ function TranslationPanel({
           fetchedAt: 0,
         }}
         htmlOverride={state.text}
+        topPadding={topPadding}
+        onScroll={onScroll}
       />
     );
   }
@@ -333,6 +341,7 @@ function TranslationPanel({
         style={[
           styles.panel,
           {
+            marginTop: topPadding,
             backgroundColor: theme.colors.surface,
             borderColor: theme.colors.border,
             gap: theme.spacing.s,
@@ -352,6 +361,7 @@ function TranslationPanel({
         style={[
           styles.panel,
           {
+            marginTop: topPadding,
             backgroundColor: theme.colors.surface,
             borderColor: theme.colors.border,
             gap: theme.spacing.s,
@@ -373,6 +383,7 @@ function TranslationPanel({
         style={[
           styles.panel,
           {
+            marginTop: topPadding,
             backgroundColor: theme.colors.surface,
             borderColor: theme.colors.border,
             gap: theme.spacing.s,
@@ -391,6 +402,7 @@ function TranslationPanel({
         style={[
           styles.panel,
           {
+            marginTop: topPadding,
             backgroundColor: theme.colors.surface,
             borderColor: theme.colors.border,
             gap: theme.spacing.s,
@@ -407,6 +419,7 @@ function TranslationPanel({
       style={[
         styles.panel,
         {
+          marginTop: topPadding,
           backgroundColor: theme.colors.surface,
           borderColor: theme.colors.border,
           gap: theme.spacing.s,
