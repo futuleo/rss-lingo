@@ -21,7 +21,11 @@ import { useFullArticle } from '@features/fetch-article-content';
 import { formatDate } from '@shared/lib/dates';
 import { Button, ScrollToTopButton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
-import { ReaderSettingsSheet, ReaderWebView } from '@widgets/reader-view';
+import {
+  ArticleSkeleton,
+  ReaderSettingsSheet,
+  ReaderWebView,
+} from '@widgets/reader-view';
 
 export interface ArticleReaderScreenProps {
   articleId: number;
@@ -114,11 +118,10 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
       <View
         style={[
           styles.container,
-          styles.center,
           { backgroundColor: theme.colors.background, paddingTop: insets.top },
         ]}
       >
-        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <ArticleSkeleton />
       </View>
     );
   }
@@ -282,14 +285,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             />
           </View>
         ) : fullStatus === 'loading' || headerHeight === 0 ? (
-          <View style={[styles.center, styles.fill]}>
-            <View style={styles.loadingRow}>
-              <ActivityIndicator size="small" color={theme.colors.primary} />
-              <Text variant="body" style={{ color: theme.colors.textMuted }}>
-                {t('reader.loadingFull')}
-              </Text>
-            </View>
-          </View>
+          <ArticleSkeleton header={false} topPadding={headerHeight} />
         ) : article.contentHtml ? (
           <ReaderWebView
             key={webViewKey}
@@ -372,20 +368,25 @@ function TranslationPanel({
   if (state.status === 'translating') {
     const { done = 0, total = 0 } = state.progress ?? {};
     return (
-      <View
-        style={[
-          styles.panel,
-          {
-            marginTop: topPadding,
-            backgroundColor: theme.colors.surface,
-            borderColor: theme.colors.border,
-            gap: theme.spacing.s,
-          },
-        ]}
-      >
-        <ActivityIndicator size="small" color={theme.colors.primary} />
-        <Text variant="body">{t('reader.translating', { done, total })}</Text>
-        <Button label={t('reader.cancel')} variant="secondary" onPress={onCancel} />
+      <View style={styles.fill}>
+        <View
+          style={[
+            styles.translatingRow,
+            { marginTop: topPadding + theme.spacing.m },
+          ]}
+        >
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+          <Text variant="body" style={{ color: theme.colors.textMuted, flex: 1 }}>
+            {t('reader.translating', { done, total })}
+          </Text>
+          <Button
+            label={t('reader.cancel')}
+            variant="secondary"
+            labelVariant="caption"
+            onPress={onCancel}
+          />
+        </View>
+        <ArticleSkeleton header={false} />
       </View>
     );
   }
@@ -432,21 +433,7 @@ function TranslationPanel({
   }
 
   if (state.status === 'loading') {
-    return (
-      <View
-        style={[
-          styles.panel,
-          {
-            marginTop: topPadding,
-            backgroundColor: theme.colors.surface,
-            borderColor: theme.colors.border,
-            gap: theme.spacing.s,
-          },
-        ]}
-      >
-        <ActivityIndicator size="small" color={theme.colors.primary} />
-      </View>
-    );
+    return <ArticleSkeleton header={false} topPadding={topPadding} />;
   }
 
   return (
@@ -522,10 +509,11 @@ const styles = StyleSheet.create({
   toggleRow: {
     flexDirection: 'row',
   },
-  loadingRow: {
+  translatingRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    paddingHorizontal: 16,
   },
   panel: {
     borderWidth: 1,
