@@ -62,6 +62,7 @@
     "providerOpenAi": "OpenAI",
     "providerAnthropic": "Anthropic",
     "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
     "modelLabel": "Модель",
     "modelPlaceholder": "например, gpt-4o-mini",
     "baseUrlLabel": "Базовый URL (необязательно)",
@@ -123,7 +124,7 @@
         "items": [
           {
             "q": "Как настроить перевод?",
-            "a": "Откройте Настройки (⚙), выберите провайдера (OpenAI, Anthropic или Gemini), введите название модели (например, gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash), вставьте свой API-ключ этого провайдера (получить можно на platform.openai.com, console.anthropic.com или aistudio.google.com), выберите целевой язык и нажмите «Проверить подключение»."
+            "a": "Откройте Настройки (⚙), выберите провайдера (OpenAI, Anthropic, Gemini или DeepSeek), введите название модели (например, gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat), вставьте свой API-ключ этого провайдера (получить можно на platform.openai.com, console.anthropic.com или aistudio.google.com), выберите целевой язык и нажмите «Проверить подключение»."
           }
         ]
       },
