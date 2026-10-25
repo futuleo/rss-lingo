@@ -14,7 +14,8 @@
     "error": "Jokin meni pieleen",
     "loading": "Ladataan…",
     "delete": "Poista",
-    "close": "Sulje"
+    "close": "Sulje",
+    "scrollToTop": "Vieritä ylös"
   },
   "feeds": {
     "title": "Syötteet",
@@ -50,7 +51,6 @@
     "save": "Tallenna",
     "saved": "Tallennettu",
     "openInBrowser": "Avaa selaimessa",
-    "scrollToTop": "Vieritä ylös",
     "contentUnavailable": "Tällä artikkelilla ei ole luettavaa sisältöä. Avaa se selaimessa.",
     "loadingFull": "Ladataan koko artikkelia…",
     "original": "Alkuperäinen",
@@ -72,7 +72,7 @@
     "providerDeepSeek": "DeepSeek",
     "modelLabel": "Malli",
     "modelPlaceholder": "esim. gpt-4o-mini",
-    "modelCustom": "Muu…",
+    "modelCustom": "Muu malli",
     "baseUrlLabel": "Päätepiste (valinnainen)",
     "baseUrlPlaceholder": "https://api.example.com/v1",
     "apiKeyLabel": "API-avain",

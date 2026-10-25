@@ -14,7 +14,8 @@
     "error": "Что-то пошло не так",
     "loading": "Загрузка…",
     "delete": "Удалить",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "scrollToTop": "В начало"
   },
   "feeds": {
     "title": "Ленты",
@@ -50,7 +51,6 @@
     "save": "Сохранить",
     "saved": "Сохранено",
     "openInBrowser": "Открыть в браузере",
-    "scrollToTop": "В начало",
     "contentUnavailable": "У этой статьи нет читаемого содержимого. Откройте её в браузере.",
     "loadingFull": "Загрузка полной статьи…",
     "original": "Оригинал",
@@ -72,7 +72,7 @@
     "providerDeepSeek": "DeepSeek",
     "modelLabel": "Модель",
     "modelPlaceholder": "например, gpt-4o-mini",
-    "modelCustom": "Свой…",
+    "modelCustom": "Своя модель",
     "baseUrlLabel": "Базовый URL (необязательно)",
     "baseUrlPlaceholder": "https://api.example.com/v1",
     "apiKeyLabel": "API-ключ",

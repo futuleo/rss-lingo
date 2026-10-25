@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -14,6 +15,7 @@ import {
   StyleSheet,
   TextInput,
   View,
+  type ScrollViewInstance,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createProvider, PROVIDERS, type ProviderInfo } from '@shared/api/ai';
@@ -24,13 +26,10 @@ import {
   saveSettings,
   useAiProviderSettings,
 } from '@entities/ai-provider';
-import { Button, Text } from '@shared/ui';
+import { useScrollToTop } from '@shared/lib/hooks';
+import { Button, ScrollToTopButton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
-import {
-  setAppLanguage,
-  supportedLanguages,
-  type AppLanguage,
-} from '@shared/i18n';
+import { setAppLanguage, supportedLanguages, type AppLanguage } from '@shared/i18n';
 
 function providerLabelKey(id: string): string {
   switch (id) {
@@ -196,6 +195,14 @@ export function ProviderSettingsScreen({ header }: { header?: ReactNode }) {
     [theme],
   );
 
+  const scrollRef = useRef<ScrollViewInstance>(null);
+  const { onScroll, visible, reset } = useScrollToTop();
+
+  const handleScrollToTop = useCallback(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+    reset();
+  }, [reset]);
+
   if (loading || !isLoaded) {
     return (
       <View style={styles.loader}>
@@ -205,253 +212,269 @@ export function ProviderSettingsScreen({ header }: { header?: ReactNode }) {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingTop: insets.top + theme.spacing.s,
-        paddingHorizontal: theme.spacing.m,
-        paddingBottom: theme.spacing.m + insets.bottom,
-        gap: theme.spacing.m,
-      }}
-      keyboardShouldPersistTaps="handled"
-    >
-      {header}
-      <View style={styles.section}>
-        <Text variant="caption">{t('settings.providerLabel')}</Text>
-        <View style={styles.providerList}>
-          {PROVIDERS.map((provider) => {
-            const selected = provider.id === providerId;
-            return (
-              <Pressable
-                key={provider.id}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: selected }}
-                onPress={() => selectProvider(provider.id)}
-                style={[
-                  styles.providerCard,
-                  {
-                    backgroundColor: theme.colors.surface,
-                    borderColor: selected ? theme.colors.primary : theme.colors.border,
-                  },
-                ]}
-              >
-                <Text variant="headline">{t(providerLabelKey(provider.id))}</Text>
-                <Text variant="caption">{provider.keyHint}</Text>
-              </Pressable>
-            );
-          })}
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text variant="caption">{t('settings.modelLabel')}</Text>
-        <View style={styles.langList}>
-          {selectedProvider.models.map((m) => {
-            const selected = model === m;
-            return (
-              <Pressable
-                key={m}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: selected }}
-                onPress={() => setModel(m)}
-                style={[
-                  styles.langChip,
-                  {
-                    backgroundColor: selected
-                      ? theme.colors.primary
-                      : theme.colors.surface,
-                    borderColor: theme.colors.border,
-                  },
-                ]}
-              >
-                <Text
-                  style={{
-                    color: selected ? theme.colors.primaryText : theme.colors.text,
-                  }}
+    <View style={styles.container}>
+      <ScrollView
+        ref={scrollRef}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        contentContainerStyle={{
+          paddingTop: insets.top + theme.spacing.s,
+          paddingHorizontal: theme.spacing.m,
+          paddingBottom: theme.spacing.m + insets.bottom,
+          gap: theme.spacing.m,
+        }}
+        keyboardShouldPersistTaps="handled"
+      >
+        {header}
+        <View style={styles.section}>
+          <Text variant="caption">{t('settings.providerLabel')}</Text>
+          <View style={styles.providerList}>
+            {PROVIDERS.map((provider) => {
+              const selected = provider.id === providerId;
+              return (
+                <Pressable
+                  key={provider.id}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  onPress={() => selectProvider(provider.id)}
+                  style={[
+                    styles.providerCard,
+                    {
+                      backgroundColor: theme.colors.surface,
+                      borderColor: selected
+                        ? theme.colors.primary
+                        : theme.colors.border,
+                    },
+                  ]}
                 >
-                  {m}
-                </Text>
-              </Pressable>
-            );
-          })}
-          <Pressable
-            accessibilityRole="radio"
-            accessibilityState={{ checked: !selectedProvider.models.includes(model) }}
-            onPress={() => setModel('')}
-            style={[
-              styles.langChip,
-              {
-                backgroundColor: !selectedProvider.models.includes(model)
-                  ? theme.colors.primary
-                  : theme.colors.surface,
-                borderColor: theme.colors.border,
-              },
-            ]}
-          >
-            <Text
-              style={{
-                color: !selectedProvider.models.includes(model)
-                  ? theme.colors.primaryText
-                  : theme.colors.text,
-              }}
-            >
-              {t('settings.modelCustom')}
-            </Text>
-          </Pressable>
+                  <Text variant="headline">{t(providerLabelKey(provider.id))}</Text>
+                  <Text variant="caption">{provider.keyHint}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
-        {!selectedProvider.models.includes(model) && (
+
+        <View style={styles.section}>
+          <Text variant="caption">{t('settings.modelLabel')}</Text>
+          <View style={styles.langList}>
+            {selectedProvider.models.map((m) => {
+              const selected = model === m;
+              return (
+                <Pressable
+                  key={m}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  onPress={() => setModel(m)}
+                  style={[
+                    styles.langChip,
+                    {
+                      backgroundColor: selected
+                        ? theme.colors.primary
+                        : theme.colors.surface,
+                      borderColor: theme.colors.border,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      color: selected ? theme.colors.primaryText : theme.colors.text,
+                    }}
+                  >
+                    {m}
+                  </Text>
+                </Pressable>
+              );
+            })}
+            <Pressable
+              accessibilityRole="radio"
+              accessibilityState={{ checked: !selectedProvider.models.includes(model) }}
+              onPress={() => setModel('')}
+              style={[
+                styles.langChip,
+                {
+                  backgroundColor: !selectedProvider.models.includes(model)
+                    ? theme.colors.primary
+                    : theme.colors.surface,
+                  borderColor: theme.colors.border,
+                },
+              ]}
+            >
+              <Text
+                style={{
+                  color: !selectedProvider.models.includes(model)
+                    ? theme.colors.primaryText
+                    : theme.colors.text,
+                }}
+              >
+                {t('settings.modelCustom')}
+              </Text>
+            </Pressable>
+          </View>
+          {!selectedProvider.models.includes(model) && (
+            <TextInput
+              accessibilityLabel={t('settings.modelLabel')}
+              value={model}
+              onChangeText={setModel}
+              placeholder={t('settings.modelPlaceholder')}
+              placeholderTextColor={theme.colors.textMuted}
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={[styles.input, inputStyle]}
+            />
+          )}
+        </View>
+
+        <View style={styles.section}>
+          <Text variant="caption">{t('settings.baseUrlLabel')}</Text>
           <TextInput
-            accessibilityLabel={t('settings.modelLabel')}
-            value={model}
-            onChangeText={setModel}
-            placeholder={t('settings.modelPlaceholder')}
+            accessibilityLabel={t('settings.baseUrlLabel')}
+            value={baseUrl}
+            onChangeText={setBaseUrl}
+            placeholder={selectedProvider.defaultBaseUrl}
             placeholderTextColor={theme.colors.textMuted}
             autoCapitalize="none"
             autoCorrect={false}
             style={[styles.input, inputStyle]}
           />
-        )}
-      </View>
-
-      <View style={styles.section}>
-        <Text variant="caption">{t('settings.baseUrlLabel')}</Text>
-        <TextInput
-          accessibilityLabel={t('settings.baseUrlLabel')}
-          value={baseUrl}
-          onChangeText={setBaseUrl}
-          placeholder={selectedProvider.defaultBaseUrl}
-          placeholderTextColor={theme.colors.textMuted}
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={[styles.input, inputStyle]}
-        />
-      </View>
-
-      <View style={styles.section}>
-        <Text variant="caption">{t('settings.apiKeyLabel')}</Text>
-        <TextInput
-          accessibilityLabel={t('settings.apiKeyLabel')}
-          value={apiKey}
-          onChangeText={(value) => {
-            setApiKey(value);
-            setIsApiKeyDirty(true);
-          }}
-          onBlur={() => {
-            if (!isApiKeyDirty) {
-              return;
-            }
-            void (async () => {
-              if (apiKey.trim().length === 0) {
-                await deleteApiKey(providerId);
-              } else {
-                await saveApiKey(providerId, apiKey);
-              }
-              setIsApiKeyDirty(false);
-            })();
-          }}
-          placeholder={t('settings.apiKeyPlaceholder')}
-          placeholderTextColor={theme.colors.textMuted}
-          secureTextEntry
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={[styles.input, inputStyle]}
-        />
-      </View>
-
-      <View style={styles.section}>
-        <Text variant="caption">{t('settings.targetLangLabel')}</Text>
-        <View style={styles.langList}>
-          {supportedLanguages.map((lang) => {
-            const selected = targetLang === lang;
-            return (
-              <Pressable
-                key={lang}
-                accessibilityRole="radio"
-                accessibilityState={{ checked: selected }}
-                onPress={() => selectTargetLang(lang)}
-                style={[
-                  styles.langChip,
-                  {
-                    backgroundColor: selected
-                      ? theme.colors.primary
-                      : theme.colors.surface,
-                    borderColor: theme.colors.border,
-                  },
-                ]}
-              >
-                <Text
-                  style={{
-                    color: selected ? theme.colors.primaryText : theme.colors.text,
-                  }}
-                >
-                  {lang.toUpperCase()}
-                </Text>
-              </Pressable>
-            );
-          })}
         </View>
-        <Text variant="caption" style={{ color: theme.colors.textMuted }}>
-          {t('settings.targetLangHint')}
-        </Text>
-      </View>
 
-      <View style={styles.section}>
-        <Button
-          label={t('settings.testConnection')}
-          onPress={handleTestConnection}
-          disabled={testStatus.type === 'loading'}
-        />
-        {testStatus.type === 'loading' && (
-          <ActivityIndicator
-            style={{ marginTop: theme.spacing.s }}
-            color={theme.colors.primary}
+        <View style={styles.section}>
+          <Text variant="caption">{t('settings.apiKeyLabel')}</Text>
+          <TextInput
+            accessibilityLabel={t('settings.apiKeyLabel')}
+            value={apiKey}
+            onChangeText={(value) => {
+              setApiKey(value);
+              setIsApiKeyDirty(true);
+            }}
+            onBlur={() => {
+              if (!isApiKeyDirty) {
+                return;
+              }
+              void (async () => {
+                if (apiKey.trim().length === 0) {
+                  await deleteApiKey(providerId);
+                } else {
+                  await saveApiKey(providerId, apiKey);
+                }
+                setIsApiKeyDirty(false);
+              })();
+            }}
+            placeholder={t('settings.apiKeyPlaceholder')}
+            placeholderTextColor={theme.colors.textMuted}
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+            style={[styles.input, inputStyle]}
           />
-        )}
-        {testStatus.type === 'ok' && (
-          <Text
-            variant="body"
-            style={{ color: theme.colors.textMuted, marginTop: theme.spacing.s }}
-          >
-            {t('settings.testOk', { result: testStatus.result })}
-          </Text>
-        )}
-        {testStatus.type === 'error' && (
-          <Text
-            variant="body"
-            style={{ color: theme.colors.danger, marginTop: theme.spacing.s }}
-          >
-            {t('settings.testError', { message: testStatus.message })}
-          </Text>
-        )}
-      </View>
+        </View>
 
-      <Pressable
-        accessibilityRole="button"
-        onPress={() => router.push('/faq')}
-        style={[
-          styles.faqRow,
-          {
-            backgroundColor: theme.colors.surface,
-            borderColor: theme.colors.border,
-            borderRadius: theme.radii.m,
-            padding: theme.spacing.m,
-          },
-        ]}
-      >
-        <Text variant="headline">{t('settings.faq')}</Text>
-        <Text style={{ color: theme.colors.textMuted, fontSize: 18 }}>›</Text>
-      </Pressable>
+        <View style={styles.section}>
+          <Text variant="caption">{t('settings.targetLangLabel')}</Text>
+          <View style={styles.langList}>
+            {supportedLanguages.map((lang) => {
+              const selected = targetLang === lang;
+              return (
+                <Pressable
+                  key={lang}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
+                  onPress={() => selectTargetLang(lang)}
+                  style={[
+                    styles.langChip,
+                    {
+                      backgroundColor: selected
+                        ? theme.colors.primary
+                        : theme.colors.surface,
+                      borderColor: theme.colors.border,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={{
+                      color: selected ? theme.colors.primaryText : theme.colors.text,
+                    }}
+                  >
+                    {lang.toUpperCase()}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+          <Text variant="caption" style={{ color: theme.colors.textMuted }}>
+            {t('settings.targetLangHint')}
+          </Text>
+        </View>
 
-      <Text
-        variant="caption"
-        style={[styles.savedHint, { color: theme.colors.textMuted }]}
-      >
-        {t('settings.saved')}
-      </Text>
-    </ScrollView>
+        <View style={styles.section}>
+          <Button
+            label={t('settings.testConnection')}
+            onPress={handleTestConnection}
+            disabled={testStatus.type === 'loading'}
+          />
+          {testStatus.type === 'loading' && (
+            <ActivityIndicator
+              style={{ marginTop: theme.spacing.s }}
+              color={theme.colors.primary}
+            />
+          )}
+          {testStatus.type === 'ok' && (
+            <Text
+              variant="body"
+              style={{ color: theme.colors.textMuted, marginTop: theme.spacing.s }}
+            >
+              {t('settings.testOk', { result: testStatus.result })}
+            </Text>
+          )}
+          {testStatus.type === 'error' && (
+            <Text
+              variant="body"
+              style={{ color: theme.colors.danger, marginTop: theme.spacing.s }}
+            >
+              {t('settings.testError', { message: testStatus.message })}
+            </Text>
+          )}
+        </View>
+
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push('/faq')}
+          style={[
+            styles.faqRow,
+            {
+              backgroundColor: theme.colors.surface,
+              borderColor: theme.colors.border,
+              borderRadius: theme.radii.m,
+              padding: theme.spacing.m,
+            },
+          ]}
+        >
+          <Text variant="headline">{t('settings.faq')}</Text>
+          <Text style={{ color: theme.colors.textMuted, fontSize: 18 }}>›</Text>
+        </Pressable>
+
+        <Text
+          variant="caption"
+          style={[styles.savedHint, { color: theme.colors.textMuted }]}
+        >
+          {t('settings.saved')}
+        </Text>
+      </ScrollView>
+
+      <ScrollToTopButton
+        visible={visible}
+        onPress={handleScrollToTop}
+        bottomInset={0}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   loader: {
     flex: 1,
     alignItems: 'center',

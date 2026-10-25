@@ -1,10 +1,17 @@
-import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useRef, useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  type ScrollViewInstance,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Text } from '@shared/ui';
+import { useScrollToTop } from '@shared/lib/hooks';
+import { ScrollToTopButton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 
 type FaqItem = {
@@ -29,6 +36,14 @@ export function FaqScreen() {
   }) as unknown as FaqSection[];
   const title = t('faq.title');
 
+  const scrollRef = useRef<ScrollViewInstance>(null);
+  const { onScroll, visible, reset } = useScrollToTop();
+
+  const handleScrollToTop = useCallback(() => {
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
+    reset();
+  }, [reset]);
+
   const toggleSection = (id: string) => {
     setExpandedIds((prev) => {
       const next = new Set(prev);
@@ -44,6 +59,9 @@ export function FaqScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <ScrollView
+        ref={scrollRef}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         contentContainerStyle={{
           paddingHorizontal: theme.spacing.m,
           paddingBottom: theme.spacing.m + insets.bottom,
@@ -122,6 +140,8 @@ export function FaqScreen() {
           );
         })}
       </ScrollView>
+
+      <ScrollToTopButton visible={visible} onPress={handleScrollToTop} />
     </View>
   );
 }

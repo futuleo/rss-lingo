@@ -14,7 +14,8 @@
     "error": "Something went wrong",
     "loading": "Loading…",
     "delete": "Delete",
-    "close": "Close"
+    "close": "Close",
+    "scrollToTop": "Scroll to top"
   },
   "feeds": {
     "title": "Feeds",
@@ -50,7 +51,6 @@
     "save": "Save",
     "saved": "Saved",
     "openInBrowser": "Open in browser",
-    "scrollToTop": "Scroll to top",
     "contentUnavailable": "This article has no readable content. Try opening it in the browser.",
     "loadingFull": "Loading full article…",
     "original": "Original",
@@ -72,7 +72,7 @@
     "providerDeepSeek": "DeepSeek",
     "modelLabel": "Model",
     "modelPlaceholder": "e.g. gpt-4o-mini",
-    "modelCustom": "Custom…",
+    "modelCustom": "Custom model",
     "baseUrlLabel": "Base URL (optional)",
     "baseUrlPlaceholder": "https://api.example.com/v1",
     "apiKeyLabel": "API key",
