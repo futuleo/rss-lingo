@@ -1,9 +1,8 @@
-import { decode as decodeHtmlEntities } from 'he';
 import { createProvider } from '@shared/api/ai';
 import type { AiProviderSettings } from '@entities/ai-provider';
 import type { Article } from '@entities/article';
 import { saveTranslation } from '@entities/translation';
-import { splitIntoChunks } from './chunking';
+import { segmentize, type Segment } from './segmentize';
 
 export class TranslationError extends Error {
   constructor(
@@ -21,15 +20,6 @@ export interface TranslateArticleOptions {
   signal?: AbortSignal;
 }
 
-function stripHtml(html: string): string {
-  return decodeHtmlEntities(
-    html
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim(),
-  );
-}
-
 function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -39,21 +29,36 @@ function escapeHtml(text: string): string {
     .replace(/'/g, '&#039;');
 }
 
-function paragraphsToHtml(text: string): string {
-  return text
-    .split(/\n\s*\n|\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter((paragraph) => paragraph.length > 0)
-    .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
-    .join('\n');
+/** Wraps a translated text segment in an HTML tag matching its source. */
+function wrapTextSegment(
+  segment: Extract<Segment, { kind: 'text' }>,
+  text: string,
+): string {
+  const escaped = escapeHtml(text);
+  switch (segment.tag) {
+    case 'figcaption':
+      return `<figcaption>${escaped}</figcaption>`;
+    case 'h1':
+    case 'h2':
+    case 'h3':
+    case 'h4':
+    case 'h5':
+    case 'h6':
+      return `<${segment.tag}>${escaped}</${segment.tag}>`;
+    case 'blockquote':
+      return `<blockquote>${escaped}</blockquote>`;
+    default:
+      return `<p>${escaped}</p>`;
+  }
 }
 
 /**
  * Translates an article's HTML content using the configured provider.
  *
- * The content is split into block-level chunks, each chunk is translated
- * sequentially, and the resulting plain-text paragraphs are joined into a
- * single HTML string. The final translation is persisted in the cache.
+ * The content is split into ordered text and media segments. Each text
+ * segment is translated sequentially and re-wrapped in a matching tag, while
+ * media segments (images, figures, video, …) are preserved verbatim. The
+ * final HTML is persisted in the cache.
  */
 export async function translateArticle(
   article: Article,
@@ -69,6 +74,12 @@ export async function translateArticle(
     );
   }
 
+  const segments = segmentize(article.contentHtml ?? '');
+
+  if (segments.length === 0 || !segments.some((segment) => segment.kind === 'text')) {
+    throw new TranslationError('No content to translate', null);
+  }
+
   let provider;
   try {
     provider = createProvider(settings.providerId);
@@ -76,11 +87,10 @@ export async function translateArticle(
     throw new TranslationError('AI provider is not configured correctly', error);
   }
 
-  const chunks = splitIntoChunks(article.contentHtml ?? '', 2000);
-  const translatedChunks: string[] = [];
+  const translatedHtmlParts: string[] = [];
 
   try {
-    for (let i = 0; i < chunks.length; i++) {
+    for (let i = 0; i < segments.length; i++) {
       if (signal?.aborted) {
         throw new TranslationError(
           'Translation cancelled',
@@ -88,22 +98,22 @@ export async function translateArticle(
         );
       }
 
-      const plainChunk = stripHtml(chunks[i]!);
-      if (plainChunk.length === 0) {
-        translatedChunks.push('');
+      const segment = segments[i]!;
+      if (segment.kind === 'media') {
+        translatedHtmlParts.push(segment.html);
       } else {
         const translated = await provider.translate({
-          text: plainChunk,
+          text: segment.text,
           targetLang: settings.targetLang,
           apiKey,
           model: settings.model,
           baseUrl: settings.baseUrl,
           signal,
         });
-        translatedChunks.push(translated);
+        translatedHtmlParts.push(wrapTextSegment(segment, translated));
       }
 
-      onProgress?.({ done: i + 1, total: chunks.length });
+      onProgress?.({ done: i + 1, total: segments.length });
     }
   } catch (error) {
     if (error instanceof TranslationError) {
@@ -122,7 +132,7 @@ export async function translateArticle(
     );
   }
 
-  const translatedHtml = translatedChunks.map(paragraphsToHtml).join('\n');
+  const translatedHtml = translatedHtmlParts.join('\n');
 
   if (signal?.aborted) {
     throw new TranslationError(

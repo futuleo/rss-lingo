@@ -1,7 +1,7 @@
 // Must be imported before `node-html-parser`: its bundled `entities` decodes a
 // base64 trie via the global `atob` at module load, which Hermes/React Native
 // does not provide. The shim below defines it (no-op on Node).
-import '../lib/base64-polyfill';
+import '@shared/lib/base64-polyfill';
 import {
   parse,
   NodeType,

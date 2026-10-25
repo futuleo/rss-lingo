@@ -5,4 +5,4 @@ export type { FullArticleStatus } from './lib/useFullArticle';
 export {
   base64DecodeToBinary,
   binaryEncodeToBase64,
-} from './lib/base64-polyfill';
+} from '@shared/lib/base64-polyfill';
