@@ -193,7 +193,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
               gap: theme.spacing.xs,
             }}
           >
-            <Text variant="headline">
+            <Text variant="title">
               {viewMode === 'translation'
                 ? translationState.title ?? article.title
                 : article.title}
@@ -448,6 +448,7 @@ const styles = StyleSheet.create({
   backButton: {
     width: 44,
     height: 44,
+    marginLeft: -8,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
