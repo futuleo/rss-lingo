@@ -7,11 +7,7 @@ import {
   READER_FONT_SIZE_MAX,
   READER_FONT_SIZE_MIN,
   READER_FONTS,
-  READER_THEMES,
-  readerThemeSwatch,
-  resolveReaderPalette,
   type ReaderSettings,
-  type ReaderThemeId,
 } from '@entities/reader-settings';
 import { Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
@@ -25,7 +21,8 @@ export interface ReaderSettingsSheetProps {
 
 /**
  * Bottom sheet with the article appearance controls, Apple Books style:
- * text size stepper, font, reading theme, line spacing, and justification.
+ * text size stepper, font, line spacing, and justification. Reading themes
+ * live in the app settings so they recolor the whole UI.
  */
 export function ReaderSettingsSheet({
   visible,
@@ -42,9 +39,6 @@ export function ReaderSettingsSheet({
 
   // Preview "Aa" scaled with the chosen size so it doubles as a live hint.
   const previewSize = 16 + (settings.fontSize - READER_FONT_SIZE_MIN) / 2;
-
-  const swatchInk = (id: ReaderThemeId) =>
-    resolveReaderPalette({ ...settings, themeId: id }, theme).text;
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -153,51 +147,6 @@ export function ReaderSettingsSheet({
                         }}
                       >
                         {t(font.labelKey)}
-                      </Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
-            </View>
-
-            <View style={{ gap: theme.spacing.s }}>
-              <Text variant="caption">{t('reader.themeLabel')}</Text>
-              <View style={styles.themeRow}>
-                {READER_THEMES.map((item) => {
-                  const selected = settings.themeId === item.id;
-                  return (
-                    <Pressable
-                      key={item.id}
-                      accessibilityRole="radio"
-                      accessibilityState={{ checked: selected }}
-                      onPress={() => onChange({ themeId: item.id })}
-                      style={styles.themeOption}
-                    >
-                      <View
-                        style={[
-                          styles.swatch,
-                          {
-                            backgroundColor: readerThemeSwatch(item.id, theme),
-                            borderColor: selected
-                              ? theme.colors.primary
-                              : theme.colors.border,
-                            borderWidth: selected ? 3 : 1,
-                          },
-                        ]}
-                      >
-                        {selected ? (
-                          <Feather name="check" size={18} color={swatchInk(item.id)} />
-                        ) : null}
-                      </View>
-                      <Text
-                        variant="caption"
-                        style={{
-                          color: selected
-                            ? theme.colors.primary
-                            : theme.colors.textMuted,
-                        }}
-                      >
-                        {t(item.labelKey)}
                       </Text>
                     </Pressable>
                   );
@@ -333,21 +282,6 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingHorizontal: 16,
     minHeight: 44,
-    justifyContent: 'center',
-  },
-  themeRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  themeOption: {
-    alignItems: 'center',
-    gap: 6,
-  },
-  swatch: {
-    width: 44,
-    height: 44,
-    borderRadius: 999,
-    alignItems: 'center',
     justifyContent: 'center',
   },
   justifyRow: {

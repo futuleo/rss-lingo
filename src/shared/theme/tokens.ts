@@ -39,7 +39,7 @@ export const lineHeight = {
   caption: 18,
 } as const;
 
-export const palettes: Record<ColorSchemeName, ThemeColors> = {
+export const palettes: Record<ThemeMode, ThemeColors> = {
   light: {
     background: '#f7f6f3',
     surface: '#ffffff',
@@ -48,6 +48,16 @@ export const palettes: Record<ColorSchemeName, ThemeColors> = {
     primary: '#0f766e',
     primaryText: '#ffffff',
     border: '#e8e5df',
+    danger: '#dc2626',
+  },
+  sepia: {
+    background: '#f8f1e3',
+    surface: '#fdf9ef',
+    text: '#5b4636',
+    textMuted: '#8a7a68',
+    primary: '#0f766e',
+    primaryText: '#ffffff',
+    border: '#e6dbc6',
     danger: '#dc2626',
   },
   dark: {
@@ -72,6 +82,14 @@ export interface ThemeColors {
   border: string;
   danger: string;
 }
+
+/** The resolved palette: which visual theme the app is currently showing. */
+export type ThemeMode = 'light' | 'sepia' | 'dark';
+
+/**
+ * CSS/system color scheme. `sepia` resolves to `light` because it is a light
+ * background; this value drives the status bar and the reader's color-scheme.
+ */
 export type ColorSchemeName = 'light' | 'dark';
 
 export interface Theme {

@@ -1,13 +1,4 @@
 /// <reference types="jest" />
-import {
-  font,
-  lineHeight,
-  palettes,
-  radii,
-  spacing,
-  weight,
-  type Theme,
-} from '@shared/theme';
 import { migrateDatabase } from '@shared/lib/db';
 import { NodeSqliteAdapter } from '@shared/lib/db/testing/node-sqlite-adapter';
 import type * as SQLite from 'expo-sqlite';
@@ -17,21 +8,8 @@ import {
   READER_FONT_SIZE_MIN,
   getReaderSettings,
   normalizeReaderSettings,
-  resolveReaderPalette,
   saveReaderSettings,
 } from '..';
-
-function makeTheme(scheme: 'light' | 'dark'): Theme {
-  return {
-    colors: palettes[scheme],
-    scheme,
-    spacing,
-    radii,
-    font,
-    lineHeight,
-    weight,
-  };
-}
 
 async function openTestDb(): Promise<SQLite.SQLiteDatabase> {
   const adapter = NodeSqliteAdapter.open();
@@ -61,12 +39,10 @@ describe('normalizeReaderSettings', () => {
   test('falls back to defaults for unknown enum values', () => {
     const result = normalizeReaderSettings({
       fontId: 'nope',
-      themeId: 'nope',
       lineHeightId: 'nope',
       justify: 'yes',
     });
     expect(result.fontId).toBe(DEFAULT_READER_SETTINGS.fontId);
-    expect(result.themeId).toBe(DEFAULT_READER_SETTINGS.themeId);
     expect(result.lineHeightId).toBe(DEFAULT_READER_SETTINGS.lineHeightId);
     expect(result.justify).toBe(DEFAULT_READER_SETTINGS.justify);
   });
@@ -75,60 +51,15 @@ describe('normalizeReaderSettings', () => {
     const result = normalizeReaderSettings({
       fontId: 'palatino',
       fontSize: 22,
-      themeId: 'sepia',
       lineHeightId: 'relaxed',
       justify: true,
     });
     expect(result).toEqual({
       fontId: 'palatino',
       fontSize: 22,
-      themeId: 'sepia',
       lineHeightId: 'relaxed',
       justify: true,
     });
-  });
-});
-
-describe('resolveReaderPalette', () => {
-  test('auto follows the app theme', () => {
-    const light = resolveReaderPalette(
-      { ...DEFAULT_READER_SETTINGS, themeId: 'auto' },
-      makeTheme('light'),
-    );
-    expect(light).toEqual({
-      background: palettes.light.background,
-      text: palettes.light.text,
-      textMuted: palettes.light.textMuted,
-      scheme: 'light',
-    });
-
-    const dark = resolveReaderPalette(
-      { ...DEFAULT_READER_SETTINGS, themeId: 'auto' },
-      makeTheme('dark'),
-    );
-    expect(dark.scheme).toBe('dark');
-    expect(dark.background).toBe(palettes.dark.background);
-  });
-
-  test('explicit themes use fixed reading palettes', () => {
-    expect(
-      resolveReaderPalette(
-        { ...DEFAULT_READER_SETTINGS, themeId: 'light' },
-        makeTheme('dark'),
-      ).background,
-    ).toBe('#ffffff');
-    expect(
-      resolveReaderPalette(
-        { ...DEFAULT_READER_SETTINGS, themeId: 'sepia' },
-        makeTheme('dark'),
-      ).background,
-    ).toBe('#f8f1e3');
-    expect(
-      resolveReaderPalette(
-        { ...DEFAULT_READER_SETTINGS, themeId: 'dark' },
-        makeTheme('light'),
-      ).scheme,
-    ).toBe('dark');
   });
 });
 
@@ -147,7 +78,6 @@ describe('reader settings repository', () => {
     const settings = {
       fontId: 'helvetica' as const,
       fontSize: 24,
-      themeId: 'dark' as const,
       lineHeightId: 'relaxed' as const,
       justify: true,
     };
@@ -155,13 +85,13 @@ describe('reader settings repository', () => {
     expect(await getReaderSettings(db)).toEqual(settings);
   });
 
-  test('normalizes corrupted persisted JSON', async () => {
+  test('ignores stale themeId from older persisted payloads', async () => {
     await db.runAsync('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)', [
       'reader-settings',
-      '{"fontSize": 999, "themeId": "nope"}',
+      '{"fontSize": 999, "themeId": "sepia"}',
     ]);
     const result = await getReaderSettings(db);
     expect(result.fontSize).toBe(READER_FONT_SIZE_MAX);
-    expect(result.themeId).toBe(DEFAULT_READER_SETTINGS.themeId);
+    expect(result).not.toHaveProperty('themeId');
   });
 });

@@ -6,21 +6,15 @@ import {
   READER_FONT_SIZE_MAX,
   READER_FONT_SIZE_MIN,
   READER_FONTS,
-  READER_THEMES,
   type LineHeightId,
   type ReaderFontId,
   type ReaderSettings,
-  type ReaderThemeId,
 } from './types';
 
 const SETTINGS_KEY = 'reader-settings';
 
 function isReaderFontId(value: unknown): value is ReaderFontId {
   return READER_FONTS.some((font) => font.id === value);
-}
-
-function isReaderThemeId(value: unknown): value is ReaderThemeId {
-  return READER_THEMES.some((theme) => theme.id === value);
 }
 
 function isLineHeightId(value: unknown): value is LineHeightId {
@@ -52,9 +46,6 @@ export function normalizeReaderSettings(value: unknown): ReaderSettings {
       ? input.fontId
       : DEFAULT_READER_SETTINGS.fontId,
     fontSize: clamp(fontSize, READER_FONT_SIZE_MIN, READER_FONT_SIZE_MAX),
-    themeId: isReaderThemeId(input.themeId)
-      ? input.themeId
-      : DEFAULT_READER_SETTINGS.themeId,
     lineHeightId: isLineHeightId(input.lineHeightId)
       ? input.lineHeightId
       : DEFAULT_READER_SETTINGS.lineHeightId,

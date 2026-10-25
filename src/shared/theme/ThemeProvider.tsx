@@ -8,11 +8,11 @@ import {
   radii,
   spacing,
   weight,
-  type ColorSchemeName,
   type Theme,
 } from './tokens';
 import {
   getThemePreference,
+  resolveThemeMode,
   saveThemePreference,
   type ThemePreference,
 } from './theme-preference';
@@ -24,14 +24,11 @@ export interface ThemePreferenceValue {
   setPreference: (preference: ThemePreference) => void;
 }
 
-export const ThemePreferenceContext = createContext<ThemePreferenceValue | null>(
-  null,
-);
+export const ThemePreferenceContext = createContext<ThemePreferenceValue | null>(null);
 
 export function ThemeProvider({ children }: PropsWithChildren) {
   const systemScheme = useColorScheme();
-  const [preference, setPreferenceState] =
-    useState<ThemePreference>('system');
+  const [preference, setPreferenceState] = useState<ThemePreference>('system');
 
   useEffect(() => {
     let cancelled = false;
@@ -45,22 +42,19 @@ export function ThemeProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
-  const resolved: ColorSchemeName =
-    preference === 'dark' || (preference === 'system' && systemScheme === 'dark')
-      ? 'dark'
-      : 'light';
+  const resolvedMode = resolveThemeMode(preference, systemScheme);
 
   const value = useMemo<Theme>(
     () => ({
-      colors: palettes[resolved],
-      scheme: resolved,
+      colors: palettes[resolvedMode],
+      scheme: resolvedMode === 'dark' ? 'dark' : 'light',
       spacing,
       radii,
       font,
       lineHeight,
       weight,
     }),
-    [resolved],
+    [resolvedMode],
   );
 
   const setPreference = useCallback((next: ThemePreference) => {
