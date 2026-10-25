@@ -72,7 +72,7 @@
     "providerDeepSeek": "DeepSeek",
     "modelLabel": "Malli",
     "modelPlaceholder": "esim. gpt-4o-mini",
-    "modelCustom": "Muu…",
+    "modelCustom": "Muu malli",
     "baseUrlLabel": "Päätepiste (valinnainen)",
     "baseUrlPlaceholder": "https://api.example.com/v1",
     "apiKeyLabel": "API-avain",

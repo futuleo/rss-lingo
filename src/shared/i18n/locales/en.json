@@ -72,7 +72,7 @@
     "providerDeepSeek": "DeepSeek",
     "modelLabel": "Model",
     "modelPlaceholder": "e.g. gpt-4o-mini",
-    "modelCustom": "Custom…",
+    "modelCustom": "Custom model",
     "baseUrlLabel": "Base URL (optional)",
     "baseUrlPlaceholder": "https://api.example.com/v1",
     "apiKeyLabel": "API key",
