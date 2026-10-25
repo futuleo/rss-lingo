@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "フィード",
+    "saved": "保存済み",
+    "settings": "設定"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "キャンセル",
+    "retry": "再試行",
+    "error": "問題が発生しました",
+    "loading": "読み込み中…",
+    "delete": "削除",
+    "close": "閉じる",
+    "scrollToTop": "先頭へ戻る"
+  },
+  "feeds": {
+    "title": "フィード",
+    "addHeader": "フィードを追加",
+    "addTitle": "新しいフィード",
+    "urlLabel": "直接の RSS URL",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "追加",
+    "emptyTitle": "フィードはまだありません",
+    "emptyHint": "サイトやブログの直接の RSS URL を貼り付けてフィードを追加します。",
+    "addFailed": "このフィードを追加できませんでした。URL を確認して再試行してください。",
+    "refreshAllFailed": "一部のフィードを更新できませんでした",
+    "loadError": "フィードを読み込めませんでした",
+    "deleteTitle": "フィードを削除しますか？",
+    "deleteMessage": "\"{{title}}\" を削除しますか？このフィードのすべての記事も削除されます。",
+    "deleteFailed": "このフィードを削除できませんでした"
+  },
+  "articles": {
+    "emptyTitle": "記事はまだありません",
+    "emptyHint": "下に引っ張ってこのフィードを更新します。",
+    "refreshFailed": "更新に失敗しました",
+    "translatingHeadlines": "見出しを翻訳中… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "保存済みの記事",
+    "back": "戻る",
+    "emptyTitle": "保存済みの記事はありません",
+    "emptyHint": "読書中に記事を保存すると、ここで見つけられます。",
+    "loadError": "保存済みの記事を読み込めませんでした"
+  },
+  "reader": {
+    "back": "戻る",
+    "save": "保存",
+    "saved": "保存済み",
+    "openInBrowser": "ブラウザで開く",
+    "contentUnavailable": "この記事には読める内容がありません。ブラウザで開いてみてください。",
+    "loadingFull": "記事全体を読み込み中…",
+    "original": "原文",
+    "translation": "翻訳",
+    "translate": "翻訳",
+    "translating": "翻訳中… {{done}}/{{total}}",
+    "cancel": "キャンセル",
+    "translationFailed": "翻訳に失敗しました",
+    "configureFirst": "記事を翻訳するには、AI プロバイダーと API キーを設定してください。",
+    "configure": "設定",
+    "settings": "読書設定",
+    "openSettings": "読書設定",
+    "closeSettings": "読書設定を閉じる",
+    "sizeLabel": "文字サイズ",
+    "decreaseSize": "文字サイズを小さく",
+    "increaseSize": "文字サイズを大きく",
+    "fontLabel": "フォント",
+    "fontSystem": "システム",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "行間",
+    "lineHeightCompact": "狭い",
+    "lineHeightRegular": "標準",
+    "lineHeightRelaxed": "広い",
+    "justifyLabel": "両端揃え"
+  },
+  "settings": {
+    "title": "設定",
+    "back": "戻る",
+    "providerLabel": "AI プロバイダー",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "OpenAI API 経由の GPT モデル",
+    "providerDescAnthropic": "Anthropic API 経由の Claude モデル",
+    "providerDescGemini": "Google AI 経由の Gemini モデル",
+    "providerDescDeepSeek": "DeepSeek Chat および Reasoner モデル",
+    "modelLabel": "モデル",
+    "modelPlaceholder": "例: gpt-4o-mini",
+    "modelCustom": "カスタムモデル",
+    "baseUrlLabel": "ベース URL（任意）",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API キー",
+    "apiKeyPlaceholder": "プロバイダーの API キー",
+    "targetLangLabel": "言語",
+    "targetLangHint": "アプリの表示と翻訳に使用されます。",
+    "themeLabel": "テーマ",
+    "themeSystem": "システム",
+    "themeLight": "ライト",
+    "themeSepia": "セピア",
+    "themeDark": "ダーク",
+    "testConnection": "接続をテスト",
+    "testOk": "翻訳: {{result}}",
+    "testError": "テスト失敗: {{message}}",
+    "testErrorApiKeyRequired": "先に API キーを入力してください",
+    "saved": "保存済み",
+    "faq": "よくある質問",
+    "errors": {
+      "invalidResponse": "プロバイダーからの予期しない応答"
+    }
+  },
+  "faq": {
+    "title": "よくある質問",
+    "sections": [
+      {
+        "title": "概要",
+        "items": [
+          {
+            "q": "RSS Lingo とは何ですか？",
+            "a": "RSS Lingo は、言語学習を助けるモバイル RSS リーダーです。気になるフィードを追加し、快適に読み、自分の AI キーで記事を翻訳できます。すべては端末に保存されます。"
+          }
+        ]
+      },
+      {
+        "title": "フィード",
+        "items": [
+          {
+            "q": "フィードを追加するには？",
+            "a": "+ フィードを追加 をタップし、https://example.org/rss.xml のような直接の RSS URL を貼り付けます。フィードはすぐに取得されます。"
+          },
+          {
+            "q": "RSS URL はどこで見つかりますか？",
+            "a": "サイトのフッターやヘッダーにある「RSS」または「Feed」のリンクを探してください。/rss.xml、/feed/、/atom.xml を試すこともできます。サイトのアドレスだけを貼り付けるのはまだ対応していません（自動検出は予定されています）。"
+          }
+        ]
+      },
+      {
+        "title": "読書",
+        "items": [
+          {
+            "q": "保存すると何が起きますか？",
+            "a": "保存すると記事は永久に保持されます。保存しない場合、フィードごとに最新 50 件だけが保持されます。"
+          },
+          {
+            "q": "記事はどこに保存されますか？",
+            "a": "記事は端末内のローカルデータベースにのみ保存されます。"
+          }
+        ]
+      },
+      {
+        "title": "翻訳の設定（BYOK）",
+        "items": [
+          {
+            "q": "翻訳を設定するには？",
+            "a": "設定（⚙）を開き、プロバイダー（OpenAI、Anthropic、Gemini、DeepSeek）を選び、モデル名（例: gpt-4o-mini、claude-sonnet-4-5、gemini-2.0-flash、deepseek-chat）を入力し、そのプロバイダーの自分の API キー（platform.openai.com、console.anthropic.com、aistudio.google.com で取得）を貼り付け、翻訳先の言語を選び、接続をテスト をタップします。"
+          }
+        ]
+      },
+      {
+        "title": "キーとプライバシー",
+        "items": [
+          {
+            "q": "API キーはどこに保存されますか？",
+            "a": "キーは端末の安全なストレージ（iOS Keychain / Android Keystore）に保存されます。選択したプロバイダーにのみ、翻訳するときだけ送信されます。サーバーは持っておらず、キーを見ることは決してありません。"
+          },
+          {
+            "q": "OpenAI 互換のサービスは使えますか？",
+            "a": "はい。OpenRouter、Groq、ローカルモデルなどのサービスのために、設定でカスタムのベース URL を指定できます。"
+          }
+        ]
+      },
+      {
+        "title": "トラブルシューティング",
+        "items": [
+          {
+            "q": "「API キーが無効です」",
+            "a": "設定でキーを確認してください。"
+          },
+          {
+            "q": "「レート制限に達しました」",
+            "a": "しばらく待ってから再試行してください。"
+          },
+          {
+            "q": "「タイムアウトしました」",
+            "a": "インターネット接続を確認してください。"
+          },
+          {
+            "q": "「先に設定してください」",
+            "a": "設定を開き、AI プロバイダーと API キーを追加してください。"
+          },
+          {
+            "q": "翻訳が違う言語で表示される",
+            "a": "設定で翻訳先の言語を確認してください。"
+          }
+        ]
+      },
+      {
+        "title": "言語",
+        "items": [
+          {
+            "q": "アプリはどの言語に対応していますか？",
+            "a": "アプリの表示は、設定で選んだ翻訳先の言語に従います（アラビア語、簡体字中国語、英語、フィンランド語、フランス語、ドイツ語、ヒンディー語、イタリア語、日本語、韓国語、ポルトガル語、ロシア語、スペイン語）。"
+          }
+        ]
+      }
+    ]
+  }
+}

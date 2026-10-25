@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "Flux",
+    "saved": "Enregistrés",
+    "settings": "Réglages"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Annuler",
+    "retry": "Réessayer",
+    "error": "Une erreur s'est produite",
+    "loading": "Chargement…",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "scrollToTop": "Revenir en haut"
+  },
+  "feeds": {
+    "title": "Flux",
+    "addHeader": "Ajouter un flux",
+    "addTitle": "Nouveau flux",
+    "urlLabel": "URL RSS directe",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "Ajouter",
+    "emptyTitle": "Aucun flux pour l'instant",
+    "emptyHint": "Ajoutez un flux en collant l'URL RSS directe d'un site ou d'un blog.",
+    "addFailed": "Impossible d'ajouter ce flux. Vérifiez l'URL et réessayez.",
+    "refreshAllFailed": "Certains flux n'ont pas pu être actualisés",
+    "loadError": "Impossible de charger les flux",
+    "deleteTitle": "Supprimer le flux ?",
+    "deleteMessage": "Supprimer « {{title}} » ? Tous ses articles seront également supprimés.",
+    "deleteFailed": "Impossible de supprimer ce flux"
+  },
+  "articles": {
+    "emptyTitle": "Aucun article pour l'instant",
+    "emptyHint": "Tirez vers le bas pour actualiser ce flux.",
+    "refreshFailed": "Échec de l'actualisation",
+    "translatingHeadlines": "Traduction des titres… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "Articles enregistrés",
+    "back": "Retour",
+    "emptyTitle": "Aucun article enregistré",
+    "emptyHint": "Enregistrez des articles pendant la lecture pour les retrouver ici.",
+    "loadError": "Impossible de charger les articles enregistrés"
+  },
+  "reader": {
+    "back": "Retour",
+    "save": "Enregistrer",
+    "saved": "Enregistré",
+    "openInBrowser": "Ouvrir dans le navigateur",
+    "contentUnavailable": "Cet article n'a pas de contenu lisible. Essayez de l'ouvrir dans le navigateur.",
+    "loadingFull": "Chargement de l'article complet…",
+    "original": "Original",
+    "translation": "Traduction",
+    "translate": "Traduire",
+    "translating": "Traduction… {{done}}/{{total}}",
+    "cancel": "Annuler",
+    "translationFailed": "Échec de la traduction",
+    "configureFirst": "Configurez un fournisseur d'IA et une clé API pour traduire les articles.",
+    "configure": "Configurer",
+    "settings": "Réglages de lecture",
+    "openSettings": "Réglages de lecture",
+    "closeSettings": "Fermer les réglages de lecture",
+    "sizeLabel": "Taille du texte",
+    "decreaseSize": "Réduire la taille du texte",
+    "increaseSize": "Augmenter la taille du texte",
+    "fontLabel": "Police",
+    "fontSystem": "Système",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "Interligne",
+    "lineHeightCompact": "Compact",
+    "lineHeightRegular": "Normal",
+    "lineHeightRelaxed": "Aéré",
+    "justifyLabel": "Justifier le texte"
+  },
+  "settings": {
+    "title": "Réglages",
+    "back": "Retour",
+    "providerLabel": "Fournisseur d'IA",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "Modèles GPT via l'API OpenAI",
+    "providerDescAnthropic": "Modèles Claude via l'API Anthropic",
+    "providerDescGemini": "Modèles Gemini via Google AI",
+    "providerDescDeepSeek": "Modèles DeepSeek Chat et Reasoner",
+    "modelLabel": "Modèle",
+    "modelPlaceholder": "ex. gpt-4o-mini",
+    "modelCustom": "Modèle personnalisé",
+    "baseUrlLabel": "URL de base (facultatif)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "Clé API",
+    "apiKeyPlaceholder": "Votre clé API du fournisseur",
+    "targetLangLabel": "Langue",
+    "targetLangHint": "Utilisée pour l'interface de l'app et les traductions.",
+    "themeLabel": "Thème",
+    "themeSystem": "Système",
+    "themeLight": "Clair",
+    "themeSepia": "Sépia",
+    "themeDark": "Sombre",
+    "testConnection": "Tester la connexion",
+    "testOk": "Traduction : {{result}}",
+    "testError": "Échec du test : {{message}}",
+    "testErrorApiKeyRequired": "Saisissez d'abord une clé API",
+    "saved": "Enregistré",
+    "faq": "FAQ",
+    "errors": {
+      "invalidResponse": "Réponse inattendue du fournisseur"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "sections": [
+      {
+        "title": "À propos",
+        "items": [
+          {
+            "q": "Qu'est-ce que RSS Lingo ?",
+            "a": "RSS Lingo est un lecteur RSS mobile qui vous aide à apprendre une langue. Ajoutez les flux qui vous intéressent, lisez confortablement et traduisez les articles avec votre propre clé d'IA. Tout est stocké sur votre appareil."
+          }
+        ]
+      },
+      {
+        "title": "Flux",
+        "items": [
+          {
+            "q": "Comment ajouter un flux ?",
+            "a": "Touchez + Ajouter un flux et collez une URL RSS directe comme https://example.org/rss.xml. Le flux est récupéré immédiatement."
+          },
+          {
+            "q": "Où trouver une URL RSS ?",
+            "a": "Cherchez un lien « RSS » ou « Feed » dans le pied de page ou l'en-tête du site. Vous pouvez aussi essayer /rss.xml, /feed/ ou /atom.xml. Coller uniquement l'adresse du site n'est pas encore pris en charge — la détection automatique est prévue."
+          }
+        ]
+      },
+      {
+        "title": "Lecture",
+        "items": [
+          {
+            "q": "À quoi sert Enregistrer ?",
+            "a": "Enregistrer conserve un article pour toujours. Sans enregistrement, seuls les 50 articles les plus récents par flux sont conservés."
+          },
+          {
+            "q": "Où sont stockés les articles ?",
+            "a": "Les articles vivent dans une base de données locale, uniquement sur votre appareil."
+          }
+        ]
+      },
+      {
+        "title": "Configuration de la traduction (BYOK)",
+        "items": [
+          {
+            "q": "Comment configurer la traduction ?",
+            "a": "Ouvrez Réglages (⚙), choisissez un fournisseur (OpenAI, Anthropic, Gemini ou DeepSeek), saisissez un nom de modèle (ex. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat), collez votre propre clé API de ce fournisseur (obtenez-la sur platform.openai.com, console.anthropic.com ou aistudio.google.com), choisissez la langue cible et touchez Tester la connexion."
+          }
+        ]
+      },
+      {
+        "title": "Clé et confidentialité",
+        "items": [
+          {
+            "q": "Où est stockée ma clé API ?",
+            "a": "Votre clé est stockée dans le stockage sécurisé de l'appareil (iOS Keychain / Android Keystore). Elle n'est envoyée qu'au fournisseur choisi, et uniquement lors de la traduction. Nous n'avons aucun serveur et ne voyons jamais votre clé."
+          },
+          {
+            "q": "Puis-je utiliser des services compatibles OpenAI ?",
+            "a": "Oui. Définissez une URL de base personnalisée dans Réglages pour des services comme OpenRouter, Groq ou des modèles locaux."
+          }
+        ]
+      },
+      {
+        "title": "Dépannage",
+        "items": [
+          {
+            "q": "« Clé API invalide »",
+            "a": "Revérifiez la clé dans Réglages."
+          },
+          {
+            "q": "« Limite de débit atteinte »",
+            "a": "Attendez un instant et réessayez."
+          },
+          {
+            "q": "« Délai dépassé »",
+            "a": "Vérifiez votre connexion internet."
+          },
+          {
+            "q": "« Configurez d'abord »",
+            "a": "Ouvrez Réglages et ajoutez un fournisseur d'IA avec une clé API."
+          },
+          {
+            "q": "La traduction affiche la mauvaise langue",
+            "a": "Vérifiez la langue cible dans Réglages."
+          }
+        ]
+      },
+      {
+        "title": "Langues",
+        "items": [
+          {
+            "q": "Quelles langues l'app prend-elle en charge ?",
+            "a": "L'interface de l'app suit la langue cible que vous choisissez dans Réglages (allemand, anglais, arabe, chinois simplifié, coréen, espagnol, finnois, français, hindi, italien, japonais, portugais ou russe)."
+          }
+        ]
+      }
+    ]
+  }
+}

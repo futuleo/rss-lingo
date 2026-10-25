@@ -206,7 +206,7 @@
         "items": [
           {
             "q": "Mitä kieliä sovellus tukee?",
-            "a": "Sovelluksen käyttöliittymä seuraa käännöksen kohdekieltä, jonka valitset Asetuksissa (englanti, venäjä tai suomi)."
+            "a": "Sovelluksen käyttöliittymä seuraa käännöksen kohdekieltä, jonka valitset Asetuksissa (arabia, kiina (yksinkertaistettu), englanti, suomi, ranska, saksa, hindi, italia, japani, korea, portugali, venäjä tai espanja)."
           }
         ]
       }

@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "Feeds",
+    "saved": "Gespeichert",
+    "settings": "Einstellungen"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Abbrechen",
+    "retry": "Erneut versuchen",
+    "error": "Etwas ist schiefgelaufen",
+    "loading": "Wird geladen…",
+    "delete": "Löschen",
+    "close": "Schließen",
+    "scrollToTop": "Nach oben scrollen"
+  },
+  "feeds": {
+    "title": "Feeds",
+    "addHeader": "Feed hinzufügen",
+    "addTitle": "Neuer Feed",
+    "urlLabel": "Direkte RSS-URL",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "Hinzufügen",
+    "emptyTitle": "Noch keine Feeds",
+    "emptyHint": "Füge einen Feed hinzu, indem du die direkte RSS-URL einer Website oder eines Blogs einfügst.",
+    "addFailed": "Dieser Feed konnte nicht hinzugefügt werden. Prüfe die URL und versuche es erneut.",
+    "refreshAllFailed": "Einige Feeds konnten nicht aktualisiert werden",
+    "loadError": "Feeds konnten nicht geladen werden",
+    "deleteTitle": "Feed löschen?",
+    "deleteMessage": "„{{title}}“ löschen? Alle zugehörigen Artikel werden ebenfalls entfernt.",
+    "deleteFailed": "Dieser Feed konnte nicht gelöscht werden"
+  },
+  "articles": {
+    "emptyTitle": "Noch keine Artikel",
+    "emptyHint": "Ziehe nach unten, um diesen Feed zu aktualisieren.",
+    "refreshFailed": "Aktualisierung fehlgeschlagen",
+    "translatingHeadlines": "Übersetze Überschriften… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "Gespeicherte Artikel",
+    "back": "Zurück",
+    "emptyTitle": "Keine gespeicherten Artikel",
+    "emptyHint": "Speichere Artikel beim Lesen, um sie hier wiederzufinden.",
+    "loadError": "Gespeicherte Artikel konnten nicht geladen werden"
+  },
+  "reader": {
+    "back": "Zurück",
+    "save": "Speichern",
+    "saved": "Gespeichert",
+    "openInBrowser": "Im Browser öffnen",
+    "contentUnavailable": "Dieser Artikel hat keinen lesbaren Inhalt. Versuche, ihn im Browser zu öffnen.",
+    "loadingFull": "Vollständigen Artikel laden…",
+    "original": "Original",
+    "translation": "Übersetzung",
+    "translate": "Übersetzen",
+    "translating": "Übersetze… {{done}}/{{total}}",
+    "cancel": "Abbrechen",
+    "translationFailed": "Übersetzung fehlgeschlagen",
+    "configureFirst": "Konfiguriere einen KI-Anbieter und einen API-Schlüssel, um Artikel zu übersetzen.",
+    "configure": "Konfigurieren",
+    "settings": "Leseeinstellungen",
+    "openSettings": "Leseeinstellungen",
+    "closeSettings": "Leseeinstellungen schließen",
+    "sizeLabel": "Textgröße",
+    "decreaseSize": "Textgröße verringern",
+    "increaseSize": "Textgröße erhöhen",
+    "fontLabel": "Schriftart",
+    "fontSystem": "System",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "Zeilenabstand",
+    "lineHeightCompact": "Kompakt",
+    "lineHeightRegular": "Normal",
+    "lineHeightRelaxed": "Weit",
+    "justifyLabel": "Text ausrichten"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "back": "Zurück",
+    "providerLabel": "KI-Anbieter",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "GPT-Modelle über die OpenAI-API",
+    "providerDescAnthropic": "Claude-Modelle über die Anthropic-API",
+    "providerDescGemini": "Gemini-Modelle über Google AI",
+    "providerDescDeepSeek": "DeepSeek Chat- und Reasoner-Modelle",
+    "modelLabel": "Modell",
+    "modelPlaceholder": "z. B. gpt-4o-mini",
+    "modelCustom": "Eigenes Modell",
+    "baseUrlLabel": "Basis-URL (optional)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API-Schlüssel",
+    "apiKeyPlaceholder": "Dein API-Schlüssel des Anbieters",
+    "targetLangLabel": "Sprache",
+    "targetLangHint": "Wird für die App-Oberfläche und Übersetzungen verwendet.",
+    "themeLabel": "Design",
+    "themeSystem": "System",
+    "themeLight": "Hell",
+    "themeSepia": "Sepia",
+    "themeDark": "Dunkel",
+    "testConnection": "Verbindung testen",
+    "testOk": "Übersetzung: {{result}}",
+    "testError": "Test fehlgeschlagen: {{message}}",
+    "testErrorApiKeyRequired": "Gib zuerst einen API-Schlüssel ein",
+    "saved": "Gespeichert",
+    "faq": "FAQ",
+    "errors": {
+      "invalidResponse": "Unerwartete Antwort des Anbieters"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "sections": [
+      {
+        "title": "Über",
+        "items": [
+          {
+            "q": "Was ist RSS Lingo?",
+            "a": "RSS Lingo ist ein mobiler RSS-Reader, der dir beim Sprachenlernen hilft. Füge Feeds hinzu, die dich interessieren, lies bequem und übersetze Artikel mit deinem eigenen KI-Schlüssel. Alles wird auf deinem Gerät gespeichert."
+          }
+        ]
+      },
+      {
+        "title": "Feeds",
+        "items": [
+          {
+            "q": "Wie füge ich einen Feed hinzu?",
+            "a": "Tippe auf + Feed hinzufügen und füge eine direkte RSS-URL wie https://example.org/rss.xml ein. Der Feed wird sofort abgerufen."
+          },
+          {
+            "q": "Wo finde ich eine RSS-URL?",
+            "a": "Suche in der Fuß- oder Kopfzeile der Website nach einem „RSS“- oder „Feed“-Link. Du kannst auch /rss.xml, /feed/ oder /atom.xml ausprobieren. Nur die Website-Adresse einzufügen wird noch nicht unterstützt — die automatische Erkennung ist geplant."
+          }
+        ]
+      },
+      {
+        "title": "Lesen",
+        "items": [
+          {
+            "q": "Was bewirkt Speichern?",
+            "a": "Speichern behält einen Artikel dauerhaft. Ohne Speichern werden pro Feed nur die 50 neuesten Artikel behalten."
+          },
+          {
+            "q": "Wo werden Artikel gespeichert?",
+            "a": "Artikel liegen in einer lokalen Datenbank, nur auf deinem Gerät."
+          }
+        ]
+      },
+      {
+        "title": "Übersetzung einrichten (BYOK)",
+        "items": [
+          {
+            "q": "Wie richte ich die Übersetzung ein?",
+            "a": "Öffne Einstellungen (⚙), wähle einen Anbieter (OpenAI, Anthropic, Gemini oder DeepSeek), gib einen Modellnamen ein (z. B. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat), füge deinen eigenen API-Schlüssel dieses Anbieters ein (erhältlich unter platform.openai.com, console.anthropic.com oder aistudio.google.com), wähle die Zielsprache und tippe auf Verbindung testen."
+          }
+        ]
+      },
+      {
+        "title": "Schlüssel & Datenschutz",
+        "items": [
+          {
+            "q": "Wo wird mein API-Schlüssel gespeichert?",
+            "a": "Dein Schlüssel wird im sicheren Speicher des Geräts aufbewahrt (iOS Keychain / Android Keystore). Er wird nur an den gewählten Anbieter gesendet und nur beim Übersetzen. Wir haben keine Server und sehen deinen Schlüssel niemals."
+          },
+          {
+            "q": "Kann ich OpenAI-kompatible Dienste verwenden?",
+            "a": "Ja. Lege in den Einstellungen eine eigene Basis-URL für Dienste wie OpenRouter, Groq oder lokale Modelle fest."
+          }
+        ]
+      },
+      {
+        "title": "Fehlerbehebung",
+        "items": [
+          {
+            "q": "„Ungültiger API-Schlüssel“",
+            "a": "Prüfe den Schlüssel in den Einstellungen."
+          },
+          {
+            "q": "„Zu viele Anfragen“",
+            "a": "Warte einen Moment und versuche es erneut."
+          },
+          {
+            "q": "„Zeitüberschreitung“",
+            "a": "Prüfe deine Internetverbindung."
+          },
+          {
+            "q": "„Zuerst konfigurieren“",
+            "a": "Öffne die Einstellungen und füge einen KI-Anbieter mit API-Schlüssel hinzu."
+          },
+          {
+            "q": "Die Übersetzung zeigt die falsche Sprache",
+            "a": "Prüfe die Zielsprache in den Einstellungen."
+          }
+        ]
+      },
+      {
+        "title": "Sprachen",
+        "items": [
+          {
+            "q": "Welche Sprachen unterstützt die App?",
+            "a": "Die App-Oberfläche folgt der Zielsprache, die du in den Einstellungen wählst (Arabisch, Chinesisch (vereinfacht), Deutsch, Englisch, Finnisch, Französisch, Hindi, Italienisch, Japanisch, Koreanisch, Portugiesisch, Russisch oder Spanisch)."
+          }
+        ]
+      }
+    ]
+  }
+}

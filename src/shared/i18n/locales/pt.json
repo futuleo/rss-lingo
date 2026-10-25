@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "Feeds",
+    "saved": "Salvos",
+    "settings": "Ajustes"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "retry": "Tentar novamente",
+    "error": "Algo deu errado",
+    "loading": "Carregando…",
+    "delete": "Excluir",
+    "close": "Fechar",
+    "scrollToTop": "Voltar ao topo"
+  },
+  "feeds": {
+    "title": "Feeds",
+    "addHeader": "Adicionar feed",
+    "addTitle": "Novo feed",
+    "urlLabel": "URL RSS direta",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "Adicionar",
+    "emptyTitle": "Nenhum feed ainda",
+    "emptyHint": "Adicione um feed colando a URL RSS direta de um site ou blog.",
+    "addFailed": "Não foi possível adicionar este feed. Verifique a URL e tente novamente.",
+    "refreshAllFailed": "Alguns feeds não foram atualizados",
+    "loadError": "Não foi possível carregar os feeds",
+    "deleteTitle": "Excluir feed?",
+    "deleteMessage": "Excluir \"{{title}}\"? Todos os seus artigos também serão removidos.",
+    "deleteFailed": "Não foi possível excluir este feed"
+  },
+  "articles": {
+    "emptyTitle": "Nenhum artigo ainda",
+    "emptyHint": "Puxe para baixo para atualizar este feed.",
+    "refreshFailed": "Falha ao atualizar",
+    "translatingHeadlines": "Traduzindo títulos… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "Artigos salvos",
+    "back": "Voltar",
+    "emptyTitle": "Nenhum artigo salvo",
+    "emptyHint": "Salve artigos durante a leitura para encontrá-los aqui.",
+    "loadError": "Não foi possível carregar os artigos salvos"
+  },
+  "reader": {
+    "back": "Voltar",
+    "save": "Salvar",
+    "saved": "Salvo",
+    "openInBrowser": "Abrir no navegador",
+    "contentUnavailable": "Este artigo não tem conteúdo legível. Tente abri-lo no navegador.",
+    "loadingFull": "Carregando artigo completo…",
+    "original": "Original",
+    "translation": "Tradução",
+    "translate": "Traduzir",
+    "translating": "Traduzindo… {{done}}/{{total}}",
+    "cancel": "Cancelar",
+    "translationFailed": "Falha na tradução",
+    "configureFirst": "Configure um provedor de IA e uma chave de API para traduzir artigos.",
+    "configure": "Configurar",
+    "settings": "Configurações de leitura",
+    "openSettings": "Configurações de leitura",
+    "closeSettings": "Fechar configurações de leitura",
+    "sizeLabel": "Tamanho do texto",
+    "decreaseSize": "Diminuir tamanho do texto",
+    "increaseSize": "Aumentar tamanho do texto",
+    "fontLabel": "Fonte",
+    "fontSystem": "Sistema",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "Espaçamento entre linhas",
+    "lineHeightCompact": "Compacto",
+    "lineHeightRegular": "Normal",
+    "lineHeightRelaxed": "Amplo",
+    "justifyLabel": "Justificar texto"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "back": "Voltar",
+    "providerLabel": "Provedor de IA",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "Modelos GPT pela API da OpenAI",
+    "providerDescAnthropic": "Modelos Claude pela API da Anthropic",
+    "providerDescGemini": "Modelos Gemini pelo Google AI",
+    "providerDescDeepSeek": "Modelos DeepSeek Chat e Reasoner",
+    "modelLabel": "Modelo",
+    "modelPlaceholder": "ex. gpt-4o-mini",
+    "modelCustom": "Modelo personalizado",
+    "baseUrlLabel": "URL base (opcional)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "Chave de API",
+    "apiKeyPlaceholder": "Sua chave de API do provedor",
+    "targetLangLabel": "Idioma",
+    "targetLangHint": "Usado para a interface do app e as traduções.",
+    "themeLabel": "Tema",
+    "themeSystem": "Sistema",
+    "themeLight": "Claro",
+    "themeSepia": "Sépia",
+    "themeDark": "Escuro",
+    "testConnection": "Testar conexão",
+    "testOk": "Tradução: {{result}}",
+    "testError": "Teste falhou: {{message}}",
+    "testErrorApiKeyRequired": "Insira primeiro uma chave de API",
+    "saved": "Salvo",
+    "faq": "Perguntas frequentes",
+    "errors": {
+      "invalidResponse": "Resposta inesperada do provedor"
+    }
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "sections": [
+      {
+        "title": "Sobre",
+        "items": [
+          {
+            "q": "O que é o RSS Lingo?",
+            "a": "O RSS Lingo é um leitor de RSS móvel que ajuda você a aprender um idioma. Adicione os feeds que lhe interessam, leia com conforto e traduza artigos com sua própria chave de IA. Tudo é armazenado no seu dispositivo."
+          }
+        ]
+      },
+      {
+        "title": "Feeds",
+        "items": [
+          {
+            "q": "Como adiciono um feed?",
+            "a": "Toque em + Adicionar feed e cole uma URL RSS direta como https://example.org/rss.xml. O feed é baixado imediatamente."
+          },
+          {
+            "q": "Onde encontro uma URL RSS?",
+            "a": "Procure um link \"RSS\" ou \"Feed\" no rodapé ou cabeçalho do site. Você também pode tentar /rss.xml, /feed/ ou /atom.xml. Colar apenas o endereço do site ainda não é suportado — a detecção automática está planejada."
+          }
+        ]
+      },
+      {
+        "title": "Leitura",
+        "items": [
+          {
+            "q": "O que o Salvar faz?",
+            "a": "Salvar mantém um artigo para sempre. Sem salvar, apenas os 50 artigos mais recentes por feed são mantidos."
+          },
+          {
+            "q": "Onde os artigos são armazenados?",
+            "a": "Os artigos ficam em um banco de dados local, apenas no seu dispositivo."
+          }
+        ]
+      },
+      {
+        "title": "Configuração da tradução (BYOK)",
+        "items": [
+          {
+            "q": "Como configuro a tradução?",
+            "a": "Abra Ajustes (⚙), escolha um provedor (OpenAI, Anthropic, Gemini ou DeepSeek), insira um nome de modelo (ex. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat), cole sua própria chave de API desse provedor (obtenha em platform.openai.com, console.anthropic.com ou aistudio.google.com), escolha o idioma de destino e toque em Testar conexão."
+          }
+        ]
+      },
+      {
+        "title": "Chave e privacidade",
+        "items": [
+          {
+            "q": "Onde minha chave de API é armazenada?",
+            "a": "Sua chave fica no armazenamento seguro do dispositivo (iOS Keychain / Android Keystore). Ela é enviada apenas ao provedor escolhido e somente ao traduzir. Não temos servidores e nunca vemos sua chave."
+          },
+          {
+            "q": "Posso usar serviços compatíveis com OpenAI?",
+            "a": "Sim. Defina uma URL base personalizada em Ajustes para serviços como OpenRouter, Groq ou modelos locais."
+          }
+        ]
+      },
+      {
+        "title": "Solução de problemas",
+        "items": [
+          {
+            "q": "\"Chave de API inválida\"",
+            "a": "Verifique novamente a chave em Ajustes."
+          },
+          {
+            "q": "\"Limite de requisições atingido\"",
+            "a": "Aguarde um momento e tente novamente."
+          },
+          {
+            "q": "\"Tempo esgotado\"",
+            "a": "Verifique sua conexão com a internet."
+          },
+          {
+            "q": "\"Configure primeiro\"",
+            "a": "Abra Ajustes e adicione um provedor de IA com a chave de API."
+          },
+          {
+            "q": "A tradução mostra o idioma errado",
+            "a": "Verifique o idioma de destino em Ajustes."
+          }
+        ]
+      },
+      {
+        "title": "Idiomas",
+        "items": [
+          {
+            "q": "Quais idiomas o app suporta?",
+            "a": "A interface do app segue o idioma de destino que você escolher em Ajustes (alemão, árabe, chinês simplificado, coreano, espanhol, finlandês, francês, hindi, inglês, italiano, japonês, português ou russo)."
+          }
+        ]
+      }
+    ]
+  }
+}

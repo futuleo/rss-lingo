@@ -206,7 +206,7 @@
         "items": [
           {
             "q": "What languages does the app support?",
-            "a": "The app interface follows the translation target language you pick in Settings (English, Russian, or Finnish)."
+            "a": "The app interface follows the translation target language you pick in Settings (Arabic, Chinese (Simplified), English, Finnish, French, German, Hindi, Italian, Japanese, Korean, Portuguese, Russian, or Spanish)."
           }
         ]
       }

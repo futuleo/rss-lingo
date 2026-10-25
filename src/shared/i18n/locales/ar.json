@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "الموجزات",
+    "saved": "المحفوظات",
+    "settings": "الإعدادات"
+  },
+  "common": {
+    "ok": "حسنًا",
+    "cancel": "إلغاء",
+    "retry": "إعادة المحاولة",
+    "error": "حدث خطأ ما",
+    "loading": "جارٍ التحميل…",
+    "delete": "حذف",
+    "close": "إغلاق",
+    "scrollToTop": "التمرير إلى الأعلى"
+  },
+  "feeds": {
+    "title": "الموجزات",
+    "addHeader": "إضافة موجز",
+    "addTitle": "موجز جديد",
+    "urlLabel": "رابط RSS مباشر",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "إضافة",
+    "emptyTitle": "لا توجد موجزات بعد",
+    "emptyHint": "أضف موجزًا بلصق رابط RSS المباشر لموقع أو مدونة.",
+    "addFailed": "تعذرت إضافة هذا الموجز. تحقق من الرابط وأعد المحاولة.",
+    "refreshAllFailed": "فشل تحديث بعض الموجزات",
+    "loadError": "تعذر تحميل الموجزات",
+    "deleteTitle": "حذف الموجز؟",
+    "deleteMessage": "حذف \"{{title}}\"؟ سيؤدي ذلك أيضًا إلى إزالة جميع مقالاته.",
+    "deleteFailed": "تعذر حذف هذا الموجز"
+  },
+  "articles": {
+    "emptyTitle": "لا توجد مقالات بعد",
+    "emptyHint": "اسحب للأسفل لتحديث هذا الموجز.",
+    "refreshFailed": "فشل التحديث",
+    "translatingHeadlines": "جارٍ ترجمة العناوين… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "المقالات المحفوظة",
+    "back": "رجوع",
+    "emptyTitle": "لا توجد مقالات محفوظة",
+    "emptyHint": "احفظ المقالات أثناء القراءة لتجدها هنا.",
+    "loadError": "تعذر تحميل المقالات المحفوظة"
+  },
+  "reader": {
+    "back": "رجوع",
+    "save": "حفظ",
+    "saved": "محفوظ",
+    "openInBrowser": "فتح في المتصفح",
+    "contentUnavailable": "لا يحتوي هذا المقال على محتوى قابل للقراءة. جرّب فتحه في المتصفح.",
+    "loadingFull": "جارٍ تحميل المقال كاملاً…",
+    "original": "الأصل",
+    "translation": "الترجمة",
+    "translate": "ترجمة",
+    "translating": "جارٍ الترجمة… {{done}}/{{total}}",
+    "cancel": "إلغاء",
+    "translationFailed": "فشلت الترجمة",
+    "configureFirst": "اضبط موفّر ذكاء اصطناعي ومفتاح API لترجمة المقالات.",
+    "configure": "ضبط",
+    "settings": "إعدادات القراءة",
+    "openSettings": "إعدادات القراءة",
+    "closeSettings": "إغلاق إعدادات القراءة",
+    "sizeLabel": "حجم النص",
+    "decreaseSize": "تصغير حجم النص",
+    "increaseSize": "تكبير حجم النص",
+    "fontLabel": "الخط",
+    "fontSystem": "النظام",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "تباعد الأسطر",
+    "lineHeightCompact": "مضغوط",
+    "lineHeightRegular": "عادي",
+    "lineHeightRelaxed": "مريح",
+    "justifyLabel": "ضبط النص"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "back": "رجوع",
+    "providerLabel": "موفّر الذكاء الاصطناعي",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "نماذج GPT عبر واجهة OpenAI",
+    "providerDescAnthropic": "نماذج Claude عبر واجهة Anthropic",
+    "providerDescGemini": "نماذج Gemini عبر Google AI",
+    "providerDescDeepSeek": "نموذجا DeepSeek Chat و Reasoner",
+    "modelLabel": "النموذج",
+    "modelPlaceholder": "مثال: gpt-4o-mini",
+    "modelCustom": "نموذج مخصص",
+    "baseUrlLabel": "عنوان URL الأساسي (اختياري)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "مفتاح API",
+    "apiKeyPlaceholder": "مفتاح API الخاص بالموفّر",
+    "targetLangLabel": "اللغة",
+    "targetLangHint": "تُستخدم لواجهة التطبيق والترجمات.",
+    "themeLabel": "السمة",
+    "themeSystem": "النظام",
+    "themeLight": "فاتح",
+    "themeSepia": "بني داكن",
+    "themeDark": "داكن",
+    "testConnection": "اختبار الاتصال",
+    "testOk": "الترجمة: {{result}}",
+    "testError": "فشل الاختبار: {{message}}",
+    "testErrorApiKeyRequired": "أدخل مفتاح API أولاً",
+    "saved": "محفوظ",
+    "faq": "الأسئلة الشائعة",
+    "errors": {
+      "invalidResponse": "استجابة غير متوقعة من الموفر"
+    }
+  },
+  "faq": {
+    "title": "الأسئلة الشائعة",
+    "sections": [
+      {
+        "title": "حول",
+        "items": [
+          {
+            "q": "ما هو RSS Lingo؟",
+            "a": "RSS Lingo هو قارئ RSS للهاتف يساعدك على تعلّم لغة. أضف الموجزات التي تهمك، واقرأ براحة، وترجم المقالات بمفتاح الذكاء الاصطناعي الخاص بك. كل شيء يُحفظ على جهازك."
+          }
+        ]
+      },
+      {
+        "title": "الموجزات",
+        "items": [
+          {
+            "q": "كيف أضيف موجزًا؟",
+            "a": "اضغط على + إضافة موجز والصق رابط RSS مباشر مثل https://example.org/rss.xml. يُجلب الموجز فورًا."
+          },
+          {
+            "q": "أين أجد رابط RSS؟",
+            "a": "ابحث عن رابط \"RSS\" أو \"Feed\" في تذييل الموقع أو ترويسته. يمكنك أيضًا تجربة /rss.xml أو /feed/ أو /atom.xml. لصق عنوان الموقع وحده غير مدعوم بعد — الاكتشاف التلقائي مخطط له."
+          }
+        ]
+      },
+      {
+        "title": "القراءة",
+        "items": [
+          {
+            "q": "ماذا يفعل حفظ؟",
+            "a": "يحفظ المقال إلى الأبد. بدون الحفظ، يُحتفظ فقط بأحدث 50 مقالًا لكل موجز."
+          },
+          {
+            "q": "أين تُخزن المقالات؟",
+            "a": "تعيش المقالات في قاعدة بيانات محلية على جهازك فقط."
+          }
+        ]
+      },
+      {
+        "title": "إعداد الترجمة (BYOK)",
+        "items": [
+          {
+            "q": "كيف أعدّ الترجمة؟",
+            "a": "افتح الإعدادات (⚙)، اختر موفرًا (OpenAI أو Anthropic أو Gemini أو DeepSeek)، وأدخل اسم النموذج (مثل gpt-4o-mini أو claude-sonnet-4-5 أو gemini-2.0-flash أو deepseek-chat)، والصق مفتاح API الخاص بك من ذلك الموفر (احصل عليه من platform.openai.com أو console.anthropic.com أو aistudio.google.com)، واختر اللغة الهدف ثم اضغط اختبار الاتصال."
+          }
+        ]
+      },
+      {
+        "title": "المفتاح والخصوصية",
+        "items": [
+          {
+            "q": "أين يُخزن مفتاح API الخاص بي؟",
+            "a": "يُخزن مفتاحك في التخزين الآمن للجهاز (iOS Keychain / Android Keystore). يُرسل فقط إلى الموفر الذي اخترته وفقط عند الترجمة. ليس لدينا خوادم ولا نرى مفتاحك أبدًا."
+          },
+          {
+            "q": "هل يمكنني استخدام خدمات متوافقة مع OpenAI؟",
+            "a": "نعم. عيّن عنوان URL أساسي مخصصًا في الإعدادات لخدمات مثل OpenRouter أو Groq أو النماذج المحلية."
+          }
+        ]
+      },
+      {
+        "title": "استكشاف الأخطاء وإصلاحها",
+        "items": [
+          {
+            "q": "\"مفتاح API غير صالح\"",
+            "a": "أعد التحقق من المفتاح في الإعدادات."
+          },
+          {
+            "q": "\"تم تجاوز حد الطلبات\"",
+            "a": "انتظر لحظة ثم أعد المحاولة."
+          },
+          {
+            "q": "\"انتهت المهلة\"",
+            "a": "تحقق من اتصالك بالإنترنت."
+          },
+          {
+            "q": "\"اضبط أولاً\"",
+            "a": "افتح الإعدادات وأضف موفر ذكاء اصطناعي ومفتاح API."
+          },
+          {
+            "q": "الترجمة تظهر بلغة خاطئة",
+            "a": "تحقق من اللغة الهدف في الإعدادات."
+          }
+        ]
+      },
+      {
+        "title": "اللغات",
+        "items": [
+          {
+            "q": "ما اللغات التي يدعمها التطبيق؟",
+            "a": "تتبع واجهة التطبيق لغة الترجمة الهدف التي تختارها في الإعدادات (الألمانية، الإسبانية، الإنجليزية، الإيطالية، البرتغالية، الروسية، الصينية المبسطة، العربية، الفنلندية، الفرنسية، الكورية، الهندية، أو اليابانية)."
+          }
+        ]
+      }
+    ]
+  }
+}

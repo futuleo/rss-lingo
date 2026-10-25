@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "订阅源",
+    "saved": "已保存",
+    "settings": "设置"
+  },
+  "common": {
+    "ok": "确定",
+    "cancel": "取消",
+    "retry": "重试",
+    "error": "出错了",
+    "loading": "加载中…",
+    "delete": "删除",
+    "close": "关闭",
+    "scrollToTop": "回到顶部"
+  },
+  "feeds": {
+    "title": "订阅源",
+    "addHeader": "添加订阅源",
+    "addTitle": "新建订阅源",
+    "urlLabel": "直接 RSS 链接",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "添加",
+    "emptyTitle": "还没有订阅源",
+    "emptyHint": "粘贴网站或博客的直接 RSS 链接来添加订阅源。",
+    "addFailed": "无法添加此订阅源。请检查链接后重试。",
+    "refreshAllFailed": "部分订阅源刷新失败",
+    "loadError": "无法加载订阅源",
+    "deleteTitle": "删除订阅源？",
+    "deleteMessage": "删除\"{{title}}\"？其所有文章也会被一并删除。",
+    "deleteFailed": "无法删除此订阅源"
+  },
+  "articles": {
+    "emptyTitle": "还没有文章",
+    "emptyHint": "下拉以刷新此订阅源。",
+    "refreshFailed": "刷新失败",
+    "translatingHeadlines": "正在翻译标题… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "已保存的文章",
+    "back": "返回",
+    "emptyTitle": "没有已保存的文章",
+    "emptyHint": "阅读时保存文章，即可在此处找到。",
+    "loadError": "无法加载已保存的文章"
+  },
+  "reader": {
+    "back": "返回",
+    "save": "保存",
+    "saved": "已保存",
+    "openInBrowser": "在浏览器中打开",
+    "contentUnavailable": "此文章没有可阅读的内容。请尝试在浏览器中打开。",
+    "loadingFull": "正在加载完整文章…",
+    "original": "原文",
+    "translation": "译文",
+    "translate": "翻译",
+    "translating": "翻译中… {{done}}/{{total}}",
+    "cancel": "取消",
+    "translationFailed": "翻译失败",
+    "configureFirst": "请先配置 AI 提供商和 API 密钥，以便翻译文章。",
+    "configure": "配置",
+    "settings": "阅读设置",
+    "openSettings": "阅读设置",
+    "closeSettings": "关闭阅读设置",
+    "sizeLabel": "字号",
+    "decreaseSize": "减小字号",
+    "increaseSize": "增大字号",
+    "fontLabel": "字体",
+    "fontSystem": "系统",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "行距",
+    "lineHeightCompact": "紧凑",
+    "lineHeightRegular": "正常",
+    "lineHeightRelaxed": "宽松",
+    "justifyLabel": "两端对齐"
+  },
+  "settings": {
+    "title": "设置",
+    "back": "返回",
+    "providerLabel": "AI 提供商",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "通过 OpenAI API 使用 GPT 模型",
+    "providerDescAnthropic": "通过 Anthropic API 使用 Claude 模型",
+    "providerDescGemini": "通过 Google AI 使用 Gemini 模型",
+    "providerDescDeepSeek": "DeepSeek Chat 与 Reasoner 模型",
+    "modelLabel": "模型",
+    "modelPlaceholder": "例如 gpt-4o-mini",
+    "modelCustom": "自定义模型",
+    "baseUrlLabel": "基础 URL（可选）",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API 密钥",
+    "apiKeyPlaceholder": "你的提供商 API 密钥",
+    "targetLangLabel": "语言",
+    "targetLangHint": "用于应用界面和翻译。",
+    "themeLabel": "主题",
+    "themeSystem": "跟随系统",
+    "themeLight": "浅色",
+    "themeSepia": "棕褐",
+    "themeDark": "深色",
+    "testConnection": "测试连接",
+    "testOk": "翻译：{{result}}",
+    "testError": "测试失败：{{message}}",
+    "testErrorApiKeyRequired": "请先输入 API 密钥",
+    "saved": "已保存",
+    "faq": "常见问题",
+    "errors": {
+      "invalidResponse": "提供商返回了意外的响应"
+    }
+  },
+  "faq": {
+    "title": "常见问题",
+    "sections": [
+      {
+        "title": "关于",
+        "items": [
+          {
+            "q": "RSS Lingo 是什么？",
+            "a": "RSS Lingo 是一款帮助你学习语言的移动 RSS 阅读器。添加你关心的订阅源，舒适地阅读，并用你自己的 AI 密钥翻译文章。所有内容都保存在你的设备上。"
+          }
+        ]
+      },
+      {
+        "title": "订阅源",
+        "items": [
+          {
+            "q": "如何添加订阅源？",
+            "a": "点击 + 添加订阅源，粘贴像 https://example.org/rss.xml 这样的直接 RSS 链接。订阅源会立即抓取。"
+          },
+          {
+            "q": "在哪里找到 RSS 链接？",
+            "a": "在网站的页脚或页眉查找 \"RSS\" 或 \"Feed\" 链接。也可以尝试 /rss.xml、/feed/ 或 /atom.xml。目前尚不支持只粘贴网站地址——自动发现功能正在规划中。"
+          }
+        ]
+      },
+      {
+        "title": "阅读",
+        "items": [
+          {
+            "q": "保存有什么作用？",
+            "a": "保存会永久保留一篇文章。如果不保存，每个订阅源只会保留最新的 50 篇文章。"
+          },
+          {
+            "q": "文章存储在哪里？",
+            "a": "文章只存储在设备上的本地数据库中。"
+          }
+        ]
+      },
+      {
+        "title": "翻译设置（自带密钥）",
+        "items": [
+          {
+            "q": "如何设置翻译？",
+            "a": "打开设置（⚙），选择提供商（OpenAI、Anthropic、Gemini 或 DeepSeek），输入模型名称（例如 gpt-4o-mini、claude-sonnet-4-5、gemini-2.0-flash、deepseek-chat），粘贴该提供商你自己的 API 密钥（可在 platform.openai.com、console.anthropic.com 或 aistudio.google.com 获取），选择目标语言，然后点击测试连接。"
+          }
+        ]
+      },
+      {
+        "title": "密钥与隐私",
+        "items": [
+          {
+            "q": "我的 API 密钥存储在哪里？",
+            "a": "你的密钥存储在设备的安全存储中（iOS 钥匙串 / Android Keystore）。它只会发送给你选择的提供商，且仅在你翻译时发送。我们没有服务器，也永远看不到你的密钥。"
+          },
+          {
+            "q": "可以使用兼容 OpenAI 的服务吗？",
+            "a": "可以。在设置中为 OpenRouter、Groq 或本地模型等服务设置自定义基础 URL。"
+          }
+        ]
+      },
+      {
+        "title": "故障排查",
+        "items": [
+          {
+            "q": "\"API 密钥无效\"",
+            "a": "在设置中重新检查密钥。"
+          },
+          {
+            "q": "\"超出速率限制\"",
+            "a": "稍等片刻后重试。"
+          },
+          {
+            "q": "\"超时\"",
+            "a": "检查你的网络连接。"
+          },
+          {
+            "q": "\"请先配置\"",
+            "a": "打开设置，添加 AI 提供商和 API 密钥。"
+          },
+          {
+            "q": "翻译显示的语言不正确",
+            "a": "在设置中检查目标语言。"
+          }
+        ]
+      },
+      {
+        "title": "语言",
+        "items": [
+          {
+            "q": "应用支持哪些语言？",
+            "a": "应用界面会跟随你在设置中选择的翻译目标语言（阿拉伯语、简体中文、英语、芬兰语、法语、德语、印地语、意大利语、日语、韩语、葡萄牙语、俄语或西班牙语）。"
+          }
+        ]
+      }
+    ]
+  }
+}
