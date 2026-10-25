@@ -111,7 +111,6 @@ export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
 
 const styles = StyleSheet.create({
   webview: {
-    minHeight: 320,
     flex: 1,
   },
 });

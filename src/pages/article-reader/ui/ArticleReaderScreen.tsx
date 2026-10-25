@@ -4,10 +4,11 @@ import {
   ActivityIndicator,
   Alert,
   Linking,
-  ScrollView,
+  Pressable,
   StyleSheet,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useArticle, useToggleSaved } from '@entities/article';
 import { useArticleTranslation } from '@features/translate-article';
@@ -27,6 +28,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const { data: article, loading, setData: setArticle } = useArticle(articleId);
   const { saving, toggleSaved } = useToggleSaved();
@@ -48,7 +50,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
         style={[
           styles.container,
           styles.center,
-          { backgroundColor: theme.colors.background },
+          { backgroundColor: theme.colors.background, paddingTop: insets.top },
         ]}
       >
         <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -62,7 +64,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
         style={[
           styles.container,
           styles.center,
-          { backgroundColor: theme.colors.background },
+          { backgroundColor: theme.colors.background, paddingTop: insets.top },
         ]}
       >
         <Text variant="body">{t('common.error')}</Text>
@@ -74,46 +76,93 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <ScrollView
-        contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
+      <View
+        style={[
+          styles.header,
+          {
+            paddingTop: insets.top + theme.spacing.s,
+            paddingBottom: theme.spacing.s,
+          },
+        ]}
       >
-        <Text variant="title">{article.title}</Text>
-        <Text variant="caption">
-          {formatDate(article.publishedAt ?? article.fetchedAt)}
-          {article.author ? ` · ${article.author}` : ''}
-        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('reader.back')}
+          onPress={() => router.back()}
+          style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
+        >
+          <Text style={{ color: theme.colors.primary }}>← {t('reader.back')}</Text>
+        </Pressable>
 
-        <View style={styles.actions}>
-          <Button
-            label={article.saved ? `★ ${t('reader.saved')}` : t('reader.save')}
-            variant={article.saved ? 'secondary' : 'primary'}
+        <View style={styles.titleBlock}>
+          <Text variant="headline" numberOfLines={1}>
+            {article.title}
+          </Text>
+          <Text variant="caption" numberOfLines={1}>
+            {formatDate(article.publishedAt ?? article.fetchedAt)}
+            {article.author ? ` · ${article.author}` : ''}
+          </Text>
+        </View>
+
+        <View style={styles.headerActions}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={article.saved ? t('reader.saved') : t('reader.save')}
             onPress={onToggleSaved}
             disabled={saving}
-          />
+            style={({ pressed }) => [
+              styles.actionButton,
+              saving && styles.disabled,
+              pressed && styles.pressed,
+            ]}
+          >
+            <Text
+              style={{ color: theme.colors.primary, fontSize: theme.font.headline }}
+            >
+              {article.saved ? '★' : '☆'}
+            </Text>
+          </Pressable>
           {article.url ? (
-            <Button
-              label={t('reader.openInBrowser')}
-              variant="secondary"
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('reader.openInBrowser')}
               onPress={() => {
                 if (article.url) void Linking.openURL(article.url);
               }}
-            />
+              style={({ pressed }) => [styles.actionButton, pressed && styles.pressed]}
+            >
+              <Text
+                style={{ color: theme.colors.primary, fontSize: theme.font.headline }}
+              >
+                ↗
+              </Text>
+            </Pressable>
           ) : null}
         </View>
+      </View>
 
-        <View style={styles.toggleRow}>
-          <Button
-            label={t('reader.original')}
-            variant={viewMode === 'original' ? 'primary' : 'secondary'}
-            onPress={() => setViewMode('original')}
-          />
-          <Button
-            label={t('reader.translation')}
-            variant={viewMode === 'translation' ? 'primary' : 'secondary'}
-            onPress={() => setViewMode('translation')}
-          />
-        </View>
+      <View
+        style={[
+          styles.toggleRow,
+          {
+            paddingHorizontal: theme.spacing.m,
+            paddingBottom: theme.spacing.s,
+          },
+        ]}
+      >
+        <Button
+          label={t('reader.original')}
+          variant={viewMode === 'original' ? 'primary' : 'secondary'}
+          onPress={() => setViewMode('original')}
+        />
+        <Button
+          label={t('reader.translation')}
+          variant={viewMode === 'translation' ? 'primary' : 'secondary'}
+          onPress={() => setViewMode('translation')}
+        />
+      </View>
 
+      <View style={styles.content}>
         {showTranslation ? (
           <TranslationPanel
             state={translationState}
@@ -122,20 +171,24 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             onConfigure={() => router.push('/settings')}
           />
         ) : fullStatus === 'loading' ? (
-          <View style={styles.loadingRow}>
-            <ActivityIndicator size="small" color={theme.colors.primary} />
-            <Text variant="body" style={{ color: theme.colors.textMuted }}>
-              {t('reader.loadingFull')}
-            </Text>
+          <View style={[styles.center, styles.fill]}>
+            <View style={styles.loadingRow}>
+              <ActivityIndicator size="small" color={theme.colors.primary} />
+              <Text variant="body" style={{ color: theme.colors.textMuted }}>
+                {t('reader.loadingFull')}
+              </Text>
+            </View>
           </View>
         ) : article.contentHtml ? (
           <ReaderWebView article={article} />
         ) : (
-          <Text variant="body" style={{ color: theme.colors.textMuted }}>
-            {t('reader.contentUnavailable')}
-          </Text>
+          <View style={[styles.center, styles.fill]}>
+            <Text variant="body" style={{ color: theme.colors.textMuted }}>
+              {t('reader.contentUnavailable')}
+            </Text>
+          </View>
         )}
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -261,10 +314,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  actions: {
+  fill: {
+    flex: 1,
+  },
+  header: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
     gap: 8,
+    paddingHorizontal: 16,
+  },
+  backButton: {
+    minHeight: 36,
+    justifyContent: 'center',
+  },
+  titleBlock: {
+    flex: 1,
+    gap: 2,
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  actionButton: {
+    minWidth: 36,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  disabled: {
+    opacity: 0.4,
+  },
+  content: {
+    flex: 1,
   },
   toggleRow: {
     flexDirection: 'row',

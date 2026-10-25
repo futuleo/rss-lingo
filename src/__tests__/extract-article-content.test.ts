@@ -72,4 +72,39 @@ describe('extractArticleContent', () => {
     expect(extractArticleContent('')).toBeNull();
     expect(extractArticleContent('<div><span>hi</span></div>')).toBeNull();
   });
+
+  test('resolves lazy-loaded images from srcset using the largest candidate', () => {
+    const page = `<!DOCTYPE html><html><body><article>
+      <p>${'Some article text. '.repeat(12)}</p>
+      <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" srcset="https://example.org/big.jpg 800w, https://example.org/small.jpg 400w" alt="Hero">
+    </article></body></html>`;
+
+    const output = extractArticleContent(page);
+
+    expect(output).toContain('src="https://example.org/big.jpg"');
+    expect(output).not.toContain('small.jpg');
+    expect(output).not.toContain('data:image');
+  });
+
+  test('resolves images from data-src when src is unusable', () => {
+    const page = `<!DOCTYPE html><html><body><article>
+      <p>${'Some article text. '.repeat(12)}</p>
+      <img data-src="https://example.org/x.jpg" alt="Lazy">
+    </article></body></html>`;
+
+    const output = extractArticleContent(page);
+
+    expect(output).toContain('src="https://example.org/x.jpg"');
+  });
+
+  test('keeps a normal image src unchanged', () => {
+    const page = `<!DOCTYPE html><html><body><article>
+      <p>${'Some article text. '.repeat(12)}</p>
+      <img src="https://example.org/a.jpg" alt="Normal">
+    </article></body></html>`;
+
+    const output = extractArticleContent(page);
+
+    expect(output).toContain('src="https://example.org/a.jpg"');
+  });
 });
