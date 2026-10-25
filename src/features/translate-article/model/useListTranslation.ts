@@ -26,6 +26,8 @@ export interface UseListTranslationResult {
   state: ListTranslationState;
   translate: () => void;
   cancel: () => void;
+  /** Changes when the translation cache key (lang/provider/model) changes. */
+  translationKey: string;
 }
 
 interface PreparedState {
@@ -45,6 +47,10 @@ type LocalStatus = 'translating' | 'ready' | 'failed' | null;
  */
 export function useListTranslation(articles: Article[]): UseListTranslationResult {
   const { settings, loading: settingsLoading } = useAiProviderSettings();
+
+  const translationKey = settings
+    ? `${settings.targetLang}|${settings.providerId}|${settings.model}`
+    : '';
 
   const loadPrepared = useCallback(async (): Promise<PreparedState> => {
     if (!settings) {
@@ -76,6 +82,18 @@ export function useListTranslation(articles: Article[]): UseListTranslationResul
     null,
   );
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Reset in-memory translations when the target language (or provider/model)
+  // changes so stale headlines from the previous language don't linger and
+  // block re-translation.
+  const [prevTranslationKey, setPrevTranslationKey] = useState(translationKey);
+  if (prevTranslationKey !== translationKey) {
+    setPrevTranslationKey(translationKey);
+    setItems({});
+    setStatus(null);
+    setError(null);
+    setProgress(null);
+  }
 
   const mergedItems = useMemo(
     () => ({ ...(prepared?.items ?? {}), ...items }),
@@ -195,5 +213,5 @@ export function useListTranslation(articles: Article[]): UseListTranslationResul
 
   useEffect(() => cancel, [cancel]);
 
-  return { state, translate, cancel };
+  return { state, translate, cancel, translationKey };
 }

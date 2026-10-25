@@ -49,7 +49,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   const { refreshing, onRefresh } = useRefreshFeed(feedId, reload);
 
   const [viewMode, setViewMode] = useState<ViewMode>('original');
-  const { state: listTranslation, translate } = useListTranslation(
+  const { state: listTranslation, translate, translationKey } = useListTranslation(
     articles ?? EMPTY_ARTICLES,
   );
   const translatedFeedTitle = useFeedTitleTranslation(
@@ -69,19 +69,23 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   // Auto-start headline translation the first time the user switches to
   // translation view (and only when the translation is genuinely ready to go,
   // not still loading settings). The guard fires once per entry into
-  // translation mode.
-  const hasAutoTranslated = useRef(false);
+  // translation mode, and again when the target language changes so headlines
+  // are re-translated into the new language.
+  const autoTranslatedKey = useRef<string | null>(null);
 
   useEffect(() => {
     if (viewMode !== 'translation') {
-      hasAutoTranslated.current = false;
+      autoTranslatedKey.current = null;
       return;
     }
-    if (!hasAutoTranslated.current && listTranslation.status === 'idle') {
-      hasAutoTranslated.current = true;
+    if (
+      autoTranslatedKey.current !== translationKey &&
+      listTranslation.status === 'idle'
+    ) {
+      autoTranslatedKey.current = translationKey;
       translate();
     }
-  }, [viewMode, listTranslation.status, translate]);
+  }, [viewMode, listTranslation.status, translate, translationKey]);
 
   const handleRefresh = useCallback(async () => {
     try {

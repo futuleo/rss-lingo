@@ -37,7 +37,12 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
 
   const { data: article, loading, setData: setArticle } = useArticle(articleId);
   const { saving, toggleSaved } = useToggleSaved();
-  const { state: translationState, translate, cancel } = useArticleTranslation(article);
+  const {
+    state: translationState,
+    translate,
+    cancel,
+    translationKey,
+  } = useArticleTranslation(article);
   const fullStatus = useFullArticle(article, setArticle);
   const readerSettings = useReaderSettings();
 
@@ -50,19 +55,24 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
 
   // Auto-start translation the first time the user switches to translation
   // view (and only when the translation is genuinely ready, not still
-  // loading settings). The guard fires once per entry into translation mode.
-  const hasAutoTranslated = useRef(false);
+  // loading settings). The guard fires once per entry into translation mode,
+  // and again when the target language changes so the article is re-translated
+  // into the new language.
+  const autoTranslatedKey = useRef<string | null>(null);
 
   useEffect(() => {
     if (viewMode !== 'translation') {
-      hasAutoTranslated.current = false;
+      autoTranslatedKey.current = null;
       return;
     }
-    if (!hasAutoTranslated.current && translationState.status === 'idle') {
-      hasAutoTranslated.current = true;
+    if (
+      autoTranslatedKey.current !== translationKey &&
+      translationState.status === 'idle'
+    ) {
+      autoTranslatedKey.current = translationKey;
       translate();
     }
-  }, [viewMode, translationState.status, translate]);
+  }, [viewMode, translationState.status, translate, translationKey]);
 
   const onToggleSaved = useCallback(async () => {
     if (!article) return;
