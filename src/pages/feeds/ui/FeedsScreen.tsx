@@ -8,6 +8,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { deleteFeed, useFeeds, type Feed } from '@entities/feed';
 import { AddFeedModal } from '@features/add-feed';
@@ -19,6 +20,7 @@ export function FeedsScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const { data: feeds, loading, error, reload } = useFeeds();
   const { refreshing, onRefresh } = useRefreshAllFeeds(reload);
@@ -67,25 +69,17 @@ export function FeedsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
+      <View
+        style={[
+          styles.header,
+          {
+            paddingHorizontal: theme.spacing.m,
+            paddingTop: insets.top + theme.spacing.s,
+          },
+        ]}
+      >
         <Text variant="title">{t('feeds.title')}</Text>
         <View style={styles.headerActions}>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('saved.title')}
-            onPress={() => router.push('/saved')}
-            style={styles.iconButton}
-          >
-            <Text style={{ fontSize: 22 }}>★</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t('settings.title')}
-            onPress={() => router.push('/settings')}
-            style={styles.iconButton}
-          >
-            <Text style={{ fontSize: 22 }}>⚙</Text>
-          </Pressable>
           <Button
             label={`+ ${t('feeds.addHeader')}`}
             onPress={() => setAddModalVisible(true)}
@@ -164,16 +158,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 48,
     paddingBottom: 8,
   },
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-  },
-  iconButton: {
-    padding: 8,
   },
   loader: {
     marginTop: 48,

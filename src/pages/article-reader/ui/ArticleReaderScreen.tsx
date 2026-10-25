@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useArticle, useToggleSaved } from '@entities/article';
 import { useArticleTranslation } from '@features/translate-article';
@@ -107,11 +108,11 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
           onPress={() => router.back()}
           style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
         >
-          <Text style={{ color: theme.colors.primary }}>← {t('reader.back')}</Text>
+          <Feather name="chevron-left" size={24} color={theme.colors.primary} />
         </Pressable>
 
         <View style={styles.titleBlock}>
-          <Text variant="headline" numberOfLines={1}>
+          <Text variant="headline">
             {viewMode === 'translation' ? translationState.title ?? article.title : article.title}
           </Text>
           <Text variant="caption" numberOfLines={1}>
@@ -184,7 +185,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             state={translationState}
             onTranslate={translate}
             onCancel={cancel}
-            onConfigure={() => router.push('/settings')}
+            onConfigure={() => router.navigate('/settings')}
           />
         ) : fullStatus === 'loading' ? (
           <View style={[styles.center, styles.fill]}>
@@ -357,7 +358,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   backButton: {
-    minHeight: 36,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
     justifyContent: 'center',
   },
   titleBlock: {

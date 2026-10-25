@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@shared/ui';
@@ -19,6 +21,7 @@ export function FaqScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   const sections = t('faq.sections', {
@@ -45,27 +48,30 @@ export function FaqScreen() {
           styles.header,
           {
             paddingHorizontal: theme.spacing.m,
-            paddingTop: 48,
+            paddingTop: insets.top + theme.spacing.s,
             paddingBottom: theme.spacing.s,
           },
         ]}
       >
         <Pressable
           accessibilityRole="button"
+          accessibilityLabel={t('settings.back')}
           onPress={() => router.back()}
-          style={styles.backButton}
+          style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
         >
-          <Text style={{ color: theme.colors.primary }}>← {t('settings.back')}</Text>
+          <Feather name="chevron-left" size={24} color={theme.colors.primary} />
         </Pressable>
         <Text variant="title">{title}</Text>
         <View style={styles.placeholder} />
       </View>
 
       <ScrollView
-        contentContainerStyle={[
-          styles.content,
-          { padding: theme.spacing.m, gap: theme.spacing.m },
-        ]}
+        contentContainerStyle={{
+          paddingTop: theme.spacing.m,
+          paddingHorizontal: theme.spacing.m,
+          paddingBottom: theme.spacing.m + insets.bottom,
+          gap: theme.spacing.m,
+        }}
       >
         {sections.map((section, sectionIndex) => {
           const id = String(sectionIndex);
@@ -139,13 +145,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   backButton: {
-    minWidth: 64,
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    opacity: 0.7,
   },
   placeholder: {
-    minWidth: 64,
-  },
-  content: {
-    paddingBottom: 48,
+    minWidth: 44,
   },
   sectionCard: {
     borderWidth: 1,

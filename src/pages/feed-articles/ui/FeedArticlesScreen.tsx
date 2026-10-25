@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Alert, FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { listArticlesByFeed, type Article } from '@entities/article';
 import { useFeed } from '@entities/feed';
@@ -23,6 +25,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const load = useCallback(() => listArticlesByFeed(feedId), [feedId]);
   const { data: articles, loading, reload } = useAsyncData(load);
@@ -61,6 +64,30 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View
+        style={[
+          styles.header,
+          {
+            paddingHorizontal: theme.spacing.m,
+            paddingTop: insets.top + theme.spacing.s,
+          },
+        ]}
+      >
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('reader.back')}
+          onPress={() => router.back()}
+          style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
+        >
+          <Feather name="chevron-left" size={24} color={theme.colors.primary} />
+        </Pressable>
+        {feed?.title ?? feed?.url ? (
+          <Text variant="title" style={styles.title}>
+            {feed?.title ?? feed?.url}
+          </Text>
+        ) : null}
+      </View>
+
       {loading ? (
         <ActivityIndicator
           style={styles.loader}
@@ -69,13 +96,6 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         />
       ) : (
         <>
-          {(feed?.title ?? feed?.url) ? (
-            <View style={[styles.header, { paddingHorizontal: theme.spacing.m }]}>
-              <Text variant="title" style={styles.title}>
-                {feed?.title ?? feed?.url}
-              </Text>
-            </View>
-          ) : null}
           <View
             style={[
               styles.toggleArea,
@@ -118,7 +138,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                   label={t('reader.configure')}
                   variant="secondary"
                   labelVariant="caption"
-                  onPress={() => router.push('/settings')}
+                  onPress={() => router.navigate('/settings')}
                 />
               </View>
             ) : null}
@@ -166,11 +186,22 @@ const styles = StyleSheet.create({
     marginTop: 48,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     paddingBottom: 8,
-    paddingTop: 48,
+  },
+  backButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    opacity: 0.7,
   },
   title: {
-    flexShrink: 1,
+    flex: 1,
   },
   toggleArea: {
     gap: 8,
