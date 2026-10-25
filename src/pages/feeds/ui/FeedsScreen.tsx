@@ -69,77 +69,75 @@ export function FeedsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View
-        style={[
-          styles.header,
-          {
-            paddingHorizontal: theme.spacing.m,
-            paddingTop: insets.top + theme.spacing.s,
-          },
-        ]}
-      >
-        <Text variant="title">{t('feeds.title')}</Text>
-        <View style={styles.headerActions}>
-          <Button
-            label={`+ ${t('feeds.addHeader')}`}
-            onPress={() => setAddModalVisible(true)}
-          />
-        </View>
-      </View>
-
-      {loading ? (
-        <ActivityIndicator
-          style={styles.loader}
-          size="large"
-          color={theme.colors.primary}
-        />
-      ) : error ? (
-        <View style={styles.error}>
-          <Text
-            variant="body"
-            style={{ color: theme.colors.danger, textAlign: 'center' }}
-          >
-            {t('feeds.loadError')}
-          </Text>
-          <Button label={t('common.retry')} variant="secondary" onPress={reload} />
-        </View>
-      ) : (
-        <FlatList
-          data={feeds ?? []}
-          keyExtractor={(feed) => String(feed.id)}
-          contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          ListEmptyComponent={
+      <FlatList
+        data={feeds ?? []}
+        keyExtractor={(feed) => String(feed.id)}
+        contentContainerStyle={{ padding: theme.spacing.m, gap: theme.spacing.s }}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        ListHeaderComponent={
+          <View style={{ paddingTop: insets.top + theme.spacing.s }}>
+            <View
+              style={[
+                styles.headerRow,
+                { paddingHorizontal: theme.spacing.m },
+              ]}
+            >
+              <Text variant="title">{t('feeds.title')}</Text>
+              <Button
+                label={`+ ${t('feeds.addHeader')}`}
+                onPress={() => setAddModalVisible(true)}
+              />
+            </View>
+          </View>
+        }
+        ListEmptyComponent={
+          loading ? (
+            <ActivityIndicator
+              style={styles.loader}
+              size="large"
+              color={theme.colors.primary}
+            />
+          ) : error ? (
+            <View style={styles.error}>
+              <Text
+                variant="body"
+                style={{ color: theme.colors.danger, textAlign: 'center' }}
+              >
+                {t('feeds.loadError')}
+              </Text>
+              <Button label={t('common.retry')} variant="secondary" onPress={reload} />
+            </View>
+          ) : (
             <EmptyState
               symbol="📡"
               title={t('feeds.emptyTitle')}
               hint={t('feeds.emptyHint')}
             />
-          }
-          renderItem={({ item }) => (
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => router.push(`/feeds/${item.id}`)}
-              onLongPress={() => handleDeleteFeed(item)}
-              style={[
-                styles.feedItem,
-                {
-                  backgroundColor: theme.colors.surface,
-                  borderColor: theme.colors.border,
-                  borderRadius: theme.radii.m,
-                  padding: theme.spacing.m,
-                },
-              ]}
-            >
-              <Text variant="headline">{item.title ?? item.url}</Text>
-              <Text variant="caption" numberOfLines={1}>
-                {item.url}
-              </Text>
-            </Pressable>
-          )}
-        />
-      )}
+          )
+        }
+        renderItem={({ item }) => (
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push(`/feeds/${item.id}`)}
+            onLongPress={() => handleDeleteFeed(item)}
+            style={[
+              styles.feedItem,
+              {
+                backgroundColor: theme.colors.surface,
+                borderColor: theme.colors.border,
+                borderRadius: theme.radii.m,
+                padding: theme.spacing.m,
+              },
+            ]}
+          >
+            <Text variant="headline">{item.title ?? item.url}</Text>
+            <Text variant="caption" numberOfLines={1}>
+              {item.url}
+            </Text>
+          </Pressable>
+        )}
+      />
 
       <AddFeedModal
         visible={addModalVisible}
@@ -154,16 +152,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
+  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingBottom: 8,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
   },
   loader: {
     marginTop: 48,
