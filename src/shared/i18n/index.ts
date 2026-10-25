@@ -24,6 +24,12 @@ export function detectLanguage(): AppLanguage {
   return 'en';
 }
 
+export function setAppLanguage(lang: AppLanguage): void {
+  if (i18n.language !== lang) {
+    void i18n.changeLanguage(lang);
+  }
+}
+
 export function initI18n(): void {
   if (i18n.isInitialized) {
     return;

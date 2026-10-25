@@ -19,8 +19,11 @@ import {
 } from '@entities/ai-provider';
 import { Button, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
-
-const SUPPORTED_TARGET_LANGS = ['en', 'ru', 'fi'] as const;
+import {
+  setAppLanguage,
+  supportedLanguages,
+  type AppLanguage,
+} from '@shared/i18n';
 
 function providerLabelKey(id: string): string {
   switch (id) {
@@ -47,8 +50,7 @@ export function ProviderSettingsScreen() {
   const [providerId, setProviderId] = useState<string>(PROVIDERS[0]!.id);
   const [model, setModel] = useState('');
   const [baseUrl, setBaseUrl] = useState('');
-  const [targetLang, setTargetLang] = useState<string>(SUPPORTED_TARGET_LANGS[0]);
-  const [customTargetLang, setCustomTargetLang] = useState('');
+  const [targetLang, setTargetLang] = useState<AppLanguage>(supportedLanguages[0]);
   const [apiKey, setApiKey] = useState('');
   const [isApiKeyDirty, setIsApiKeyDirty] = useState(false);
   const [testStatus, setTestStatus] = useState<
@@ -74,13 +76,11 @@ export function ProviderSettingsScreen() {
     setModel(settings.model);
     setBaseUrl(settings.baseUrl ?? '');
 
-    const supported = SUPPORTED_TARGET_LANGS as readonly string[];
+    const supported = supportedLanguages as readonly string[];
     if (supported.includes(settings.targetLang)) {
-      setTargetLang(settings.targetLang);
-      setCustomTargetLang('');
+      setTargetLang(settings.targetLang as AppLanguage);
     } else {
-      setTargetLang('other');
-      setCustomTargetLang(settings.targetLang);
+      setTargetLang(supportedLanguages[0]);
     }
 
     setIsLoaded(true);
@@ -102,18 +102,16 @@ export function ProviderSettingsScreen() {
     if (!isLoaded) {
       return;
     }
-    const effectiveTargetLang =
-      targetLang === 'other' ? customTargetLang.trim() || 'en' : targetLang;
     const timeout = setTimeout(() => {
       void saveSettings({
         providerId,
         model,
         baseUrl: baseUrl.trim() || undefined,
-        targetLang: effectiveTargetLang,
+        targetLang,
       });
     }, 300);
     return () => clearTimeout(timeout);
-  }, [providerId, model, baseUrl, targetLang, customTargetLang, isLoaded]);
+  }, [providerId, model, baseUrl, targetLang, isLoaded]);
 
   useEffect(() => {
     if (!isLoaded || !isApiKeyDirty) {
@@ -142,9 +140,10 @@ export function ProviderSettingsScreen() {
     setTestStatus({ type: 'idle' });
   }, []);
 
-  const effectiveTargetLang = useMemo(() => {
-    return targetLang === 'other' ? customTargetLang.trim() || 'en' : targetLang;
-  }, [targetLang, customTargetLang]);
+  const selectTargetLang = useCallback((lang: AppLanguage) => {
+    setTargetLang(lang);
+    setAppLanguage(lang);
+  }, []);
 
   const handleTestConnection = useCallback(async () => {
     if (!apiKey.trim()) {
@@ -163,7 +162,7 @@ export function ProviderSettingsScreen() {
       const provider = createProvider(providerId);
       const result = await provider.translate({
         text: 'Hello',
-        targetLang: effectiveTargetLang,
+        targetLang,
         apiKey,
         model: model.trim() || selectedProvider.defaultModelExample,
         baseUrl: baseUrl.trim() || undefined,
@@ -178,7 +177,7 @@ export function ProviderSettingsScreen() {
     } finally {
       clearTimeout(timeout);
     }
-  }, [apiKey, providerId, effectiveTargetLang, model, baseUrl, selectedProvider, t]);
+  }, [apiKey, providerId, targetLang, model, baseUrl, selectedProvider, t]);
 
   const inputStyle = useMemo(
     () => ({
@@ -350,14 +349,14 @@ export function ProviderSettingsScreen() {
       <View style={styles.section}>
         <Text variant="caption">{t('settings.targetLangLabel')}</Text>
         <View style={styles.langList}>
-          {SUPPORTED_TARGET_LANGS.map((lang) => {
+          {supportedLanguages.map((lang) => {
             const selected = targetLang === lang;
             return (
               <Pressable
                 key={lang}
                 accessibilityRole="radio"
                 accessibilityState={{ checked: selected }}
-                onPress={() => setTargetLang(lang)}
+                onPress={() => selectTargetLang(lang)}
                 style={[
                   styles.langChip,
                   {
@@ -378,39 +377,10 @@ export function ProviderSettingsScreen() {
               </Pressable>
             );
           })}
-          <Pressable
-            accessibilityRole="radio"
-            accessibilityState={{ checked: targetLang === 'other' }}
-            onPress={() => setTargetLang('other')}
-            style={[
-              styles.langChip,
-              {
-                backgroundColor:
-                  targetLang === 'other' ? theme.colors.primary : theme.colors.surface,
-                borderColor: theme.colors.border,
-              },
-            ]}
-          >
-            <Text
-              style={{
-                color:
-                  targetLang === 'other' ? theme.colors.primaryText : theme.colors.text,
-              }}
-            >
-              {t('settings.targetLangOther')}
-            </Text>
-          </Pressable>
         </View>
-        {targetLang === 'other' && (
-          <TextInput
-            accessibilityLabel={t('settings.targetLangOther')}
-            value={customTargetLang}
-            onChangeText={setCustomTargetLang}
-            placeholder={t('settings.targetLangOther')}
-            placeholderTextColor={theme.colors.textMuted}
-            style={[styles.input, inputStyle, { marginTop: theme.spacing.s }]}
-          />
-        )}
+        <Text variant="caption" style={{ color: theme.colors.textMuted }}>
+          {t('settings.targetLangHint')}
+        </Text>
       </View>
 
       <View style={styles.section}>

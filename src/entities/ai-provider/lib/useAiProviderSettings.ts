@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useAsyncData } from '@shared/lib/hooks';
 import { PROVIDERS } from '@shared/api/ai';
+import { detectLanguage } from '@shared/i18n';
 import { getSettings, saveSettings } from '../model/settings-repository';
 import type { AiProviderSettings } from '../model/types';
 
 const DEFAULT_SETTINGS: AiProviderSettings = {
   providerId: PROVIDERS[0]!.id,
   model: PROVIDERS[0]!.defaultModelExample,
-  targetLang: 'en',
+  targetLang: detectLanguage(),
 };
 
 export function useAiProviderSettings() {

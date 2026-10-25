@@ -19,3 +19,7 @@ jest.mock('he', () => ({
       .replace(/&gt;/g, '>')
       .replace(/&amp;/g, '&'),
 }));
+
+jest.mock('expo-localization', () => ({
+  getLocales: jest.fn(() => [{ languageCode: 'en' }]),
+}));

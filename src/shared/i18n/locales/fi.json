@@ -72,7 +72,7 @@
     "apiKeyLabel": "API-avain",
     "apiKeyPlaceholder": "Palvelun API-avain",
     "targetLangLabel": "Käännä kielelle",
-    "targetLangOther": "Muu…",
+    "targetLangHint": "Sovelluksen käyttöliittymä seuraa tätä kieltä.",
     "testConnection": "Testaa yhteyttä",
     "testOk": "Käännös: {{result}}",
     "testError": "Virhe: {{message}}",
@@ -173,7 +173,7 @@
         "items": [
           {
             "q": "Mitä kieliä sovellus tukee?",
-            "a": "Sovelluksen käyttöliittymä seuraa laitteen kieltä (englanti, venäjä tai suomi). Käännöksen kohdekieli asetetaan erikseen Asetuksissa."
+            "a": "Sovelluksen käyttöliittymä seuraa käännöksen kohdekieltä, jonka valitset Asetuksissa (englanti, venäjä tai suomi)."
           }
         ]
       }
