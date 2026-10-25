@@ -12,6 +12,7 @@ export const PROVIDERS: ProviderInfo[] = [
     docsUrl: 'https://platform.openai.com/docs',
     keyHint: 'sk-...',
     defaultModelExample: 'gpt-4o-mini',
+    models: ['gpt-4o-mini', 'gpt-4.1-mini', 'gpt-4o', 'gpt-4.1', 'o3-mini'],
   },
   {
     id: 'anthropic',
@@ -20,6 +21,7 @@ export const PROVIDERS: ProviderInfo[] = [
     docsUrl: 'https://docs.anthropic.com',
     keyHint: 'sk-ant-...',
     defaultModelExample: 'claude-sonnet-4-5',
+    models: ['claude-sonnet-4-5', 'claude-haiku-4-5', 'claude-opus-4-5'],
   },
   {
     id: 'gemini',
@@ -28,6 +30,7 @@ export const PROVIDERS: ProviderInfo[] = [
     docsUrl: 'https://ai.google.dev/gemini-api/docs',
     keyHint: 'AIza...',
     defaultModelExample: 'gemini-2.0-flash',
+    models: ['gemini-2.0-flash', 'gemini-2.5-flash', 'gemini-2.5-pro'],
   },
   {
     id: 'deepseek',
@@ -36,6 +39,7 @@ export const PROVIDERS: ProviderInfo[] = [
     docsUrl: 'https://api-docs.deepseek.com',
     keyHint: 'sk-...',
     defaultModelExample: 'deepseek-chat',
+    models: ['deepseek-chat', 'deepseek-reasoner'],
   },
 ];
 
