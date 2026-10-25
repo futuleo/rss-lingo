@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 import { getDb } from '@shared/lib/db';
-import type { Translation } from './types';
+import type { ArticleMetaTranslation, Translation } from './types';
 
 interface TranslationRow {
   id: number;
@@ -20,6 +20,28 @@ function mapRow(row: TranslationRow): Translation {
     providerId: row.provider_id,
     model: row.model,
     text: row.text,
+    createdAt: row.created_at,
+  };
+}
+
+interface ArticleMetaTranslationRow {
+  article_id: number;
+  lang: string;
+  provider_id: string;
+  model: string;
+  title: string;
+  summary: string | null;
+  created_at: number;
+}
+
+function mapMetaRow(row: ArticleMetaTranslationRow): ArticleMetaTranslation {
+  return {
+    articleId: row.article_id,
+    lang: row.lang,
+    providerId: row.provider_id,
+    model: row.model,
+    title: row.title,
+    summary: row.summary,
     createdAt: row.created_at,
   };
 }
@@ -60,5 +82,50 @@ export async function saveTranslation(
        text = excluded.text,
        created_at = excluded.created_at`,
     [articleId, lang, providerId, model, text, createdAt],
+  );
+}
+
+export async function getArticleMetaTranslations(
+  articleIds: number[],
+  lang: string,
+  providerId: string,
+  model: string,
+  db?: SQLiteDatabase,
+): Promise<ArticleMetaTranslation[]> {
+  if (articleIds.length === 0) {
+    return [];
+  }
+  const database = db ?? (await getDb());
+  const placeholders = articleIds.map(() => '?').join(', ');
+  const rows = await database.getAllAsync<ArticleMetaTranslationRow>(
+    `SELECT *
+     FROM article_meta_translations
+     WHERE lang = ? AND provider_id = ? AND model = ?
+       AND article_id IN (${placeholders})`,
+    [lang, providerId, model, ...articleIds],
+  );
+  return rows.map(mapMetaRow);
+}
+
+export async function saveArticleMetaTranslation(
+  articleId: number,
+  lang: string,
+  providerId: string,
+  model: string,
+  title: string,
+  summary: string | null,
+  db?: SQLiteDatabase,
+): Promise<void> {
+  const database = db ?? (await getDb());
+  const createdAt = Date.now();
+  await database.runAsync(
+    `INSERT INTO article_meta_translations
+       (article_id, lang, provider_id, model, title, summary, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(article_id, lang, provider_id, model) DO UPDATE SET
+       title = excluded.title,
+       summary = excluded.summary,
+       created_at = excluded.created_at`,
+    [articleId, lang, providerId, model, title, summary, createdAt],
   );
 }

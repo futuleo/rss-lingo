@@ -68,6 +68,24 @@ const MIGRATION_V3 = `
 ALTER TABLE articles ADD COLUMN has_full_content INTEGER NOT NULL DEFAULT 0;
 `;
 
+/**
+ * Schema version 4 — cache translated article titles and summaries for the
+ * article-list screens. Keyed by the same (article, lang, provider, model)
+ * composite as full-article translations so each headline is fetched once.
+ */
+const MIGRATION_V4 = `
+CREATE TABLE IF NOT EXISTS article_meta_translations (
+  article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
+  lang TEXT NOT NULL,
+  provider_id TEXT NOT NULL,
+  model TEXT NOT NULL,
+  title TEXT NOT NULL,
+  summary TEXT,
+  created_at INTEGER NOT NULL,
+  PRIMARY KEY (article_id, lang, provider_id, model)
+);
+`;
+
 type Migration = {
   version: number;
   sql: string;
@@ -77,6 +95,7 @@ const migrations: Migration[] = [
   { version: 1, sql: MIGRATION_V1 },
   { version: 2, sql: MIGRATION_V2 },
   { version: 3, sql: MIGRATION_V3 },
+  { version: 4, sql: MIGRATION_V4 },
 ];
 
 export async function migrateDatabase(db: SQLite.SQLiteDatabase): Promise<void> {

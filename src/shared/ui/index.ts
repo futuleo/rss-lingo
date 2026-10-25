@@ -4,3 +4,8 @@ export { Button } from './Button';
 export type { ButtonProps } from './Button';
 export { EmptyState } from './EmptyState';
 export type { EmptyStateProps } from './EmptyState';
+export { SegmentedToggle } from './SegmentedToggle';
+export type {
+  SegmentedToggleOption,
+  SegmentedToggleProps,
+} from './SegmentedToggle';

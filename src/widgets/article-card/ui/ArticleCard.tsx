@@ -8,13 +8,22 @@ import type { Article } from '@entities/article';
 export interface ArticleCardProps {
   article: Article;
   onPress: (article: Article) => void;
+  titleOverride?: string | null;
+  summaryOverride?: string | null;
 }
 
-export function ArticleCard({ article, onPress }: ArticleCardProps) {
+export function ArticleCard({
+  article,
+  onPress,
+  titleOverride = null,
+  summaryOverride = null,
+}: ArticleCardProps) {
   const { t } = useTranslation();
   const theme = useTheme();
 
   const dateLabel = formatDate(article.publishedAt ?? article.fetchedAt);
+  const title = titleOverride ?? article.title;
+  const summary = summaryOverride ?? article.summary;
 
   return (
     <Pressable
@@ -39,10 +48,10 @@ export function ArticleCard({ article, onPress }: ArticleCardProps) {
           </Text>
         ) : null}
       </View>
-      <Text variant="headline">{article.title}</Text>
-      {article.summary ? (
+      <Text variant="headline">{title}</Text>
+      {summary ? (
         <Text variant="body" numberOfLines={2} style={styles.summary}>
-          {article.summary}
+          {summary}
         </Text>
       ) : null}
     </Pressable>

@@ -30,7 +30,8 @@
   "articles": {
     "emptyTitle": "No articles yet",
     "emptyHint": "Pull down to refresh this feed.",
-    "refreshFailed": "Refresh failed"
+    "refreshFailed": "Refresh failed",
+    "translatingHeadlines": "Translating headlines… {{done}}/{{total}}"
   },
   "saved": {
     "title": "Saved articles",
