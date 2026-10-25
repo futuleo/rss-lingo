@@ -1,0 +1,215 @@
+{
+  "app": {
+    "title": "RSS Lingo"
+  },
+  "tabs": {
+    "feeds": "피드",
+    "saved": "저장됨",
+    "settings": "설정"
+  },
+  "common": {
+    "ok": "확인",
+    "cancel": "취소",
+    "retry": "재시도",
+    "error": "문제가 발생했습니다",
+    "loading": "불러오는 중…",
+    "delete": "삭제",
+    "close": "닫기",
+    "scrollToTop": "맨 위로 스크롤"
+  },
+  "feeds": {
+    "title": "피드",
+    "addHeader": "피드 추가",
+    "addTitle": "새 피드",
+    "urlLabel": "직접 RSS URL",
+    "urlPlaceholder": "https://example.org/rss.xml",
+    "addSubmit": "추가",
+    "emptyTitle": "아직 피드가 없습니다",
+    "emptyHint": "사이트나 블로그의 직접 RSS URL을 붙여넣어 피드를 추가하세요.",
+    "addFailed": "이 피드를 추가할 수 없습니다. URL을 확인하고 다시 시도하세요.",
+    "refreshAllFailed": "일부 피드를 새로고침하지 못했습니다",
+    "loadError": "피드를 불러오지 못했습니다",
+    "deleteTitle": "피드를 삭제할까요?",
+    "deleteMessage": "\"{{title}}\"을(를) 삭제할까요? 모든 기사도 함께 삭제됩니다.",
+    "deleteFailed": "이 피드를 삭제하지 못했습니다"
+  },
+  "articles": {
+    "emptyTitle": "아직 기사가 없습니다",
+    "emptyHint": "아래로 당겨서 이 피드를 새로고침하세요.",
+    "refreshFailed": "새로고침 실패",
+    "translatingHeadlines": "제목 번역 중… {{done}}/{{total}}"
+  },
+  "saved": {
+    "title": "저장된 기사",
+    "back": "뒤로",
+    "emptyTitle": "저장된 기사가 없습니다",
+    "emptyHint": "읽는 동안 기사를 저장하면 여기서 찾을 수 있습니다.",
+    "loadError": "저장된 기사를 불러오지 못했습니다"
+  },
+  "reader": {
+    "back": "뒤로",
+    "save": "저장",
+    "saved": "저장됨",
+    "openInBrowser": "브라우저에서 열기",
+    "contentUnavailable": "이 기사에는 읽을 수 있는 내용이 없습니다. 브라우저에서 열어보세요.",
+    "loadingFull": "전체 기사를 불러오는 중…",
+    "original": "원문",
+    "translation": "번역",
+    "translate": "번역",
+    "translating": "번역 중… {{done}}/{{total}}",
+    "cancel": "취소",
+    "translationFailed": "번역 실패",
+    "configureFirst": "기사를 번역하려면 AI 제공자와 API 키를 설정하세요.",
+    "configure": "설정",
+    "settings": "읽기 설정",
+    "openSettings": "읽기 설정",
+    "closeSettings": "읽기 설정 닫기",
+    "sizeLabel": "글자 크기",
+    "decreaseSize": "글자 크기 줄이기",
+    "increaseSize": "글자 크기 키우기",
+    "fontLabel": "글꼴",
+    "fontSystem": "시스템",
+    "fontGeorgia": "Georgia",
+    "fontPalatino": "Palatino",
+    "fontCharter": "Charter",
+    "fontTimes": "Times New Roman",
+    "fontHelvetica": "Helvetica",
+    "lineHeightLabel": "줄 간격",
+    "lineHeightCompact": "좁게",
+    "lineHeightRegular": "보통",
+    "lineHeightRelaxed": "넓게",
+    "justifyLabel": "양쪽 정렬"
+  },
+  "settings": {
+    "title": "설정",
+    "back": "뒤로",
+    "providerLabel": "AI 제공자",
+    "providerOpenAi": "OpenAI",
+    "providerAnthropic": "Anthropic",
+    "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
+    "providerDescOpenAi": "OpenAI API를 통한 GPT 모델",
+    "providerDescAnthropic": "Anthropic API를 통한 Claude 모델",
+    "providerDescGemini": "Google AI를 통한 Gemini 모델",
+    "providerDescDeepSeek": "DeepSeek Chat 및 Reasoner 모델",
+    "modelLabel": "모델",
+    "modelPlaceholder": "예: gpt-4o-mini",
+    "modelCustom": "사용자 지정 모델",
+    "baseUrlLabel": "기본 URL(선택)",
+    "baseUrlPlaceholder": "https://api.example.com/v1",
+    "apiKeyLabel": "API 키",
+    "apiKeyPlaceholder": "제공자의 API 키",
+    "targetLangLabel": "언어",
+    "targetLangHint": "앱 인터페이스와 번역에 사용됩니다.",
+    "themeLabel": "테마",
+    "themeSystem": "시스템",
+    "themeLight": "라이트",
+    "themeSepia": "세피아",
+    "themeDark": "다크",
+    "testConnection": "연결 테스트",
+    "testOk": "번역: {{result}}",
+    "testError": "테스트 실패: {{message}}",
+    "testErrorApiKeyRequired": "먼저 API 키를 입력하세요",
+    "saved": "저장됨",
+    "faq": "자주 묻는 질문",
+    "errors": {
+      "invalidResponse": "제공자로부터 예상치 못한 응답"
+    }
+  },
+  "faq": {
+    "title": "자주 묻는 질문",
+    "sections": [
+      {
+        "title": "소개",
+        "items": [
+          {
+            "q": "RSS Lingo란 무엇인가요?",
+            "a": "RSS Lingo는 언어 학습을 돕는 모바일 RSS 리더입니다. 관심 있는 피드를 추가하고, 편안하게 읽고, 자신의 AI 키로 기사를 번역하세요. 모든 것이 기기에 저장됩니다."
+          }
+        ]
+      },
+      {
+        "title": "피드",
+        "items": [
+          {
+            "q": "피드를 어떻게 추가하나요?",
+            "a": "+ 피드 추가를 탭하고 https://example.org/rss.xml 같은 직접 RSS URL을 붙여넣으세요. 피드는 즉시 가져옵니다."
+          },
+          {
+            "q": "RSS URL은 어디에서 찾나요?",
+            "a": "사이트의 푸터나 헤더에서 \"RSS\" 또는 \"Feed\" 링크를 찾아보세요. /rss.xml, /feed/, /atom.xml도 시도해볼 수 있습니다. 사이트 주소만 붙여넣는 것은 아직 지원되지 않으며 자동 감지는 계획 중입니다."
+          }
+        ]
+      },
+      {
+        "title": "읽기",
+        "items": [
+          {
+            "q": "저장은 무엇을 하나요?",
+            "a": "저장하면 기사가 영구적으로 보관됩니다. 저장하지 않으면 피드당 최신 50개 기사만 유지됩니다."
+          },
+          {
+            "q": "기사는 어디에 저장되나요?",
+            "a": "기사는 기기의 로컬 데이터베이스에만 저장됩니다."
+          }
+        ]
+      },
+      {
+        "title": "번역 설정 (BYOK)",
+        "items": [
+          {
+            "q": "번역을 어떻게 설정하나요?",
+            "a": "설정(⚙)을 열고 제공자(OpenAI, Anthropic, Gemini, DeepSeek)를 선택한 뒤 모델 이름(예: gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat)을 입력하고, 해당 제공자의 API 키(platform.openai.com, console.anthropic.com, aistudio.google.com에서 발급)를 붙여넣고, 대상 언어를 선택한 후 연결 테스트를 탭하세요."
+          }
+        ]
+      },
+      {
+        "title": "키 및 개인정보",
+        "items": [
+          {
+            "q": "API 키는 어디에 저장되나요?",
+            "a": "키는 기기의 보안 저장소(iOS Keychain / Android Keystore)에 저장됩니다. 선택한 제공자에게만, 번역할 때만 전송됩니다. 서버가 없으며 키를 결코 볼 수 없습니다."
+          },
+          {
+            "q": "OpenAI 호환 서비스를 사용할 수 있나요?",
+            "a": "네. OpenRouter, Groq 또는 로컬 모델 같은 서비스를 위해 설정에서 사용자 지정 기본 URL을 지정하세요."
+          }
+        ]
+      },
+      {
+        "title": "문제 해결",
+        "items": [
+          {
+            "q": "\"API 키가 올바르지 않습니다\"",
+            "a": "설정에서 키를 다시 확인하세요."
+          },
+          {
+            "q": "\"요청 한도를 초과했습니다\"",
+            "a": "잠시 기다렸다가 다시 시도하세요."
+          },
+          {
+            "q": "\"시간 초과\"",
+            "a": "인터넷 연결을 확인하세요."
+          },
+          {
+            "q": "\"먼저 설정하세요\"",
+            "a": "설정을 열고 AI 제공자와 API 키를 추가하세요."
+          },
+          {
+            "q": "번역이 잘못된 언어로 표시됩니다",
+            "a": "설정에서 대상 언어를 확인하세요."
+          }
+        ]
+      },
+      {
+        "title": "언어",
+        "items": [
+          {
+            "q": "앱은 어떤 언어를 지원하나요?",
+            "a": "앱 인터페이스는 설정에서 선택한 대상 언어를 따릅니다(아랍어, 중국어(간체), 영어, 핀란드어, 프랑스어, 독일어, 힌디어, 이탈리아어, 일본어, 한국어, 포르투갈어, 러시아어, 스페인어)."
+          }
+        ]
+      }
+    ]
+  }
+}
