@@ -1,11 +1,11 @@
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { RootProviders } from '@app/providers/RootProviders';
+import { ThemedStatusBar } from '@app/providers/ThemedStatusBar';
 
 export default function RootLayout() {
   return (
     <RootProviders>
-      <StatusBar style="auto" />
+      <ThemedStatusBar />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="feeds/[id]" />
