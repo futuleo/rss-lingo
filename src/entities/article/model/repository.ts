@@ -60,8 +60,15 @@ export async function upsertArticles(
            title = excluded.title,
            author = excluded.author,
            summary = excluded.summary,
-           content_html = CASE WHEN excluded.has_full_content = 1 THEN excluded.content_html ELSE articles.content_html END,
-           has_full_content = CASE WHEN excluded.has_full_content = 1 THEN 1 ELSE articles.has_full_content END,
+           content_html = CASE
+             WHEN excluded.has_full_content = 1 THEN excluded.content_html
+             WHEN articles.has_full_content = 1 THEN articles.content_html
+             ELSE excluded.content_html
+           END,
+           has_full_content = CASE
+             WHEN excluded.has_full_content = 1 OR articles.has_full_content = 1 THEN 1
+             ELSE 0
+           END,
            published_at = excluded.published_at,
            fetched_at = excluded.fetched_at`,
         [

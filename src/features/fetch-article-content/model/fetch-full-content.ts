@@ -33,6 +33,17 @@ export async function fetchArticleFullContent(url: string): Promise<string> {
         `Article request failed: HTTP ${response.status} (${url})`,
       );
     }
+    const contentType = response.headers.get('content-type');
+    if (
+      contentType &&
+      !/^(text\/html|application\/xhtml\+xml|text\/xml|application\/xml)/i.test(
+        contentType,
+      )
+    ) {
+      throw new FullContentError(
+        `Unexpected content type "${contentType}" (${url})`,
+      );
+    }
     const html = await response.text();
     const content = extractArticleContent(html);
     if (content === null) {

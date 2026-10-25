@@ -118,6 +118,30 @@ describe('database invariants', () => {
     expect(overwritten?.has_full_content).toBe(1);
   });
 
+  test('teaser-only content still updates on refresh when never full-fetched', async () => {
+    const feed = await createFeed({ url: 'https://example.org/feed' }, db);
+    expect(feed).not.toBeNull();
+
+    await upsertArticles(
+      feed!.id,
+      [{ ...makeArticle('a1', 1_000_000), contentHtml: '<p>old teaser</p>' }],
+      db,
+    );
+
+    await upsertArticles(
+      feed!.id,
+      [{ ...makeArticle('a1', 1_000_000), contentHtml: '<p>new teaser</p>' }],
+      db,
+    );
+
+    const row = await db.getFirstAsync<{
+      content_html: string | null;
+      has_full_content: number;
+    }>('SELECT content_html, has_full_content FROM articles WHERE guid = ?', ['a1']);
+    expect(row?.content_html).toBe('<p>new teaser</p>');
+    expect(row?.has_full_content).toBe(0);
+  });
+
   test('prune keeps newest 50 non-saved and all saved articles', async () => {
     const feed = await createFeed({ url: 'https://example.org/feed' }, db);
     expect(feed).not.toBeNull();

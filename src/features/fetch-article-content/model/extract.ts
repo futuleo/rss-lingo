@@ -1,3 +1,7 @@
+// Must be imported before `node-html-parser`: its bundled `entities` decodes a
+// base64 trie via the global `atob` at module load, which Hermes/React Native
+// does not provide. The shim below defines it (no-op on Node).
+import '../lib/base64-polyfill';
 import {
   parse,
   NodeType,
@@ -228,6 +232,22 @@ function sanitizeHref(href: string | undefined): string | null {
   return /^https?:\/\//i.test(trimmed) ? trimmed : null;
 }
 
+/**
+ * Keeps http/https and relative (scheme-less) image sources, which resolve
+ * against the article base URL; drops `data:`, `file:`, `javascript:` and
+ * custom schemes.
+ */
+function sanitizeSrc(src: string | undefined): string | null {
+  if (!src) {
+    return null;
+  }
+  const trimmed = src.trim();
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(trimmed)) {
+    return trimmed;
+  }
+  return /^https?:\/\//i.test(trimmed) ? trimmed : null;
+}
+
 /** Whether a content element should be kept: has text or media. */
 function hasRenderedContent(inner: string, node: HTMLElement): boolean {
   if (inner.includes('<img') || inner.includes('<br')) {
@@ -263,7 +283,7 @@ function serializeClean(node: Node): string {
       attributes += ` href="${escapeAttribute(href)}"`;
     }
   } else if (name === 'img') {
-    const src = node.getAttribute('src');
+    const src = sanitizeSrc(node.getAttribute('src'));
     const alt = node.getAttribute('alt');
     if (src) {
       attributes += ` src="${escapeAttribute(src)}"`;
