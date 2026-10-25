@@ -32,26 +32,33 @@ export const weight = {
   bold: '700',
 } as const;
 
+export const lineHeight = {
+  title: 30,
+  headline: 24,
+  body: 22,
+  caption: 18,
+} as const;
+
 export const palettes: Record<ColorSchemeName, ThemeColors> = {
   light: {
-    background: '#f6f7fb',
+    background: '#f7f6f3',
     surface: '#ffffff',
-    text: '#111418',
-    textMuted: '#5d6570',
-    primary: '#3b5bdb',
+    text: '#1b1a18',
+    textMuted: '#6e6c67',
+    primary: '#0f766e',
     primaryText: '#ffffff',
-    border: '#dfe3ea',
-    danger: '#e03131',
+    border: '#e8e5df',
+    danger: '#dc2626',
   },
   dark: {
-    background: '#101318',
-    surface: '#1a1f27',
-    text: '#f1f3f5',
-    textMuted: '#9aa3af',
-    primary: '#748ffc',
-    primaryText: '#0b0e13',
-    border: '#2c333d',
-    danger: '#ff6b6b',
+    background: '#12140f',
+    surface: '#1b1e19',
+    text: '#eef0ea',
+    textMuted: '#9aa39b',
+    primary: '#4fd1c5',
+    primaryText: '#0a1f1b',
+    border: '#2a2e28',
+    danger: '#f87171',
   },
 } as const;
 
@@ -73,5 +80,6 @@ export interface Theme {
   spacing: typeof spacing;
   radii: typeof radii;
   font: typeof font;
+  lineHeight: typeof lineHeight;
   weight: typeof weight;
 }
