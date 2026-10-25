@@ -1,19 +1,21 @@
 import { StyleSheet, View } from 'react-native';
+import type { ComponentProps } from 'react';
+import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../theme';
 import { Text } from './Text';
 
 export interface EmptyStateProps {
-  symbol: string;
+  icon: ComponentProps<typeof Feather>['name'];
   title: string;
   hint?: string;
 }
 
-export function EmptyState({ symbol, title, hint }: EmptyStateProps) {
+export function EmptyState({ icon, title, hint }: EmptyStateProps) {
   const theme = useTheme();
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.symbol, { color: theme.colors.primary }]}>{symbol}</Text>
+      <Feather name={icon} size={40} color={theme.colors.textMuted} />
       <Text variant="headline">{title}</Text>
       {hint ? (
         <Text variant="body" style={styles.hint}>
@@ -30,10 +32,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     paddingHorizontal: 24,
-  },
-  symbol: {
-    fontSize: 40,
-    lineHeight: 48,
   },
   hint: {
     textAlign: 'center',

@@ -32,10 +32,9 @@ export function ArticleCard({
       style={({ pressed }) => [
         styles.card,
         {
-          backgroundColor: theme.colors.surface,
-          borderColor: theme.colors.border,
-          borderRadius: theme.radii.m,
-          padding: theme.spacing.m,
+          paddingVertical: theme.spacing.m,
+          borderBottomWidth: StyleSheet.hairlineWidth,
+          borderBottomColor: theme.colors.border,
         },
         pressed && styles.pressed,
       ]}
@@ -60,7 +59,6 @@ export function ArticleCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
     gap: 6,
   },
   pressed: {
