@@ -11,13 +11,19 @@ export class FullContentError extends Error {
 }
 
 const FETCH_TIMEOUT_MS = 15000;
+const FETCH_ATTEMPTS = 2;
 
-/**
- * Fetches an article page and extracts its main text as clean HTML.
- * Throws `FullContentError` on non-OK responses, timeouts, or when the page
- * yields no meaningful article content.
- */
-export async function fetchArticleFullContent(url: string): Promise<string> {
+function isRetryable(error: unknown): boolean {
+  if (error instanceof FullContentError) {
+    // A timeout is transient; a definitive result (HTTP error, unexpected
+    // content type, no readable content) is not worth retrying.
+    return /timed out/i.test(error.message);
+  }
+  // Non-FullContentError (e.g. a failed fetch / network error) is retryable.
+  return true;
+}
+
+async function fetchOnce(url: string): Promise<string> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
@@ -66,4 +72,27 @@ export async function fetchArticleFullContent(url: string): Promise<string> {
   } finally {
     clearTimeout(timeout);
   }
+}
+
+/**
+ * Fetches an article page and extracts its main text as clean HTML.
+ * Throws `FullContentError` on non-OK responses, timeouts, or when the page
+ * yields no meaningful article content. Transient failures (timeouts, network
+ * errors) are retried once.
+ */
+export async function fetchArticleFullContent(url: string): Promise<string> {
+  let lastError: unknown = null;
+
+  for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt += 1) {
+    try {
+      return await fetchOnce(url);
+    } catch (error) {
+      lastError = error;
+      if (!isRetryable(error) || attempt === FETCH_ATTEMPTS) {
+        throw error;
+      }
+    }
+  }
+
+  throw lastError;
 }
