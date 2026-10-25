@@ -49,9 +49,45 @@ const BOILERPLATE_ROLES = new Set([
   'search',
 ]);
 
-/** id/class fragments that signal non-content boilerplate. */
-const BOILERPLATE_PATTERN =
-  /comment|advert|ad-|_ad|ads|share|social|related|sidebar|promo|subscribe|newsletter|breadcrumb|cookie|consent|outbrain|taboola|sponsor|pagination|menu|footer|header|nav/i;
+/**
+ * id/class tokens that signal non-content boilerplate. Values are tokenized
+ * (split on non-alphanumerics) so CamelCase layout wrappers such as
+ * "ContainerWithSidebarWrapper" are NOT mistaken for a sidebar, while
+ * "main-sidebar" / "site-header" / "nav" still match.
+ */
+const BOILERPLATE_TOKENS = new Set([
+  'ad',
+  'ads',
+  'advert',
+  'advertisement',
+  'breadcrumb',
+  'comment',
+  'comments',
+  'consent',
+  'cookie',
+  'footer',
+  'header',
+  'menu',
+  'nav',
+  'navigation',
+  'newsletter',
+  'outbrain',
+  'pagination',
+  'promo',
+  'related',
+  'share',
+  'sidebar',
+  'social',
+  'sponsor',
+  'sponsored',
+  'subscribe',
+  'taboola',
+]);
+
+function hasBoilerplateToken(value: string): boolean {
+  const tokens = value.toLowerCase().split(/[^a-z0-9]+/);
+  return tokens.some((token) => token.length > 0 && BOILERPLATE_TOKENS.has(token));
+}
 
 /** Tags preserved verbatim in the cleaned output. */
 const CONTENT_TAGS = new Set([
@@ -133,7 +169,7 @@ function isBoilerplate(node: HTMLElement): boolean {
   }
   const id = node.getAttribute('id') ?? '';
   const cls = node.getAttribute('class') ?? '';
-  return BOILERPLATE_PATTERN.test(`${id} ${cls}`);
+  return hasBoilerplateToken(`${id} ${cls}`);
 }
 
 /** Removes boilerplate nodes in place (post-order, children first). */

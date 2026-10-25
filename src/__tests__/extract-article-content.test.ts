@@ -67,6 +67,27 @@ describe('extractArticleContent', () => {
     expect(output).not.toContain('javascript:');
   });
 
+  test('does not drop content inside a CamelCase "Sidebar" layout wrapper', () => {
+    // "ContainerWithSidebarWrapper" is a page layout wrapper, not a sidebar;
+    // it must not be removed or the whole article disappears (BBC regression).
+    const page = `<!DOCTYPE html><html><body>
+      <div class="ContainerWithSidebarWrapper">
+        <main id="main-content">
+          <article class="ArticleWrapper">
+            <p>${'A real article body sentence. '.repeat(12)}</p>
+          </article>
+        </main>
+        <aside class="sidebar">Related</aside>
+      </div>
+    </body></html>`;
+
+    const output = extractArticleContent(page);
+
+    expect(output).not.toBeNull();
+    expect(output).toContain('A real article body sentence.');
+    expect(output).not.toContain('Related');
+  });
+
   test('returns null when the page has no meaningful article text', () => {
     expect(extractArticleContent('<!doctype html><html><body><div></div></body></html>')).toBeNull();
     expect(extractArticleContent('')).toBeNull();
