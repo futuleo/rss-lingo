@@ -1,5 +1,10 @@
 import { useMemo } from 'react';
-import { Linking, StyleSheet } from 'react-native';
+import {
+  Linking,
+  StyleSheet,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useTheme } from '@shared/theme';
 import type { Article } from '@entities/article';
@@ -11,6 +16,7 @@ function buildReaderHtml(
     background: string;
     text: string;
     textMuted: string;
+    topPadding: number;
   },
 ): string {
   return `<!DOCTYPE html>
@@ -25,13 +31,23 @@ function buildReaderHtml(
     padding: 0;
     background-color: ${options.background};
     color: ${options.text};
-    font-size: 17px;
-    line-height: 1.6;
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    font-size: 18px;
+    line-height: 1.7;
     -webkit-text-size-adjust: 100%;
     word-wrap: break-word;
   }
-  body { padding: 16px; }
-  img { max-width: 100%; height: auto; border-radius: 8px; }
+  body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: ${options.topPadding}px 18px 40px;
+  }
+  h1, h2, h3 {
+    line-height: 1.3;
+    font-weight: 600;
+    margin-top: 1.4em;
+  }
+  img { max-width: 100%; height: auto; border-radius: 10px; }
   a { color: ${options.text}; }
   pre, code { white-space: pre-wrap; word-wrap: break-word; }
   blockquote {
@@ -49,9 +65,20 @@ function buildReaderHtml(
 export interface ReaderWebViewProps {
   article: Article;
   htmlOverride?: string;
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  /**
+   * Extra top padding (in CSS px) reserved for an overlaid header. The
+   * article text starts below the header instead of behind it.
+   */
+  topPadding?: number;
 }
 
-export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
+export function ReaderWebView({
+  article,
+  htmlOverride,
+  onScroll,
+  topPadding = 20,
+}: ReaderWebViewProps) {
   const theme = useTheme();
 
   const content = htmlOverride ?? article.contentHtml ?? '';
@@ -61,8 +88,9 @@ export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
       background: theme.colors.background,
       text: theme.colors.text,
       textMuted: theme.colors.textMuted,
+      topPadding,
     });
-  }, [content, theme]);
+  }, [content, theme, topPadding]);
 
   // Restrict the base URL to http(s) so a feed-controlled file:, data:,
   // javascript:, or custom-scheme URL can never become the reader's own
@@ -91,6 +119,8 @@ export function ReaderWebView({ article, htmlOverride }: ReaderWebViewProps) {
       ]}
       javaScriptEnabled={false}
       domStorageEnabled={false}
+      onScroll={onScroll}
+      scrollEventThrottle={16}
       onShouldStartLoadWithRequest={(request) => {
         // Feed-controlled HTML is untrusted and runs with JavaScript
         // disabled, so keep the reader's own document in-app, open genuine
