@@ -1,7 +1,7 @@
 ---
 description: Handles one-time escalation when a regular agent is blocked on a difficult implementation or diagnosis
 mode: subagent
-model: opencode-go/kimi-k3
+model: deepseek/deepseek-v4-pro
 permissions:
   - action: shell
     resource: git push *

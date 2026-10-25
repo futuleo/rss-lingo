@@ -1,7 +1,7 @@
 ---
 description: Periodic security auditor - scans dependencies and code for vulnerabilities before merges to main, after dependency changes, and before releases
 mode: subagent
-model: opencode-go/qwen3.8-max
+model: deepseek/deepseek-v4-pro
 permissions:
   - action: '*'
     resource: '*'

@@ -1,7 +1,7 @@
 ---
 description: Explores the repository and reports relevant architecture, conventions, files, and test commands without editing
 mode: subagent
-model: opencode-go/glm-5.3-flash
+model: deepseek/deepseek-flash
 permissions:
   - action: '*'
     resource: '*'

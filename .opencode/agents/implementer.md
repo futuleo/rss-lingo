@@ -1,7 +1,7 @@
 ---
 description: Implements a clearly scoped coding task and runs relevant checks
 mode: subagent
-model: opencode-go/kimi-k2.7-code
+model: deepseek/deepseek-v4-pro
 permissions:
   - action: shell
     resource: git push *

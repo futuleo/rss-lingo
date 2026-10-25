@@ -1,7 +1,7 @@
 ---
 description: Provides an independent high-capability review for high-impact or unresolved changes
 mode: subagent
-model: opencode-go/gpt-6-luna
+model: deepseek/deepseek-v4-pro
 permissions:
   - action: '*'
     resource: '*'

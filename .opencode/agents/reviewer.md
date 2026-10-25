@@ -1,7 +1,7 @@
 ---
 description: Reviews changes for bugs, regressions, and missing tests without editing files
 mode: subagent
-model: opencode-go/glm-5.2
+model: deepseek/deepseek-flash
 permissions:
   - action: '*'
     resource: '*'

@@ -1,7 +1,7 @@
 ---
 description: UI/UX auditor - reviews screens, navigation and flows for usability; proposes concrete design improvements (read-only, orchestrator implements)
 mode: subagent
-model: opencode-go/grok-4.7
+model: deepseek/deepseek-flash
 permissions:
   - action: '*'
     resource: '*'

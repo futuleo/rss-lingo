@@ -1,7 +1,7 @@
 ---
 description: Coordinates implementation by delegating focused work to specialist agents and integrating the results
 mode: primary
-model: opencode-go/glm-5.3-flash
+model: deepseek/deepseek-v4-pro
 permissions:
   - action: subagent
     resource: '*'
