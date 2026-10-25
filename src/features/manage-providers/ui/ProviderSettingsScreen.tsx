@@ -46,6 +46,21 @@ function providerLabelKey(id: string): string {
   }
 }
 
+function providerDescriptionKey(id: string): string {
+  switch (id) {
+    case 'openai':
+      return 'settings.providerDescOpenAi';
+    case 'anthropic':
+      return 'settings.providerDescAnthropic';
+    case 'gemini':
+      return 'settings.providerDescGemini';
+    case 'deepseek':
+      return 'settings.providerDescDeepSeek';
+    default:
+      return 'settings.providerDescOpenAi';
+  }
+}
+
 export function ProviderSettingsScreen({ header }: { header?: ReactNode }) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -248,7 +263,9 @@ export function ProviderSettingsScreen({ header }: { header?: ReactNode }) {
                   ]}
                 >
                   <Text variant="headline">{t(providerLabelKey(provider.id))}</Text>
-                  <Text variant="caption">{provider.keyHint}</Text>
+                  <Text variant="caption">
+                    {t(providerDescriptionKey(provider.id))}
+                  </Text>
                 </Pressable>
               );
             })}

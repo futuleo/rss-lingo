@@ -17,7 +17,6 @@ export interface ProviderInfo {
   label: string;
   defaultBaseUrl: string;
   docsUrl: string;
-  keyHint: string;
   defaultModelExample: string;
   /** Known models, first is the recommended default. */
   models: string[];
