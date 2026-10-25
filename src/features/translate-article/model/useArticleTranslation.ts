@@ -32,6 +32,8 @@ export interface UseArticleTranslationResult {
   state: TranslationState;
   translate: () => void;
   cancel: () => void;
+  /** Changes when the translation cache key (lang/provider/model) changes. */
+  translationKey: string;
 }
 
 /**
@@ -45,6 +47,10 @@ export function useArticleTranslation(
   article: Article | null,
 ): UseArticleTranslationResult {
   const { settings, loading: settingsLoading } = useAiProviderSettings();
+
+  const translationKey = settings
+    ? `${settings.targetLang}|${settings.providerId}|${settings.model}`
+    : '';
 
   const loadPrepared = useCallback(async (): Promise<PreparedState> => {
     if (!article || !settings) {
@@ -83,6 +89,18 @@ export function useArticleTranslation(
   const [error, setError] = useState<TranslationError | null>(null);
   const [progress, setProgress] = useState<TranslationProgress | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Reset in-memory translation when the target language (or provider/model)
+  // changes so a stale translation from the previous language isn't shown.
+  const [prevTranslationKey, setPrevTranslationKey] = useState(translationKey);
+  if (prevTranslationKey !== translationKey) {
+    setPrevTranslationKey(translationKey);
+    setStatus(null);
+    setText(null);
+    setTitle(null);
+    setError(null);
+    setProgress(null);
+  }
 
   const resolvedTitle = title ?? prepared?.title;
 
@@ -182,5 +200,5 @@ export function useArticleTranslation(
 
   useEffect(() => cancel, [cancel]);
 
-  return { state, translate, cancel };
+  return { state, translate, cancel, translationKey };
 }
