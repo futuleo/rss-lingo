@@ -13,10 +13,19 @@ import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { listArticlesByFeed, type Article } from '@entities/article';
 import { useFeed } from '@entities/feed';
-import { useFeedTitleTranslation, useListTranslation } from '@features/translate-article';
+import {
+  useFeedTitleTranslation,
+  useListTranslation,
+} from '@features/translate-article';
 import { useRefreshFeed } from '@features/refresh-feeds';
-import { useAsyncData } from '@shared/lib/hooks';
-import { Button, EmptyState, SegmentedToggle, Text } from '@shared/ui';
+import { useAsyncData, useScrollToTop } from '@shared/lib/hooks';
+import {
+  Button,
+  EmptyState,
+  ScrollToTopButton,
+  SegmentedToggle,
+  Text,
+} from '@shared/ui';
 import { useTheme } from '@shared/theme';
 import { ArticleCard } from '@widgets/article-card';
 
@@ -49,6 +58,14 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   );
   const displayFeedTitle = translatedFeedTitle ?? feed?.title ?? feed?.url;
 
+  const listRef = useRef<FlatList<Article>>(null);
+  const { onScroll, visible, reset } = useScrollToTop();
+
+  const handleScrollToTop = useCallback(() => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: true });
+    reset();
+  }, [reset]);
+
   // Auto-start headline translation the first time the user switches to
   // translation view (and only when the translation is genuinely ready to go,
   // not still loading settings). The guard fires once per entry into
@@ -77,9 +94,12 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
+        ref={listRef}
         data={articles ?? []}
         keyExtractor={(article) => String(article.id)}
         style={styles.list}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         contentContainerStyle={[
           styles.listContent,
           {
@@ -96,16 +116,9 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                 accessibilityRole="button"
                 accessibilityLabel={t('reader.back')}
                 onPress={() => router.back()}
-                style={({ pressed }) => [
-                  styles.backButton,
-                  pressed && styles.pressed,
-                ]}
+                style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
               >
-                <Feather
-                  name="chevron-left"
-                  size={24}
-                  color={theme.colors.primary}
-                />
+                <Feather name="chevron-left" size={24} color={theme.colors.primary} />
               </Pressable>
               {displayFeedTitle ? (
                 <View style={styles.titleBlock}>
@@ -139,8 +152,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                     })}
                   </Text>
                 ) : null}
-                {viewMode === 'translation' &&
-                listTranslation.status === 'blocked' ? (
+                {viewMode === 'translation' && listTranslation.status === 'blocked' ? (
                   <View
                     style={[
                       styles.banner,
@@ -161,8 +173,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                     />
                   </View>
                 ) : null}
-                {viewMode === 'translation' &&
-                listTranslation.status === 'failed' ? (
+                {viewMode === 'translation' && listTranslation.status === 'failed' ? (
                   <View
                     style={[
                       styles.banner,
@@ -173,8 +184,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                     ]}
                   >
                     <Text variant="caption" style={styles.bannerText}>
-                      {listTranslation.error?.message ??
-                        t('reader.translationFailed')}
+                      {listTranslation.error?.message ?? t('reader.translationFailed')}
                     </Text>
                     <Button
                       label={t('common.retry')}
@@ -205,9 +215,7 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         }
         renderItem={({ item }) => {
           const meta =
-            viewMode === 'translation'
-              ? listTranslation.items[item.id]
-              : undefined;
+            viewMode === 'translation' ? listTranslation.items[item.id] : undefined;
           return (
             <ArticleCard
               article={item}
@@ -218,6 +226,8 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
           );
         }}
       />
+
+      <ScrollToTopButton visible={visible} onPress={handleScrollToTop} />
     </View>
   );
 }

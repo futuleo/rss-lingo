@@ -18,7 +18,7 @@ import { useArticle, useToggleSaved } from '@entities/article';
 import { useArticleTranslation } from '@features/translate-article';
 import { useFullArticle } from '@features/fetch-article-content';
 import { formatDate } from '@shared/lib/dates';
-import { Button, Text } from '@shared/ui';
+import { Button, ScrollToTopButton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 import { ReaderWebView } from '@widgets/reader-view';
 
@@ -157,7 +157,9 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             <View style={[styles.actionsRight, { gap: theme.spacing.xs }]}>
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel={article.saved ? t('reader.saved') : t('reader.save')}
+                accessibilityLabel={
+                  article.saved ? t('reader.saved') : t('reader.save')
+                }
                 onPress={onToggleSaved}
                 disabled={saving}
                 style={({ pressed }) => [
@@ -179,9 +181,16 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
                   onPress={() => {
                     if (article.url) void Linking.openURL(article.url);
                   }}
-                  style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+                  style={({ pressed }) => [
+                    styles.iconButton,
+                    pressed && styles.pressed,
+                  ]}
                 >
-                  <Feather name="external-link" size={22} color={theme.colors.primary} />
+                  <Feather
+                    name="external-link"
+                    size={22}
+                    color={theme.colors.primary}
+                  />
                 </Pressable>
               ) : null}
             </View>
@@ -196,7 +205,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
           >
             <Text variant="title">
               {viewMode === 'translation'
-                ? translationState.title ?? article.title
+                ? (translationState.title ?? article.title)
                 : article.title}
             </Text>
             <Text variant="caption" numberOfLines={1}>
@@ -239,6 +248,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
               onConfigure={() => router.navigate('/settings')}
               topPadding={headerHeight}
               onScroll={handleScroll}
+              webViewKey={webViewKey}
             />
           </View>
         ) : fullStatus === 'loading' || headerHeight === 0 ? (
@@ -266,26 +276,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
         )}
       </View>
 
-      {showTranslation ? null : scrolled ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('reader.scrollToTop')}
-          onPress={scrollToTop}
-          style={({ pressed }) => [
-            styles.scrollTopButton,
-            {
-              backgroundColor: theme.colors.surface,
-              borderColor: theme.colors.border,
-              borderRadius: theme.radii.full,
-              right: theme.spacing.m,
-              bottom: insets.bottom + theme.spacing.m,
-            },
-            pressed && styles.pressed,
-          ]}
-        >
-          <Feather name="arrow-up" size={20} color={theme.colors.primary} />
-        </Pressable>
-      ) : null}
+      <ScrollToTopButton visible={scrolled} onPress={scrollToTop} />
     </View>
   );
 }
@@ -297,6 +288,7 @@ interface TranslationPanelProps {
   onConfigure: () => void;
   topPadding: number;
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  webViewKey: number;
 }
 
 function TranslationPanel({
@@ -306,6 +298,7 @@ function TranslationPanel({
   onConfigure,
   topPadding,
   onScroll,
+  webViewKey,
 }: TranslationPanelProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -328,6 +321,7 @@ function TranslationPanel({
           fetchedAt: 0,
         }}
         htmlOverride={state.text}
+        key={webViewKey}
         topPadding={topPadding}
         onScroll={onScroll}
       />
@@ -497,13 +491,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: 'flex-start',
-  },
-  scrollTopButton: {
-    position: 'absolute',
-    width: 44,
-    height: 44,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

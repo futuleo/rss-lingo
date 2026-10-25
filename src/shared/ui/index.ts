@@ -5,7 +5,6 @@ export type { ButtonProps } from './Button';
 export { EmptyState } from './EmptyState';
 export type { EmptyStateProps } from './EmptyState';
 export { SegmentedToggle } from './SegmentedToggle';
-export type {
-  SegmentedToggleOption,
-  SegmentedToggleProps,
-} from './SegmentedToggle';
+export type { SegmentedToggleOption, SegmentedToggleProps } from './SegmentedToggle';
+export { ScrollToTopButton } from './ScrollToTopButton';
+export type { ScrollToTopButtonProps } from './ScrollToTopButton';

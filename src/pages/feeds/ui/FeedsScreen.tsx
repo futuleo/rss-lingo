@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -13,7 +13,8 @@ import { useRouter } from 'expo-router';
 import { deleteFeed, useFeeds, type Feed } from '@entities/feed';
 import { AddFeedModal } from '@features/add-feed';
 import { useRefreshAllFeeds } from '@features/refresh-feeds';
-import { Button, EmptyState, Text } from '@shared/ui';
+import { useScrollToTop } from '@shared/lib/hooks';
+import { Button, EmptyState, ScrollToTopButton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
 
 export function FeedsScreen() {
@@ -25,6 +26,14 @@ export function FeedsScreen() {
   const { data: feeds, loading, error, reload } = useFeeds();
   const { refreshing, onRefresh } = useRefreshAllFeeds(reload);
   const [addModalVisible, setAddModalVisible] = useState(false);
+
+  const listRef = useRef<FlatList<Feed>>(null);
+  const { onScroll, visible, reset } = useScrollToTop();
+
+  const handleScrollToTop = useCallback(() => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: true });
+    reset();
+  }, [reset]);
 
   const handleAdded = useCallback(async () => {
     try {
@@ -70,6 +79,7 @@ export function FeedsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList
+        ref={listRef}
         data={feeds ?? []}
         keyExtractor={(feed) => String(feed.id)}
         contentContainerStyle={{
@@ -78,6 +88,8 @@ export function FeedsScreen() {
         }}
         refreshing={refreshing}
         onRefresh={handleRefresh}
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         ListHeaderComponent={
           <View style={{ paddingTop: insets.top + theme.spacing.s }}>
             <View style={styles.headerRow}>
@@ -140,6 +152,12 @@ export function FeedsScreen() {
         visible={addModalVisible}
         onClose={() => setAddModalVisible(false)}
         onAdded={handleAdded}
+      />
+
+      <ScrollToTopButton
+        visible={visible}
+        onPress={handleScrollToTop}
+        bottomInset={0}
       />
     </View>
   );
