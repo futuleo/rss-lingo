@@ -62,6 +62,7 @@
     "providerOpenAi": "OpenAI",
     "providerAnthropic": "Anthropic",
     "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
     "modelLabel": "Malli",
     "modelPlaceholder": "esim. gpt-4o-mini",
     "baseUrlLabel": "Päätepiste (valinnainen)",
@@ -123,7 +124,7 @@
         "items": [
           {
             "q": "Miten käännös asetetaan?",
-            "a": "Avaa Asetukset (⚙), valitse palvelu (OpenAI, Anthropic tai Gemini), anna mallin nimi (esim. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash), liitä oma API-avaimesi kyseiseltä palvelulta (saat sen osoitteista platform.openai.com, console.anthropic.com tai aistudio.google.com), valitse kohdekieli ja napauta Testaa yhteyttä."
+            "a": "Avaa Asetukset (⚙), valitse palvelu (OpenAI, Anthropic, Gemini tai DeepSeek), anna mallin nimi (esim. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat), liitä oma API-avaimesi kyseiseltä palvelulta (saat sen osoitteista platform.openai.com, console.anthropic.com tai aistudio.google.com), valitse kohdekieli ja napauta Testaa yhteyttä."
           }
         ]
       },

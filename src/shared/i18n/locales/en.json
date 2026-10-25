@@ -62,6 +62,7 @@
     "providerOpenAi": "OpenAI",
     "providerAnthropic": "Anthropic",
     "providerGemini": "Google Gemini",
+    "providerDeepSeek": "DeepSeek",
     "modelLabel": "Model",
     "modelPlaceholder": "e.g. gpt-4o-mini",
     "baseUrlLabel": "Base URL (optional)",
@@ -123,7 +124,7 @@
         "items": [
           {
             "q": "How do I set up translation?",
-            "a": "Open Settings (⚙), pick a provider (OpenAI, Anthropic, or Gemini), enter a model name (e.g. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash), paste your own API key from that provider (get it at platform.openai.com, console.anthropic.com, or aistudio.google.com), pick the target language, and tap Test connection."
+            "a": "Open Settings (⚙), pick a provider (OpenAI, Anthropic, Gemini, or DeepSeek), enter a model name (e.g. gpt-4o-mini, claude-sonnet-4-5, gemini-2.0-flash, deepseek-chat), paste your own API key from that provider (get it at platform.openai.com, console.anthropic.com, or aistudio.google.com), pick the target language, and tap Test connection."
           }
         ]
       },

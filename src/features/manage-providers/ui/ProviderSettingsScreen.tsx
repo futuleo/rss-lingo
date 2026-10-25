@@ -30,6 +30,8 @@ function providerLabelKey(id: string): string {
       return 'settings.providerAnthropic';
     case 'gemini':
       return 'settings.providerGemini';
+    case 'deepseek':
+      return 'settings.providerDeepSeek';
     default:
       return 'settings.providerOpenAi';
   }

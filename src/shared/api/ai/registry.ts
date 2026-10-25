@@ -1,6 +1,7 @@
 import { OpenAiProvider } from './adapters/openai';
 import { AnthropicProvider } from './adapters/anthropic';
 import { GeminiProvider } from './adapters/gemini';
+import { DeepSeekProvider } from './adapters/deepseek';
 import type { AiProvider, ProviderInfo } from './types';
 
 export const PROVIDERS: ProviderInfo[] = [
@@ -28,6 +29,14 @@ export const PROVIDERS: ProviderInfo[] = [
     keyHint: 'AIza...',
     defaultModelExample: 'gemini-2.0-flash',
   },
+  {
+    id: 'deepseek',
+    label: 'DeepSeek',
+    defaultBaseUrl: 'https://api.deepseek.com',
+    docsUrl: 'https://api-docs.deepseek.com',
+    keyHint: 'sk-...',
+    defaultModelExample: 'deepseek-chat',
+  },
 ];
 
 export function createProvider(id: string): AiProvider {
@@ -38,6 +47,8 @@ export function createProvider(id: string): AiProvider {
       return new AnthropicProvider();
     case 'gemini':
       return new GeminiProvider();
+    case 'deepseek':
+      return new DeepSeekProvider();
     default:
       throw new Error(`Unknown AI provider: ${id}`);
   }
