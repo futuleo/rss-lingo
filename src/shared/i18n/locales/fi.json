@@ -30,7 +30,8 @@
   "articles": {
     "emptyTitle": "Ei vielä artikkeleita",
     "emptyHint": "Päivitä syöte vetämällä alaspäin.",
-    "refreshFailed": "Päivitys epäonnistui"
+    "refreshFailed": "Päivitys epäonnistui",
+    "translatingHeadlines": "Käännetään otsikoita… {{done}}/{{total}}"
   },
   "saved": {
     "title": "Tallennetut artikkelit",

@@ -1,2 +1,7 @@
-export type { Translation } from './model/types';
-export { getTranslation, saveTranslation } from './model/repository';
+export type { ArticleMetaTranslation, Translation } from './model/types';
+export {
+  getArticleMetaTranslations,
+  getTranslation,
+  saveArticleMetaTranslation,
+  saveTranslation,
+} from './model/repository';

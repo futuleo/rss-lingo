@@ -7,3 +7,13 @@ export interface Translation {
   text: string;
   createdAt: number;
 }
+
+export interface ArticleMetaTranslation {
+  articleId: number;
+  lang: string;
+  providerId: string;
+  model: string;
+  title: string;
+  summary: string | null;
+  createdAt: number;
+}

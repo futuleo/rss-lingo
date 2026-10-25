@@ -30,7 +30,8 @@
   "articles": {
     "emptyTitle": "Статей пока нет",
     "emptyHint": "Потяните вниз, чтобы обновить ленту.",
-    "refreshFailed": "Не удалось обновить"
+    "refreshFailed": "Не удалось обновить",
+    "translatingHeadlines": "Переводим заголовки… {{done}}/{{total}}"
   },
   "saved": {
     "title": "Сохранённые статьи",
