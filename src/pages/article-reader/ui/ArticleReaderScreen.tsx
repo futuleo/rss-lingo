@@ -112,7 +112,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
 
         <View style={styles.titleBlock}>
           <Text variant="headline" numberOfLines={1}>
-            {article.title}
+            {viewMode === 'translation' ? translationState.title ?? article.title : article.title}
           </Text>
           <Text variant="caption" numberOfLines={1}>
             {formatDate(article.publishedAt ?? article.fetchedAt)}
