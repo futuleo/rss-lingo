@@ -13,7 +13,7 @@ import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { listArticlesByFeed, type Article } from '@entities/article';
 import { useFeed } from '@entities/feed';
-import { useListTranslation } from '@features/translate-article';
+import { useFeedTitleTranslation, useListTranslation } from '@features/translate-article';
 import { useRefreshFeed } from '@features/refresh-feeds';
 import { useAsyncData } from '@shared/lib/hooks';
 import { Button, EmptyState, SegmentedToggle, Text } from '@shared/ui';
@@ -43,6 +43,11 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
   const { state: listTranslation, translate } = useListTranslation(
     articles ?? EMPTY_ARTICLES,
   );
+  const translatedFeedTitle = useFeedTitleTranslation(
+    feed?.title ?? null,
+    viewMode === 'translation',
+  );
+  const displayFeedTitle = translatedFeedTitle ?? feed?.title ?? feed?.url;
 
   // Auto-start headline translation the first time the user switches to
   // translation view (and only when the translation is genuinely ready to go,
@@ -101,14 +106,14 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                   />
                 </Pressable>
               </View>
-              {feed?.title ?? feed?.url ? (
+              {displayFeedTitle ? (
                 <View
                   style={[
                     styles.titleBlock,
                     { paddingHorizontal: theme.spacing.m },
                   ]}
                 >
-                  <Text variant="title">{feed?.title ?? feed?.url}</Text>
+                  <Text variant="title">{displayFeedTitle}</Text>
                 </View>
               ) : null}
             </View>
