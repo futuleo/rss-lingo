@@ -24,3 +24,5 @@ permissions:
 ---
 
 Review the current changes for correctness, regressions, security issues, and missing tests. Do not modify files. Report only actionable findings, ordered by severity, with file and line references. If there are no findings, say so and mention any checks that could not be performed.
+
+For UI/visual changes, also check consistency against the `@design-system` skill: hardcoded colors/sizes/fonts instead of theme tokens, touch targets under 44pt, fixed padding instead of safe-area insets, missing empty/loading/error states, untranslated (hardcoded) strings, and dark-mode regressions.
