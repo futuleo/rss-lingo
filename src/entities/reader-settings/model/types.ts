@@ -1,13 +1,12 @@
 /**
  * Reading appearance preferences for the article reader
  * (FSD `entities/reader-settings`). Modeled on Apple Books: font, text size,
- * reading theme, line spacing, and text justification.
+ * line spacing, and text justification. The reading theme lives in the app
+ * theme preference (light / sepia / dark) so it recolors the whole UI.
  */
 
 export type ReaderFontId =
   'system' | 'georgia' | 'palatino' | 'charter' | 'times' | 'helvetica';
-
-export type ReaderThemeId = 'auto' | 'light' | 'sepia' | 'dark';
 
 export type LineHeightId = 'compact' | 'regular' | 'relaxed';
 
@@ -15,7 +14,6 @@ export interface ReaderSettings {
   fontId: ReaderFontId;
   /** Body font size in CSS px. */
   fontSize: number;
-  themeId: ReaderThemeId;
   lineHeightId: LineHeightId;
   /** Justify body text like a printed book. */
   justify: boolean;
@@ -25,11 +23,6 @@ export interface ReaderFont {
   id: ReaderFontId;
   /** CSS font-family stack rendered inside the reader WebView. */
   family: string;
-  labelKey: string;
-}
-
-export interface ReaderTheme {
-  id: ReaderThemeId;
   labelKey: string;
 }
 
@@ -73,13 +66,6 @@ export const READER_FONTS: readonly ReaderFont[] = [
   },
 ] as const;
 
-export const READER_THEMES: readonly ReaderTheme[] = [
-  { id: 'auto', labelKey: 'reader.themeAuto' },
-  { id: 'light', labelKey: 'reader.themeLight' },
-  { id: 'sepia', labelKey: 'reader.themeSepia' },
-  { id: 'dark', labelKey: 'reader.themeDark' },
-] as const;
-
 export const LINE_HEIGHT_OPTIONS: readonly LineHeightOption[] = [
   { id: 'compact', value: 1.5, labelKey: 'reader.lineHeightCompact' },
   { id: 'regular', value: 1.7, labelKey: 'reader.lineHeightRegular' },
@@ -92,7 +78,6 @@ export const READER_FONT_SIZE_MAX = 30;
 export const DEFAULT_READER_SETTINGS: ReaderSettings = {
   fontId: 'georgia',
   fontSize: 18,
-  themeId: 'auto',
   lineHeightId: 'regular',
   justify: false,
 };

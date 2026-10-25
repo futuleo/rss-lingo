@@ -4,7 +4,6 @@ export {
   READER_FONT_SIZE_MAX,
   READER_FONT_SIZE_MIN,
   READER_FONTS,
-  READER_THEMES,
 } from './model/types';
 export type {
   LineHeightId,
@@ -12,11 +11,7 @@ export type {
   ReaderFont,
   ReaderFontId,
   ReaderSettings,
-  ReaderTheme,
-  ReaderThemeId,
 } from './model/types';
-export { resolveReaderPalette, readerThemeSwatch } from './model/reader-palette';
-export type { ReaderPalette } from './model/reader-palette';
 export {
   getReaderSettings,
   normalizeReaderSettings,

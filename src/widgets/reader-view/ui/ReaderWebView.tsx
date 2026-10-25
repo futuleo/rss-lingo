@@ -12,7 +12,6 @@ import {
   DEFAULT_READER_SETTINGS,
   LINE_HEIGHT_OPTIONS,
   READER_FONTS,
-  resolveReaderPalette,
   type ReaderSettings,
 } from '@entities/reader-settings';
 import { buildReaderHtml } from '../lib/buildReaderHtml';
@@ -42,7 +41,6 @@ export function ReaderWebView({
 
   const content = htmlOverride ?? article.contentHtml ?? '';
 
-  const palette = resolveReaderPalette(settings, theme);
   const font =
     READER_FONTS.find((item) => item.id === settings.fontId) ?? READER_FONTS[0]!;
   const lineHeight =
@@ -51,10 +49,10 @@ export function ReaderWebView({
 
   const readerHtml = useMemo(() => {
     return buildReaderHtml(content, {
-      background: palette.background,
-      text: palette.text,
-      textMuted: palette.textMuted,
-      scheme: palette.scheme,
+      background: theme.colors.background,
+      text: theme.colors.text,
+      textMuted: theme.colors.textMuted,
+      scheme: theme.scheme,
       topPadding,
       fontFamily: font.family,
       fontSize: settings.fontSize,
@@ -63,10 +61,10 @@ export function ReaderWebView({
     });
   }, [
     content,
-    palette.background,
-    palette.text,
-    palette.textMuted,
-    palette.scheme,
+    theme.colors.background,
+    theme.colors.text,
+    theme.colors.textMuted,
+    theme.scheme,
     topPadding,
     font.family,
     settings.fontSize,
@@ -95,7 +93,7 @@ export function ReaderWebView({
       style={[
         styles.webview,
         {
-          backgroundColor: palette.background,
+          backgroundColor: theme.colors.background,
           borderRadius: theme.radii.m,
         },
       ]}
