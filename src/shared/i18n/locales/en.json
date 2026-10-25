@@ -72,7 +72,7 @@
     "apiKeyLabel": "API key",
     "apiKeyPlaceholder": "Your provider API key",
     "targetLangLabel": "Translate to",
-    "targetLangOther": "Other…",
+    "targetLangHint": "The app interface follows this language.",
     "testConnection": "Test connection",
     "testOk": "Translation: {{result}}",
     "testError": "Test failed: {{message}}",
@@ -173,7 +173,7 @@
         "items": [
           {
             "q": "What languages does the app support?",
-            "a": "The app interface follows your device language (English, Russian, or Finnish). The translation target language is set separately in Settings."
+            "a": "The app interface follows the translation target language you pick in Settings (English, Russian, or Finnish)."
           }
         ]
       }
