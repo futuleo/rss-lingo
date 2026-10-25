@@ -16,6 +16,7 @@ function buildReaderHtml(
     background: string;
     text: string;
     textMuted: string;
+    scheme: 'light' | 'dark';
     topPadding: number;
   },
 ): string {
@@ -25,7 +26,7 @@ function buildReaderHtml(
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3" />
 <style>
-  :root { color-scheme: light dark; }
+  :root { color-scheme: ${options.scheme}; }
   html, body {
     margin: 0;
     padding: 0;
@@ -88,6 +89,7 @@ export function ReaderWebView({
       background: theme.colors.background,
       text: theme.colors.text,
       textMuted: theme.colors.textMuted,
+      scheme: theme.scheme,
       topPadding,
     });
   }, [content, theme, topPadding]);

@@ -190,6 +190,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
           <View
             style={{
               paddingHorizontal: theme.spacing.m,
+              paddingBottom: theme.spacing.s,
               gap: theme.spacing.xs,
             }}
           >
