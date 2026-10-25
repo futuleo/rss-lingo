@@ -47,26 +47,28 @@ export async function translateArticleMeta(
   }
 
   try {
-    const title = await provider.translate({
-      text: article.title,
-      targetLang: settings.targetLang,
-      apiKey,
-      model: settings.model,
-      baseUrl: settings.baseUrl,
-      signal,
-    });
-
-    let summary: string | null = null;
-    if (article.summary && article.summary.trim().length > 0) {
-      summary = await provider.translate({
-        text: article.summary,
+    // Translate title and summary in parallel (they are independent) so each
+    // article costs one round-trip instead of two.
+    const [title, summary] = await Promise.all([
+      provider.translate({
+        text: article.title,
         targetLang: settings.targetLang,
         apiKey,
         model: settings.model,
         baseUrl: settings.baseUrl,
         signal,
-      });
-    }
+      }),
+      article.summary && article.summary.trim().length > 0
+        ? provider.translate({
+            text: article.summary,
+            targetLang: settings.targetLang,
+            apiKey,
+            model: settings.model,
+            baseUrl: settings.baseUrl,
+            signal,
+          })
+        : Promise.resolve<string | null>(null),
+    ]);
 
     try {
       await saveArticleMetaTranslation(
