@@ -40,6 +40,7 @@
     "loadError": "Could not load saved articles"
   },
   "reader": {
+    "back": "Back",
     "save": "Save",
     "saved": "Saved",
     "openInBrowser": "Open in browser",

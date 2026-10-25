@@ -248,6 +248,83 @@ function sanitizeSrc(src: string | undefined): string | null {
   return /^https?:\/\//i.test(trimmed) ? trimmed : null;
 }
 
+/**
+ * Picks the largest candidate from a `srcset` value such as
+ * "https://example.org/big.jpg 800w, https://example.org/small.jpg 400w" or
+ * "https://example.org/a.jpg 1x, https://example.org/b.jpg 2x". Candidates
+ * without a descriptor are treated as 1x.
+ */
+function largestSrcsetCandidate(srcset: string): string | null {
+  let best: { url: string; value: number } | null = null;
+  for (const candidate of srcset.split(',')) {
+    const [url, descriptor = '1x'] = candidate.trim().split(/\s+/);
+    if (!url) {
+      continue;
+    }
+    let value = 1;
+    if (/w$/i.test(descriptor)) {
+      const parsed = Number.parseFloat(descriptor.slice(0, -1));
+      value = Number.isFinite(parsed) ? parsed : 0;
+    } else if (/x$/i.test(descriptor)) {
+      const parsed = Number.parseFloat(descriptor.slice(0, -1));
+      value = Number.isFinite(parsed) ? parsed : 1;
+    }
+    if (best === null || value > best.value) {
+      best = { url, value };
+    }
+  }
+  return best ? best.url : null;
+}
+
+/**
+ * Resolves the best image URL for an `<img>` element. Many sites lazy-load
+ * images, leaving a tiny `data:` placeholder in `src` while the real URL sits
+ * in `srcset`/`data-src`. Resolution order: a usable `src`, the largest
+ * `srcset` candidate, then the common lazy-load attributes.
+ */
+function resolveImageSrc(node: HTMLElement): string | null {
+  // 1. Plain `src` — return it when it is already a real http(s)/relative URL.
+  const src = sanitizeSrc(node.getAttribute('src'));
+  if (src) {
+    return src;
+  }
+
+  // 2. `srcset` — attribute names are case-sensitive in node-html-parser, so
+  //    check both spellings and prefer the largest candidate.
+  for (const name of ['srcset', 'srcSet']) {
+    const srcset = node.getAttribute(name);
+    if (srcset) {
+      const candidate = largestSrcsetCandidate(srcset);
+      if (candidate) {
+        const resolved = sanitizeSrc(candidate);
+        if (resolved) {
+          return resolved;
+        }
+      }
+    }
+  }
+
+  // 3. Lazy-load attributes, in order; `data-srcset` is parsed like srcset.
+  for (const name of ['data-src', 'data-original', 'data-lazy-src']) {
+    const resolved = sanitizeSrc(node.getAttribute(name));
+    if (resolved) {
+      return resolved;
+    }
+  }
+  const dataSrcset = node.getAttribute('data-srcset');
+  if (dataSrcset) {
+    const candidate = largestSrcsetCandidate(dataSrcset);
+    if (candidate) {
+      const resolved = sanitizeSrc(candidate);
+      if (resolved) {
+        return resolved;
+      }
+    }
+  }
+
+  return null;
+}
+
 /** Whether a content element should be kept: has text or media. */
 function hasRenderedContent(inner: string, node: HTMLElement): boolean {
   if (inner.includes('<img') || inner.includes('<br')) {
@@ -283,7 +360,7 @@ function serializeClean(node: Node): string {
       attributes += ` href="${escapeAttribute(href)}"`;
     }
   } else if (name === 'img') {
-    const src = sanitizeSrc(node.getAttribute('src'));
+    const src = resolveImageSrc(node);
     const alt = node.getAttribute('alt');
     if (src) {
       attributes += ` src="${escapeAttribute(src)}"`;
