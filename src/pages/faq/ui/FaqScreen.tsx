@@ -43,36 +43,27 @@ export function FaqScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View
-        style={[
-          styles.header,
-          {
-            paddingHorizontal: theme.spacing.m,
-            paddingTop: insets.top + theme.spacing.s,
-            paddingBottom: theme.spacing.s,
-          },
-        ]}
-      >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('settings.back')}
-          onPress={() => router.back()}
-          style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
-        >
-          <Feather name="chevron-left" size={24} color={theme.colors.primary} />
-        </Pressable>
-        <Text variant="title">{title}</Text>
-        <View style={styles.placeholder} />
-      </View>
-
       <ScrollView
         contentContainerStyle={{
-          paddingTop: theme.spacing.m,
           paddingHorizontal: theme.spacing.m,
           paddingBottom: theme.spacing.m + insets.bottom,
           gap: theme.spacing.m,
         }}
       >
+        <View style={{ paddingTop: insets.top + theme.spacing.s }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t('settings.back')}
+            onPress={() => router.back()}
+            style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
+          >
+            <Feather name="chevron-left" size={24} color={theme.colors.primary} />
+          </Pressable>
+          <View style={{ paddingBottom: theme.spacing.s }}>
+            <Text variant="title">{title}</Text>
+          </View>
+        </View>
+
         {sections.map((section, sectionIndex) => {
           const id = String(sectionIndex);
           const expanded = expandedIds.has(id);
@@ -139,11 +130,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
   backButton: {
     width: 44,
     height: 44,
@@ -152,9 +138,6 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.7,
-  },
-  placeholder: {
-    minWidth: 44,
   },
   sectionCard: {
     borderWidth: 1,

@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import {
@@ -9,6 +15,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createProvider, PROVIDERS, type ProviderInfo } from '@shared/api/ai';
 import {
   deleteApiKey,
@@ -40,10 +47,11 @@ function providerLabelKey(id: string): string {
   }
 }
 
-export function ProviderSettingsScreen() {
+export function ProviderSettingsScreen({ header }: { header?: ReactNode }) {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { settings, loading } = useAiProviderSettings();
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -198,12 +206,15 @@ export function ProviderSettingsScreen() {
 
   return (
     <ScrollView
-      contentContainerStyle={[
-        styles.container,
-        { padding: theme.spacing.m, gap: theme.spacing.m },
-      ]}
+      contentContainerStyle={{
+        paddingTop: insets.top + theme.spacing.s,
+        paddingHorizontal: theme.spacing.m,
+        paddingBottom: theme.spacing.m + insets.bottom,
+        gap: theme.spacing.m,
+      }}
       keyboardShouldPersistTaps="handled"
     >
+      {header}
       <View style={styles.section}>
         <Text variant="caption">{t('settings.providerLabel')}</Text>
         <View style={styles.providerList}>
@@ -441,9 +452,6 @@ export function ProviderSettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingBottom: 48,
-  },
   loader: {
     flex: 1,
     alignItems: 'center',

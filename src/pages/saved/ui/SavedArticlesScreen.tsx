@@ -130,7 +130,8 @@ export function SavedArticlesScreen() {
                     ]}
                   >
                     <Text variant="caption" style={styles.bannerText}>
-                      {t('reader.translationFailed')}
+                      {listTranslation.error?.message ??
+                        t('reader.translationFailed')}
                     </Text>
                     <Button
                       label={t('common.retry')}

@@ -83,30 +83,33 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
         onRefresh={handleRefresh}
         ListHeaderComponent={
           <View>
-            <View
-              style={[
-                styles.header,
-                {
-                  paddingHorizontal: theme.spacing.m,
-                  paddingTop: insets.top + theme.spacing.s,
-                },
-              ]}
-            >
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={t('reader.back')}
-                onPress={() => router.back()}
-                style={({ pressed }) => [
-                  styles.backButton,
-                  pressed && styles.pressed,
-                ]}
-              >
-                <Feather name="chevron-left" size={24} color={theme.colors.primary} />
-              </Pressable>
+            <View style={{ paddingTop: insets.top + theme.spacing.s }}>
+              <View style={{ paddingHorizontal: theme.spacing.m }}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t('reader.back')}
+                  onPress={() => router.back()}
+                  style={({ pressed }) => [
+                    styles.backButton,
+                    pressed && styles.pressed,
+                  ]}
+                >
+                  <Feather
+                    name="chevron-left"
+                    size={24}
+                    color={theme.colors.primary}
+                  />
+                </Pressable>
+              </View>
               {feed?.title ?? feed?.url ? (
-                <Text variant="title" style={styles.title}>
-                  {feed?.title ?? feed?.url}
-                </Text>
+                <View
+                  style={[
+                    styles.titleBlock,
+                    { paddingHorizontal: theme.spacing.m },
+                  ]}
+                >
+                  <Text variant="title">{feed?.title ?? feed?.url}</Text>
+                </View>
               ) : null}
             </View>
 
@@ -170,7 +173,8 @@ export function FeedArticlesScreen({ feedId }: FeedArticlesScreenProps) {
                     ]}
                   >
                     <Text variant="caption" style={styles.bannerText}>
-                      {t('reader.translationFailed')}
+                      {listTranslation.error?.message ??
+                        t('reader.translationFailed')}
                     </Text>
                     <Button
                       label={t('common.retry')}
@@ -231,12 +235,6 @@ const styles = StyleSheet.create({
   loader: {
     marginTop: 48,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingBottom: 8,
-  },
   backButton: {
     width: 44,
     height: 44,
@@ -246,8 +244,8 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.7,
   },
-  title: {
-    flex: 1,
+  titleBlock: {
+    paddingBottom: 8,
   },
   toggleArea: {
     gap: 8,
