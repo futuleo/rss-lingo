@@ -59,6 +59,15 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 `;
 
+/**
+ * Schema version 3 — track whether an article already stores full content
+ * (from content:encoded / content) rather than just a teaser. Fetched full
+ * content is flagged so refreshes never downgrade it back to a teaser.
+ */
+const MIGRATION_V3 = `
+ALTER TABLE articles ADD COLUMN has_full_content INTEGER NOT NULL DEFAULT 0;
+`;
+
 type Migration = {
   version: number;
   sql: string;
@@ -67,6 +76,7 @@ type Migration = {
 const migrations: Migration[] = [
   { version: 1, sql: MIGRATION_V1 },
   { version: 2, sql: MIGRATION_V2 },
+  { version: 3, sql: MIGRATION_V3 },
 ];
 
 export async function migrateDatabase(db: SQLite.SQLiteDatabase): Promise<void> {

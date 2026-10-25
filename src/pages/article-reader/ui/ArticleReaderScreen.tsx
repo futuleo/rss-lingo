@@ -11,6 +11,7 @@ import {
 import { useRouter } from 'expo-router';
 import { useArticle, useToggleSaved } from '@entities/article';
 import { useArticleTranslation } from '@features/translate-article';
+import { useFullArticle } from '@features/fetch-article-content';
 import { formatDate } from '@shared/lib/dates';
 import { Button, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
@@ -30,6 +31,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
   const { data: article, loading, setData: setArticle } = useArticle(articleId);
   const { saving, toggleSaved } = useToggleSaved();
   const { state: translationState, translate, cancel } = useArticleTranslation(article);
+  const fullStatus = useFullArticle(article, setArticle);
 
   const [viewMode, setViewMode] = useState<ViewMode>('original');
 
@@ -119,6 +121,13 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             onCancel={cancel}
             onConfigure={() => router.push('/settings')}
           />
+        ) : fullStatus === 'loading' ? (
+          <View style={styles.loadingRow}>
+            <ActivityIndicator size="small" color={theme.colors.primary} />
+            <Text variant="body" style={{ color: theme.colors.textMuted }}>
+              {t('reader.loadingFull')}
+            </Text>
+          </View>
         ) : article.contentHtml ? (
           <ReaderWebView article={article} />
         ) : (
@@ -159,6 +168,7 @@ function TranslationPanel({
           author: null,
           summary: null,
           contentHtml: state.text ?? null,
+          hasFullContent: true,
           publishedAt: null,
           saved: false,
           fetchedAt: 0,
@@ -258,6 +268,11 @@ const styles = StyleSheet.create({
   },
   toggleRow: {
     flexDirection: 'row',
+    gap: 8,
+  },
+  loadingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 8,
   },
   panel: {

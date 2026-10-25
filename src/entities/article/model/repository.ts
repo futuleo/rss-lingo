@@ -14,6 +14,7 @@ interface ArticleRow {
   author: string | null;
   summary: string | null;
   content_html: string | null;
+  has_full_content: number;
   published_at: number | null;
   saved: number;
   fetched_at: number;
@@ -29,6 +30,7 @@ function mapRow(row: ArticleRow): Article {
     author: row.author,
     summary: row.summary,
     contentHtml: row.content_html,
+    hasFullContent: row.has_full_content === 1,
     publishedAt: row.published_at,
     saved: row.saved === 1,
     fetchedAt: row.fetched_at,
@@ -51,14 +53,22 @@ export async function upsertArticles(
     for (const article of incoming) {
       await database.runAsync(
         `INSERT INTO articles
-           (feed_id, guid, url, title, author, summary, content_html, published_at, saved, fetched_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
+           (feed_id, guid, url, title, author, summary, content_html, has_full_content, published_at, saved, fetched_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
          ON CONFLICT(feed_id, guid) DO UPDATE SET
            url = excluded.url,
            title = excluded.title,
            author = excluded.author,
            summary = excluded.summary,
-           content_html = excluded.content_html,
+           content_html = CASE
+             WHEN excluded.has_full_content = 1 THEN excluded.content_html
+             WHEN articles.has_full_content = 1 THEN articles.content_html
+             ELSE excluded.content_html
+           END,
+           has_full_content = CASE
+             WHEN excluded.has_full_content = 1 OR articles.has_full_content = 1 THEN 1
+             ELSE 0
+           END,
            published_at = excluded.published_at,
            fetched_at = excluded.fetched_at`,
         [
@@ -69,6 +79,7 @@ export async function upsertArticles(
           article.author,
           article.summary,
           article.contentHtml,
+          article.hasFullContent ? 1 : 0,
           article.publishedAt,
           fetchedAt,
         ],
@@ -123,6 +134,22 @@ export async function setArticleSaved(
     saved ? 1 : 0,
     articleId,
   ]);
+}
+
+/**
+ * Persists extracted full-content HTML for an article and flags it as full so
+ * later refreshes never downgrade it back to a teaser.
+ */
+export async function setArticleContent(
+  articleId: number,
+  contentHtml: string,
+  db?: SQLiteDatabase,
+): Promise<void> {
+  const database = db ?? (await getDb());
+  await database.runAsync(
+    'UPDATE articles SET content_html = ?, has_full_content = 1 WHERE id = ?',
+    [contentHtml, articleId],
+  );
 }
 
 /**

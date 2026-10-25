@@ -7,6 +7,7 @@ export interface Article {
   author: string | null;
   summary: string | null;
   contentHtml: string | null;
+  hasFullContent: boolean;
   publishedAt: number | null;
   saved: boolean;
   fetchedAt: number;
@@ -20,5 +21,6 @@ export interface IncomingArticle {
   author: string | null;
   summary: string | null;
   contentHtml: string | null;
+  hasFullContent: boolean;
   publishedAt: number | null;
 }

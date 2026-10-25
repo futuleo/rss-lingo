@@ -104,6 +104,7 @@ function parseRssItem(item: UnknownRecord): ParsedArticle | null {
     author: decodeMaybe(rawText(item['dc:creator']) ?? rawText(item['author'])),
     summary: decodeMaybe(rawText(item['description'])),
     contentHtml: rawText(item['content:encoded']) ?? rawText(item['description']),
+    hasFullContent: rawText(item['content:encoded']) != null,
     publishedAt:
       toDateMs(item['pubDate']) ??
       toDateMs(item['dc:date']) ??
@@ -124,6 +125,7 @@ function parseAtomEntry(entry: UnknownRecord): ParsedArticle | null {
     author: decodeMaybe(rawText(asRecord(entry['author'])?.['name'])),
     summary: decodeMaybe(rawText(entry['summary'])),
     contentHtml: rawText(entry['content']) ?? rawText(entry['summary']),
+    hasFullContent: rawText(entry['content']) != null,
     publishedAt:
       toDateMs(entry['published']) ??
       toDateMs(entry['updated']) ??

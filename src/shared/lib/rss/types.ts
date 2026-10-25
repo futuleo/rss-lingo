@@ -8,6 +8,8 @@ export interface ParsedArticle {
   summary: string | null;
   /** Raw HTML content, preferred source for the reader view. */
   contentHtml: string | null;
+  /** True when the feed provided full content via content:encoded/content. */
+  hasFullContent: boolean;
   /** Unix milliseconds, null when the feed provides no parseable date. */
   publishedAt: number | null;
 }

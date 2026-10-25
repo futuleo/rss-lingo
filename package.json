@@ -15,6 +15,7 @@
     "fast-xml-parser": "^5.11.2",
     "he": "^2.0.0",
     "i18next": "^26.5.2",
+    "node-html-parser": "^9.0.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-i18next": "^17.1.0",
