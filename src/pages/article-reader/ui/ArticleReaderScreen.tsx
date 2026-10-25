@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -36,6 +36,22 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
   const fullStatus = useFullArticle(article, setArticle);
 
   const [viewMode, setViewMode] = useState<ViewMode>('original');
+
+  // Auto-start translation the first time the user switches to translation
+  // view (and only when the translation is genuinely ready, not still
+  // loading settings). The guard fires once per entry into translation mode.
+  const hasAutoTranslated = useRef(false);
+
+  useEffect(() => {
+    if (viewMode !== 'translation') {
+      hasAutoTranslated.current = false;
+      return;
+    }
+    if (!hasAutoTranslated.current && translationState.status === 'idle') {
+      hasAutoTranslated.current = true;
+      translate();
+    }
+  }, [viewMode, translationState.status, translate]);
 
   const onToggleSaved = useCallback(async () => {
     if (!article) return;
@@ -286,6 +302,23 @@ function TranslationPanel({
       >
         <Text variant="body">{t('reader.configureFirst')}</Text>
         <Button label={t('reader.configure')} variant="primary" onPress={onConfigure} />
+      </View>
+    );
+  }
+
+  if (state.status === 'loading') {
+    return (
+      <View
+        style={[
+          styles.panel,
+          {
+            backgroundColor: theme.colors.surface,
+            borderColor: theme.colors.border,
+            gap: theme.spacing.s,
+          },
+        ]}
+      >
+        <ActivityIndicator size="small" color={theme.colors.primary} />
       </View>
     );
   }

@@ -5,7 +5,7 @@ import { useAsyncData } from '@shared/lib/hooks';
 import { getTranslation } from '@entities/translation';
 import { translateArticle, TranslationError } from './translate-engine';
 
-type TranslationStatus = 'idle' | 'translating' | 'ready' | 'failed';
+type TranslationStatus = 'idle' | 'loading' | 'translating' | 'ready' | 'failed';
 
 export interface TranslationProgress {
   done: number;
@@ -73,7 +73,7 @@ export function useArticleTranslation(
 
   const state = useMemo<TranslationState>(() => {
     if (preparedLoading || settingsLoading) {
-      return { status: 'idle' };
+      return { status: 'loading' };
     }
     if (status === 'translating') {
       return { status: 'translating', progress: progress ?? { done: 0, total: 0 } };
