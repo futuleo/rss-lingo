@@ -133,12 +133,10 @@ export function ProviderSettingsScreen() {
   }, [apiKey, providerId, isLoaded, isApiKeyDirty]);
 
   const selectProvider = useCallback((id: string) => {
+    const next = PROVIDERS.find((p) => p.id === id);
     setProviderId(id);
-    setModel((current) =>
-      current.trim().length === 0
-        ? (PROVIDERS.find((p) => p.id === id)?.defaultModelExample ?? '')
-        : current,
-    );
+    setModel(next?.defaultModelExample ?? '');
+    setBaseUrl(next?.defaultBaseUrl ?? '');
     setApiKey('');
     setIsApiKeyDirty(false);
     setTestStatus({ type: 'idle' });
@@ -236,14 +234,72 @@ export function ProviderSettingsScreen() {
 
       <View style={styles.section}>
         <Text variant="caption">{t('settings.modelLabel')}</Text>
-        <TextInput
-          accessibilityLabel={t('settings.modelLabel')}
-          value={model}
-          onChangeText={setModel}
-          placeholder={t('settings.modelPlaceholder')}
-          placeholderTextColor={theme.colors.textMuted}
-          style={[styles.input, inputStyle]}
-        />
+        <View style={styles.langList}>
+          {selectedProvider.models.map((m) => {
+            const selected = model === m;
+            return (
+              <Pressable
+                key={m}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selected }}
+                onPress={() => setModel(m)}
+                style={[
+                  styles.langChip,
+                  {
+                    backgroundColor: selected
+                      ? theme.colors.primary
+                      : theme.colors.surface,
+                    borderColor: theme.colors.border,
+                  },
+                ]}
+              >
+                <Text
+                  style={{
+                    color: selected ? theme.colors.primaryText : theme.colors.text,
+                  }}
+                >
+                  {m}
+                </Text>
+              </Pressable>
+            );
+          })}
+          <Pressable
+            accessibilityRole="radio"
+            accessibilityState={{ checked: !selectedProvider.models.includes(model) }}
+            onPress={() => setModel('')}
+            style={[
+              styles.langChip,
+              {
+                backgroundColor: !selectedProvider.models.includes(model)
+                  ? theme.colors.primary
+                  : theme.colors.surface,
+                borderColor: theme.colors.border,
+              },
+            ]}
+          >
+            <Text
+              style={{
+                color: !selectedProvider.models.includes(model)
+                  ? theme.colors.primaryText
+                  : theme.colors.text,
+              }}
+            >
+              {t('settings.modelCustom')}
+            </Text>
+          </Pressable>
+        </View>
+        {!selectedProvider.models.includes(model) && (
+          <TextInput
+            accessibilityLabel={t('settings.modelLabel')}
+            value={model}
+            onChangeText={setModel}
+            placeholder={t('settings.modelPlaceholder')}
+            placeholderTextColor={theme.colors.textMuted}
+            autoCapitalize="none"
+            autoCorrect={false}
+            style={[styles.input, inputStyle]}
+          />
+        )}
       </View>
 
       <View style={styles.section}>

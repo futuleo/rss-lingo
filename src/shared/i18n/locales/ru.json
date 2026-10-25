@@ -65,6 +65,7 @@
     "providerDeepSeek": "DeepSeek",
     "modelLabel": "Модель",
     "modelPlaceholder": "например, gpt-4o-mini",
+    "modelCustom": "Свой…",
     "baseUrlLabel": "Базовый URL (необязательно)",
     "baseUrlPlaceholder": "https://api.example.com/v1",
     "apiKeyLabel": "API-ключ",
