@@ -2,6 +2,11 @@
   "app": {
     "title": "RSS Lingo"
   },
+  "tabs": {
+    "feeds": "Syötteet",
+    "saved": "Tallennetut",
+    "settings": "Asetukset"
+  },
   "common": {
     "ok": "OK",
     "cancel": "Peruuta",

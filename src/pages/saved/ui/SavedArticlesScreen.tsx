@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { listSavedArticles, type Article } from '@entities/article';
 import { useListTranslation } from '@features/translate-article';
@@ -17,6 +18,7 @@ export function SavedArticlesScreen() {
   const { t } = useTranslation();
   const theme = useTheme();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const load = useCallback(() => listSavedArticles(), []);
   const { data: articles, loading, error, reload } = useAsyncData(load);
@@ -50,21 +52,12 @@ export function SavedArticlesScreen() {
           styles.header,
           {
             paddingHorizontal: theme.spacing.m,
-            paddingTop: 48,
+            paddingTop: insets.top + theme.spacing.s,
             paddingBottom: theme.spacing.s,
           },
         ]}
       >
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={t('saved.back')}
-          onPress={() => router.back()}
-          style={styles.backButton}
-        >
-          <Text style={{ color: theme.colors.primary }}>← {t('saved.back')}</Text>
-        </Pressable>
         <Text variant="title">{t('saved.title')}</Text>
-        <View style={styles.placeholder} />
       </View>
 
       {loading ? (
@@ -127,7 +120,7 @@ export function SavedArticlesScreen() {
                   label={t('reader.configure')}
                   variant="secondary"
                   labelVariant="caption"
-                  onPress={() => router.push('/settings')}
+                  onPress={() => router.navigate('/settings')}
                 />
               </View>
             ) : null}
@@ -172,12 +165,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  backButton: {
-    minWidth: 64,
-  },
-  placeholder: {
-    minWidth: 64,
   },
   toggleArea: {
     gap: 8,
