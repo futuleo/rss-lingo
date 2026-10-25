@@ -3,6 +3,7 @@ export { translateArticle, TranslationError } from './model/translate-engine';
 export { translateArticleMeta } from './model/translate-meta';
 export type { ArticleMeta, TranslateArticleMetaOptions } from './model/translate-meta';
 export { useListTranslation } from './model/useListTranslation';
+export { useFeedTitleTranslation } from './model/useFeedTitleTranslation';
 export type {
   ListTranslationState,
   ListTranslationStatus,
