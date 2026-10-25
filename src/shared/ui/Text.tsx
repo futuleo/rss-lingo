@@ -13,17 +13,26 @@ const variantStyle = (theme: Theme, variant: TextVariant) => {
     case 'title':
       return {
         fontSize: theme.font.title,
+        lineHeight: theme.lineHeight.title,
         fontWeight: theme.weight.bold,
       };
     case 'headline':
       return {
         fontSize: theme.font.headline,
+        lineHeight: theme.lineHeight.headline,
         fontWeight: theme.weight.semibold,
       };
     case 'caption':
-      return { fontSize: theme.font.caption, color: theme.colors.textMuted };
+      return {
+        fontSize: theme.font.caption,
+        lineHeight: theme.lineHeight.caption,
+        color: theme.colors.textMuted,
+      };
     default:
-      return { fontSize: theme.font.body };
+      return {
+        fontSize: theme.font.body,
+        lineHeight: theme.lineHeight.body,
+      };
   }
 };
 
