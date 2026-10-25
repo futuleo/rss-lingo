@@ -15,12 +15,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useArticle, useToggleSaved } from '@entities/article';
+import { useReaderSettings, type ReaderSettings } from '@entities/reader-settings';
 import { useArticleTranslation } from '@features/translate-article';
 import { useFullArticle } from '@features/fetch-article-content';
 import { formatDate } from '@shared/lib/dates';
 import { Button, ScrollToTopButton, Text } from '@shared/ui';
 import { useTheme } from '@shared/theme';
-import { ReaderWebView } from '@widgets/reader-view';
+import { ReaderSettingsSheet, ReaderWebView } from '@widgets/reader-view';
 
 export interface ArticleReaderScreenProps {
   articleId: number;
@@ -38,12 +39,14 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
   const { saving, toggleSaved } = useToggleSaved();
   const { state: translationState, translate, cancel } = useArticleTranslation(article);
   const fullStatus = useFullArticle(article, setArticle);
+  const readerSettings = useReaderSettings();
 
   const [viewMode, setViewMode] = useState<ViewMode>('original');
   const [scrollY] = useState(() => new Animated.Value(0));
   const [headerHeight, setHeaderHeight] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [webViewKey, setWebViewKey] = useState(0);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   // Auto-start translation the first time the user switches to translation
   // view (and only when the translation is genuinely ready, not still
@@ -157,6 +160,22 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             <View style={[styles.actionsRight, { gap: theme.spacing.xs }]}>
               <Pressable
                 accessibilityRole="button"
+                accessibilityLabel={t('reader.openSettings')}
+                onPress={() => setSettingsOpen(true)}
+                style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
+              >
+                <Text
+                  variant="headline"
+                  style={{
+                    color: theme.colors.primary,
+                    fontWeight: theme.weight.semibold,
+                  }}
+                >
+                  Aa
+                </Text>
+              </Pressable>
+              <Pressable
+                accessibilityRole="button"
                 accessibilityLabel={
                   article.saved ? t('reader.saved') : t('reader.save')
                 }
@@ -249,6 +268,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
               topPadding={headerHeight}
               onScroll={handleScroll}
               webViewKey={webViewKey}
+              settings={readerSettings.settings}
             />
           </View>
         ) : fullStatus === 'loading' || headerHeight === 0 ? (
@@ -266,6 +286,7 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
             article={article}
             topPadding={headerHeight}
             onScroll={handleScroll}
+            settings={readerSettings.settings}
           />
         ) : (
           <View style={[styles.center, styles.fill]}>
@@ -277,6 +298,13 @@ export function ArticleReaderScreen({ articleId }: ArticleReaderScreenProps) {
       </View>
 
       <ScrollToTopButton visible={scrolled} onPress={scrollToTop} />
+
+      <ReaderSettingsSheet
+        visible={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        settings={readerSettings.settings}
+        onChange={readerSettings.update}
+      />
     </View>
   );
 }
@@ -289,6 +317,7 @@ interface TranslationPanelProps {
   topPadding: number;
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   webViewKey: number;
+  settings: ReaderSettings;
 }
 
 function TranslationPanel({
@@ -299,6 +328,7 @@ function TranslationPanel({
   topPadding,
   onScroll,
   webViewKey,
+  settings,
 }: TranslationPanelProps) {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -324,6 +354,7 @@ function TranslationPanel({
         key={webViewKey}
         topPadding={topPadding}
         onScroll={onScroll}
+        settings={settings}
       />
     );
   }
